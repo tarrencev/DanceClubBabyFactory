@@ -17,3 +17,36 @@ canvas {
     margin: 0 auto;
     display: block;
 }
+
+#infoPane {
+    width: 300px;
+    height: 500px;
+    top: 0;
+    bottom: 0;
+    float: right;
+    background-color: #f15a29;
+    display: block;
+}
+
+h1 {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #fff;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 5px;
+    font-size: 23px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #fff;
+    text-align: center;
+}
+
+h3 {
+    margin-top: 5px;
+    font-size: 20px;
+    font-weight: 100;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #fff;
+    text-align: center;
+}
