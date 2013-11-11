@@ -4,6 +4,10 @@ body {
     background-color: #000;
 }
 
+canvas {
+    float: left;
+}
+
 * {
     overflow: hidden;
     -webkit-user-select: none;
@@ -19,11 +23,11 @@ canvas {
 }
 
 #infoPane {
+    position: absolute;
     width: 300px;
-    height: 500px;
     top: 0;
+    right:0;
     bottom: 0;
-    float: right;
     background-color: #f15a29;
     display: block;
 }
