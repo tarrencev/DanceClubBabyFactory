@@ -48,6 +48,8 @@ var DoorObject = function(){
         var deltaY = event.stageY - CONSTANTS.HEIGHT/2;
         var deltaX = event.stageX - CONSTANTS.WIDTH/2;
         var angle = Math.atan(deltaY/deltaX) * 180/Math.PI;
+        if(event.stageX < CONSTANTS.WIDTH/2)
+            angle = -90 + (angle - 90);
         console.log(angle);
         door.rotation = angle;
     };
