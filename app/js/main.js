@@ -1,29 +1,49 @@
-function init() {
-    canvas = document.createElement('canvas');
+var GameObject = function() {
+    //private vars
+    var background, doorObject;
 
-    canvas.width = window.innerWidth - 300;
-    canvas.height = window.innerHeight;
-    CONSTANTS.WIDTH = window.innerWidth - 300;
-    CONSTANTS.HEIGHT = window.innerHeight;
+    //private funcs
+    function init() {
+        canvas = document.createElement('canvas');
 
-    canvas.setAttribute('id', 'c');
+        canvas.width = window.innerWidth - 300;
+        canvas.height = window.innerHeight;
+        CONSTANTS.WIDTH = window.innerWidth - 300;
+        CONSTANTS.HEIGHT = window.innerHeight;
 
-    document.body.appendChild(canvas);
-    stage = new createjs.Stage(canvas);
-    stage.mouseEventsEnabled = true;
+        canvas.setAttribute('id', 'c');
 
-    if(!createjs.Ticker.hasEventListener('tick')) {
-        createjs.Ticker.addEventListener('tick', tick);
+        document.body.appendChild(canvas);
+        stage = new createjs.Stage(canvas);
+        stage.mouseEventsEnabled = true;
+
+        if(!createjs.Ticker.hasEventListener('tick')) {
+            createjs.Ticker.addEventListener('tick', tick);
+        }
+        createjs.Ticker.setFPS(30);
+
+        //init background
+        background = new BackgroundObject();
+
+        //init door
+        doorObject = new DoorObject();
+        stage.addEventListener("pressmove", mousePressMove);
     }
-    createjs.Ticker.setFPS(30);
 
-    var doorObject = new DoorObject();
+    //same as perform_logic() in zenilib
+    function tick() {
+        stage.update();
+    }
 
-}
+    function mousePressMove(event) {
+        doorObject.moveDoor(event);
+    }
 
-document.body.onload = init();
+    //public funcs
+    this.init = function() {
+        init();
+    };
+};
 
-function tick() {
-    console.log('tick');
-    stage.update();
-}
+var gameObject = new GameObject();
+document.body.onload = gameObject.init();
