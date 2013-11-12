@@ -2,7 +2,6 @@ var DoorObject = function(){
     //private vars
     var door, doorGuide;
     var doorPosition = 0;
-    var radius = 200;
 
     //private funcs
     function init() {
@@ -12,9 +11,11 @@ var DoorObject = function(){
 
     function drawDoor() {
         door = new createjs.Shape();
+        door.x = CONSTANTS.WIDTH/2;
+        door.y = CONSTANTS.HEIGHT/2;
         door.graphics.beginStroke('#6d6e71')
                     .setStrokeStyle(16)
-                    .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, 0 + doorPosition, Math.PI/5 + doorPosition)
+                    .arc(0, 0, 250, 0 + doorPosition, Math.PI/5 + doorPosition)
                     .endStroke();
         // door.graphics
         //     .beginStroke('#fff')
@@ -48,7 +49,7 @@ var DoorObject = function(){
         var deltaX = event.stageX - CONSTANTS.WIDTH/2;
         var angle = Math.atan(deltaY/deltaX) * 180/Math.PI;
         console.log(angle);
-        // door.setTransform(0, 0, 1, 1, angle);
+        door.rotation = angle;
     };
 
     init();
