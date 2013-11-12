@@ -36,7 +36,13 @@ var DoorObject = function(){
 
     //public funcs
     this.moveDoor = function(event) {
-        doorPosition.y = event.stageY;
+        console.log(event.stageY);
+
+        //get mouse angle
+        var deltaY = event.stageY - CONSTANTS.HEIGHT/2;
+        var deltaX = event.stageX - CONSTANTS.WIDTH/2;
+        var angle = Math.atan(deltaY/deltaX) * 180/Math.PI;
+        console.log(angle);
     };
 
     init();

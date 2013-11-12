@@ -1,11 +1,21 @@
 var BackgroundObject = function(){
     //private vars
     //declare private vars her
-    var flare;
+    var flare, baseBackground;
 
     //private funcs
     function init() {
+        drawBaseBackground();
         drawFlare();
+    }
+
+    function drawBaseBackground() {
+        baseBackground = new createjs.Shape();
+        baseBackground.graphics
+        .beginFill('#000')
+        .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+
+        stage.addChild(baseBackground);
     }
 
     function drawFlare() {

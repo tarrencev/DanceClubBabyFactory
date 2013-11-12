@@ -8,7 +8,7 @@ var TemplateObject = function(){
 
     }
 
-    //public vars
+    //public funs
     this.log = function(event) {
         console.log('log public func called');
     };

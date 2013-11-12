@@ -1,6 +1,6 @@
 var GameObject = function() {
     //private vars
-    var background, doorObject;
+    var background, door, babyRepo;
 
     //private funcs
     function init() {
@@ -25,8 +25,11 @@ var GameObject = function() {
         //init background
         background = new BackgroundObject();
 
+        //init baby repo
+        babyRepo = new BabyRepoObject();
+
         //init door
-        doorObject = new DoorObject();
+        door = new DoorObject();
         stage.addEventListener("pressmove", mousePressMove);
     }
 
@@ -36,7 +39,8 @@ var GameObject = function() {
     }
 
     function mousePressMove(event) {
-        doorObject.moveDoor(event);
+        console.log('press move');
+        door.moveDoor(event);
     }
 
     //public funcs
