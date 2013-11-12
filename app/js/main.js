@@ -30,6 +30,7 @@ var GameObject = function() {
 
         //init door
         door = new DoorObject();
+        
         stage.addEventListener("pressmove", mousePressMove);
     }
 

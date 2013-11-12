@@ -14,7 +14,12 @@ var DoorObject = function(){
         door = new createjs.Shape();
         door.graphics.beginStroke('#6d6e71')
                     .setStrokeStyle(16)
-                    .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, 0 + doorPosition, Math.PI/5 + doorPosition);
+                    .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, 0 + doorPosition, Math.PI/5 + doorPosition)
+                    .endStroke();
+        // door.graphics
+        //     .beginStroke('#fff')
+        //     .setStrokeStyle(1)
+        //     .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, Math.PI/5 + doorPosition, 0 + doorPosition);
         stage.addChild(door);
     }
 
@@ -27,10 +32,11 @@ var DoorObject = function(){
             end = i * 0.8 + Math.PI/10;
 
             doorGuide.graphics.beginStroke('#f7941e')
-                    .setStrokeStyle(6)
-                    .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, start, end);
-
+                .setStrokeStyle(6)
+                .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, start, end);
         }
+        doorGuide.cache(CONSTANTS.WIDTH/2 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
+
         stage.addChild(doorGuide);
     }
 
@@ -38,11 +44,11 @@ var DoorObject = function(){
     this.moveDoor = function(event) {
         console.log(event.stageY);
 
-        //get mouse angle
         var deltaY = event.stageY - CONSTANTS.HEIGHT/2;
         var deltaX = event.stageX - CONSTANTS.WIDTH/2;
         var angle = Math.atan(deltaY/deltaX) * 180/Math.PI;
         console.log(angle);
+        // door.setTransform(0, 0, 1, 1, angle);
     };
 
     init();

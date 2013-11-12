@@ -12,9 +12,8 @@ var BackgroundObject = function(){
     function drawBaseBackground() {
         baseBackground = new createjs.Shape();
         baseBackground.graphics
-        .beginFill('#000')
-        .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
-
+            .beginFill('#000')
+            .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         stage.addChild(baseBackground);
     }
 
