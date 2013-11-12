@@ -3,8 +3,8 @@ function init() {
 
     canvas.width = window.innerWidth - 300;
     canvas.height = window.innerHeight;
-    CONSTANTS.SCREENWITH = window.innerWidth - 300;
-    CONSTANTS.SCREENHEIGHT = window.innerHeight;
+    CONSTANTS.WIDTH = window.innerWidth - 300;
+    CONSTANTS.HEIGHT = window.innerHeight;
 
     canvas.setAttribute('id', 'c');
 
@@ -18,6 +18,7 @@ function init() {
     createjs.Ticker.setFPS(30);
 
     var doorObject = new DoorObject();
+
 }
 
 document.body.onload = init();
