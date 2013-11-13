@@ -1,8 +1,11 @@
 {
-  "name": "The Infinite Dubstep Baby Factory",
+  "name": "The_Infinite_Dubstep_Baby_Factory",
   "version": "0.0.3",
   "description": "A game for EECS494",
   "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "express": "~3.3.4"
   },
