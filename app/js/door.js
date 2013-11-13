@@ -17,10 +17,6 @@ var DoorObject = function(){
                     .setStrokeStyle(16)
                     .arc(0, 0, 250, 0 + doorPosition, Math.PI/5 + doorPosition)
                     .endStroke();
-        // door.graphics
-        //     .beginStroke('#fff')
-        //     .setStrokeStyle(1)
-        //     .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, Math.PI/5 + doorPosition, 0 + doorPosition);
         stage.addChild(door);
     }
 
@@ -47,7 +43,7 @@ var DoorObject = function(){
 
         var deltaY = event.stageY - CONSTANTS.HEIGHT/2;
         var deltaX = event.stageX - CONSTANTS.WIDTH/2;
-        var angle = Math.atan(deltaY/deltaX) * 180/Math.PI;
+        var angle = Math.atan(deltaY/deltaX) * 180/Math.PI - 18;
         if(event.stageX < CONSTANTS.WIDTH/2)
             angle = -90 + (angle - 90);
         console.log(angle);

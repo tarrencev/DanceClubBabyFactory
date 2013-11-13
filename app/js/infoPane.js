@@ -9,9 +9,6 @@ var InfoPaneObject = function(){
     }
 
     //public funs
-    this.log = function(event) {
-        console.log('log public func called');
-    };
 
     init();
 };

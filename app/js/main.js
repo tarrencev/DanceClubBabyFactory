@@ -30,8 +30,9 @@ var GameObject = function() {
 
         //init door
         door = new DoorObject();
-        
-        stage.addEventListener("pressmove", mousePressMove);
+
+        stage.addEventListener("pressmove", mousePressMoveHandler);
+        stage.addEventListener("click", mouseClickHandler);
     }
 
     //same as perform_logic() in zenilib
@@ -39,14 +40,23 @@ var GameObject = function() {
         stage.update();
     }
 
-    function mousePressMove(event) {
+    function mousePressMoveHandler(event) {
         console.log('press move');
         door.moveDoor(event);
+    }
+
+    function mouseClickHandler(event) {
+        console.log('click');
+        babyRepo.addBaby();
     }
 
     //public funcs
     this.init = function() {
         init();
+    };
+
+    this.getBabyRepo = function() {
+        return babyRepo;
     };
 };
 

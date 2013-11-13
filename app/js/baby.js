@@ -1,6 +1,7 @@
 var BabyObject = function(){
     //private vars
     //declare private vars her
+    var radius = 5;
     var baby;
 
     //private funcs
@@ -14,15 +15,26 @@ var BabyObject = function(){
             .beginStroke('#fff')
             .setStrokeStyle(5)
             .beginFill('#231f20')
-            .drawCircle(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 5);
+            .drawCircle(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, radius);
 
-        baby.cache(CONSTANTS.WIDTH/2 - 8, CONSTANTS.HEIGHT/2 - 8, 16, 16);
         stage.addChild(baby);
     }
 
     //public funs
-    this.log = function(event) {
-        console.log('log public func called');
+    this.setPosition = function(position) {
+        baby.x = position.x;
+        baby.y = position.y;
+    };
+
+    this.getPosition = function() {
+        return {
+            x: baby.x,
+            y: baby.y
+        };
+    };
+
+    this.getRadius = function() {
+        return radius;
     };
 
     init();
