@@ -24,26 +24,28 @@ canvas {
 
 .infoPane {
     position: absolute;
-    width: 300px;
+    width: 30%;
+    height: 100%;
     top: 0;
     right:0;
     bottom: 0;
     background-color: #f15a29;
     display: block;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: Papyrus, fantasy;
     color: #fff;
     text-align: center;
 }
 
 h2 {
-    margin-bottom: 5px;
-    font-size: 23px;
+    margin-bottom: 3px;
+    font-size: 25px;
+    font-weight: bold;
 }
 
 h3 {
-    margin-top: 5px;
-    font-size: 20px;
-    font-weight: 100;
+    margin-top: 3px;
+    font-size: 18px;
+    font-weight: lighter;
 }
 
 .volumeSlider {

@@ -1,4 +1,4 @@
-var GameObject = function() {
+var GameObject = function Main() {
     //private vars
     var background, door, babyRepo;
 
@@ -6,9 +6,9 @@ var GameObject = function() {
     function init() {
         canvas = document.createElement('canvas');
 
-        canvas.width = window.innerWidth - 300;
+        canvas.width = window.innerWidth * 0.7;
         canvas.height = window.innerHeight;
-        CONSTANTS.WIDTH = window.innerWidth - 300;
+        CONSTANTS.WIDTH = window.innerWidth * 0.7;
         CONSTANTS.HEIGHT = window.innerHeight;
 
         canvas.setAttribute('id', 'c');
