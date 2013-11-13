@@ -31,12 +31,40 @@ var GameObject = function() {
         //init door
         door = new DoorObject();
 
+        window.onresize = function() {
+            onResize();
+        }
+
         stage.addEventListener("pressmove", mousePressMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
     }
 
     //same as perform_logic() in zenilib
     function tick() {
+        stage.update();
+    }
+
+    function onResize() {
+        // browser viewport size
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+
+        // stage dimensions
+        var ow = CONSTANTS.WIDTH;
+        var oh = CONSTANTS.HEIGHT;
+
+       
+        // keep aspect ratio
+        var scale = Math.min(w / ow, h / oh);
+        stage.scaleX = scale;
+        stage.scaleY = scale;
+
+       // adjust canvas size
+       stage.canvas.width = ow * scale;
+       stage.canvas.height = oh * scale;
+       
+
+        // update the stage
         stage.update();
     }
 
