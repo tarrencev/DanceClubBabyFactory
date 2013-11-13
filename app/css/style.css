@@ -31,7 +31,7 @@ canvas {
     bottom: 0;
     background-color: #f15a29;
     display: block;
-    font-family: Papyrus, fantasy;
+    font-family: Papyrus, fantasy, Helvetica, Arial, sans-serif;;
     color: #fff;
     text-align: center;
 }

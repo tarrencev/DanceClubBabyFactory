@@ -1,4 +1,4 @@
-var GameObject = function Main() {
+var GameObject = function() {
     //private vars
     var background, door, babyRepo;
 
