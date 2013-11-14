@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/baby.js"></script>
     <script type="text/javascript" src="js/collision.js"></script>
     <script type="text/javascript" src="js/sound.js"></script>
+    <script type="text/javascript" src="js/audioPlayer.js"></script>
 </head>
 <body>
     <div id="infoPane" class="infoPane">
@@ -27,8 +28,14 @@
         <h2>Bouncers</h2>
         <h3>None</h3>
 
-        <h2>Volume</h2>
-        <input id="volumeSlider" class="volumeSlider" type="range" min="0" max="100" />
+        <!-- <h2>Volume</h2> -->
+        <!-- <input id="volumeSlider" class="volumeSlider" type="range" min="0" max="100" /> -->
+        <div class="audioPlayer">
+            <img src="img/brahj.png" class="albumCover"></img>
+            <div class="audioControls">
+                <button id="playButton" class="playButton">Play</button>
+            </div>
+        </div>
     </div>
     <audio id="music"></audio>
 <script src="js/main.js"></script>

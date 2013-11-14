@@ -1,9 +1,10 @@
 var GameObject = function() {
     //private vars
     var sound,
-    background,
-    door,
-    babyRepo;
+        audioPlayer,
+        background,
+        door,
+        babyRepo;
 
     //private funcs
     function init() {
@@ -27,6 +28,9 @@ var GameObject = function() {
 
         //init sound
         sound = new SoundObject();
+
+        //init audio player
+        audioPlayer = new AudioPlayerObject();
 
         //init background
         background = new BackgroundObject();
@@ -55,7 +59,7 @@ var GameObject = function() {
     function mouseClickHandler(event) {
         console.log('click');
         babyRepo.addBaby();
-        sound.playPause();
+        // sound.playPause();
     }
 
     //public funcs
@@ -69,6 +73,10 @@ var GameObject = function() {
 
     this.getBackground = function() {
         return background;
+    };
+
+    this.getSound = function() {
+        return sound;
     };
 };
 
