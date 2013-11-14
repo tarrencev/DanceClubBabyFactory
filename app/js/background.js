@@ -24,11 +24,27 @@ var BackgroundObject = function(){
         };
 
         flare = new createjs.Shape();
+        flare.x = position.x;
+        flare.y = position.y;
         flare.graphics
-            .beginRadialGradientFill(["#f15a29","#000"], [0, 1], position.x, position.y, 0, position.x, position.y, 250)
-            .drawCircle(position.x, position.y, 250);
+            .beginRadialGradientFill(["#f15a29","#000"], [0, 1], 0, 0, 0, 0, 0, 250)
+            .drawCircle(0, 0, 250);
         stage.addChild(flare);
     }
+
+    //public funcs
+    this.setFlareChangeInRadius = function(radiusDiff) {
+        flare.scaleX = radiusDiff;
+        flare.scaleY = radiusDiff;
+    };
+
+    this.setFlareColor = function(color) {
+        flare.filters = [
+             new createjs.ColorFilter(0,0,0,1, color[0], color[1], color[2], 0)
+         ];
+         flare.cache(-CONSTANTS.WIDTH/2, -CONSTANTS.HEIGHT/2, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+        // .getHSL((i/CIRCLES*HUE_VARIANCE+circleHue)%360, 100, 50);
+    };
 
     init();
 };

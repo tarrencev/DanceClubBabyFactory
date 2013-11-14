@@ -3,14 +3,15 @@
 <head>
     <title>The Infinite Dubstep Baby Factory</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- <script type="text/javascript" src="vendor/jquery-2.0.3.js"></script> -->
     <script src="http://code.createjs.com/createjs-2013.09.25.min.js"></script>
+    <script type="text/javascript" src="vendor/VolumeData.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/background.js"></script>
     <script type="text/javascript" src="js/door.js"></script>
     <script type="text/javascript" src="js/babyRepo.js"></script>
     <script type="text/javascript" src="js/baby.js"></script>
     <script type="text/javascript" src="js/collision.js"></script>
+    <script type="text/javascript" src="js/sound.js"></script>
 </head>
 <body>
     <div id="infoPane" class="infoPane">
@@ -30,6 +31,7 @@
         <h2>Volume</h2>
         <input id="volumeSlider" class="volumeSlider" type="range" min="0" max="100" />
     </div>
+    <audio id="music"></audio>
 <script src="js/main.js"></script>
 </body>
 </html>
