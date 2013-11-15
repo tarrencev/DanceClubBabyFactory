@@ -7,10 +7,16 @@ Getting Started
 ---------------
 
 Download node dependencies using:
-    npm install
+```shell
+npm install
+```
 
 Run the server using:
-    'grunt'
+```shell
+grunt
+```
 
 Lint the JS with:
-    'grunt jshint'
+```shell
+grunt jshint
+```
