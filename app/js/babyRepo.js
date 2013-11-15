@@ -1,6 +1,6 @@
 var BabyRepoObject = function() {
     //private vars
-    //declare private vars her
+    //declare private vars here
     var container;
     var radius = 75;
     var babies = [];
@@ -8,7 +8,6 @@ var BabyRepoObject = function() {
     //private funcs
     function init() {
         drawContainer();
-        drawBaby();
     }
 
     function drawContainer() {
@@ -41,8 +40,8 @@ var BabyRepoObject = function() {
 
     function getRandomPos(baby) {
         var position = {
-            x: Math.random() * 60 * getRandomSign(),
-            y: Math.random() * 60 * getRandomSign()
+            x: Math.random() * 50 * getRandomSign(),
+            y: Math.random() * 50 * getRandomSign()
         };
         return position;
     }
@@ -62,7 +61,6 @@ var BabyRepoObject = function() {
     this.getRadius = function() {
         return radius;
     };
-
 
     init();
 };

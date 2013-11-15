@@ -4,7 +4,8 @@ var GameObject = function() {
         audioPlayer,
         background,
         door,
-        babyRepo;
+        babyRepo,
+        goerGen;
 
     //private funcs
     function init() {
@@ -41,6 +42,8 @@ var GameObject = function() {
         //init door
         door = new DoorObject();
 
+        goerGen = new PartyGoerGenObject();
+
         window.onresize = function() {
             onResize();
         }
@@ -57,25 +60,21 @@ var GameObject = function() {
 
     function onResize() {
         // browser viewport size
-        var w = window.innerWidth;
+        var w = window.innerWidth * 0.8;
         var h = window.innerHeight;
 
         // stage dimensions
         var ow = CONSTANTS.WIDTH;
         var oh = CONSTANTS.HEIGHT;
-
        
         // keep aspect ratio
         var scale = Math.min(w / ow, h / oh);
         stage.scaleX = scale;
         stage.scaleY = scale;
 
-       // adjust canvas size
-       stage.canvas.width = ow * scale;
-       stage.canvas.height = oh * scale;
-       
+        stage.canvas.width = ow * scale;
+        stage.canvas.height = oh * scale;     
 
-        // update the stage
         stage.update();
     }
 
@@ -87,6 +86,7 @@ var GameObject = function() {
     function mouseClickHandler(event) {
         console.log('click');
         babyRepo.addBaby();
+        goerGen.addPartyGoer();
         // sound.playPause();
     }
 
