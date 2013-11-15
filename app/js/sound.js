@@ -1,4 +1,4 @@
-var SoundObject = function(){
+var SoundObject = function(track){
     //private vars
     //declare private vars her
     var FFTSIZE = 32;      // number of samples for the analyser node FFT, min 32
@@ -10,8 +10,8 @@ var SoundObject = function(){
 
     var audio,
         playing,
-        sound_path = 'sound/',
-        src = sound_path + 'song1.mp3';
+        sound_path = 'music/',
+        src = sound_path + track;
     var soundInstance;      // the sound instance we create
     var analyserNode;       // the analyser node that allows us to visualize the audio
     var freqFloatData, freqByteData, timeByteData;  // arrays to retrieve data from analyserNode
@@ -21,11 +21,10 @@ var SoundObject = function(){
     //private funcs
     function init() {
         if (!createjs.Sound.registerPlugin(createjs.WebAudioPlugin)) { return; }
-        var audioPath = "sound/";
         var manifest = [
                 {
                     id: "Song",
-                    src: audioPath+"song1.mp3"
+                    src: sound_path+track
                 }
             ];
          
@@ -81,6 +80,10 @@ var SoundObject = function(){
             startPlayback();
     };
 
+    this.setVolume = function(value) {
+        soundInstance.setVolume(value);
+    };
+
     this.tick = function() {
         if(playing) {
             analyserNode.getFloatFrequencyData(freqFloatData);  // this gives us the dBs
@@ -120,10 +123,18 @@ var SoundObject = function(){
             // change color based on large enough changes
             if(dataDiff>COLOR_CHANGE_THRESHOLD || dataDiff<COLOR_CHANGE_THRESHOLD) {circleHue = circleHue + dataDiff;}
             // gameObject.getBackground().setFlareColor(hslToRgb((HUE_VARIANCE+circleHue)%360, 50, 10));
-            gameObject.getBackground().setFlareChangeInRadius(dataDiff);
-            console.log(dataDiff);
+            gameObject.getBackground().setFlareChangeInRadius(dataDiff * 0.5);
         }
     };
+
+    function hue2rgb(p, q, t){
+        if(t < 0) t += 1;
+        if(t > 1) t -= 1;
+        if(t < 1/6) return p + (q - p) * 6 * t;
+        if(t < 1/2) return q;
+        if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+    }
 
     function hslToRgb(h, s, l){
         var r, g, b;
@@ -131,15 +142,6 @@ var SoundObject = function(){
         if(s === 0){
             r = g = b = l; // achromatic
         } else {
-            function hue2rgb(p, q, t){
-                if(t < 0) t += 1;
-                if(t > 1) t -= 1;
-                if(t < 1/6) return p + (q - p) * 6 * t;
-                if(t < 1/2) return q;
-                if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-                return p;
-            }
-
             var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
             var p = 2 * l - q;
             r = hue2rgb(p, q, h + 1/3);

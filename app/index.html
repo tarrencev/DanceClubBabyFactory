@@ -4,6 +4,7 @@
     <title>The Infinite Dubstep Baby Factory</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="http://code.createjs.com/createjs-2013.09.25.min.js"></script>
+    <script type="text/javascript" src="vendor/jquery-2.0.3.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/background.js"></script>
     <script type="text/javascript" src="js/door.js"></script>
@@ -33,9 +34,25 @@
         <!-- <h2>Volume</h2> -->
         <!-- <input id="volumeSlider" class="volumeSlider" type="range" min="0" max="100" /> -->
         <div class="audioPlayer">
-            <img src="img/brahj.png" class="albumCover"></img>
+            <div class="albumInfoPane">
+                <div class="albumCoverContainer">
+                    <img src="img/brahj.png" class="albumCover"></img>
+                </div>
+                <div class="songInfo">
+                    <h5 id="songTitle">Song Title</h5>
+                    <h6 id="songArtist">Artist</h5>
+                </div>
+            </div>
             <div class="audioControls">
-                <button id="playButton" class="playButton">Play</button>
+                <button id="playButton" class="playButton">
+                    <span class="glyphicon glyphicon-play"></span>
+                </button>
+                <button id="playButton" class="playButton">
+                    <span class="glyphicon glyphicon-volume-up"></span>
+                </button>
+                <div class="volumeSlider">
+                    <input id="volumeSlider" type="range" min="0" max="100" />
+                </div>
             </div>
         </div>
     </div>

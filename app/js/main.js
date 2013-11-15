@@ -27,9 +27,6 @@ var GameObject = function() {
         }
         createjs.Ticker.setFPS(30);
 
-        //init sound
-        sound = new SoundObject();
-
         //init audio player
         audioPlayer = new AudioPlayerObject();
 
@@ -54,7 +51,7 @@ var GameObject = function() {
 
     //same as perform_logic() in zenilib
     function tick() {
-        sound.tick();
+        audioPlayer.tick();
         stage.update();
     }
 
