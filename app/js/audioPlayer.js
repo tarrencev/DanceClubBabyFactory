@@ -6,7 +6,7 @@ var AudioPlayerObject = function(){
         playing = false;
 
     var track = {
-        artist: 'Ratatat',
+        artist: 'sRatatat',
         title: 'Loud Pipes',
         src: '06 Loud Pipes.m4a',
         cover: 'Ratatat-Classics.png'
