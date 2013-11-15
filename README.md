@@ -6,8 +6,8 @@ The Infinite Dubstep Baby Factory
 Getting Started
 ---------------
 
-Download node dependencies using: 
-    'npm install'
+Download node dependencies using:
+    npm install
 
 Run the server using:
     'grunt'
