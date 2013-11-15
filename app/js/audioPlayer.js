@@ -37,8 +37,6 @@ var AudioPlayerObject = function(){
 
     function setVolume(event) {
         sound.setVolume(event.target.value/100);
-        // var newValue = event.value;
-        // $('#newValue').html(newValue);
     }
 
     function setSongInfo(track) {
