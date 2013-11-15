@@ -39,23 +39,23 @@ var PartyGoerGenObject = function() {
     function getRandomPos(goer_) {
         if (Math.random() > 0.5) {
             if (Math.random() > 0.5) {
-                return var position = {
+                return {
                     x: Math.random() * window.innerWidth * 0.8,
                     y: 0
                 };
             }
-            return var position = {
+            return {
                 x: Math.random() * window.innerWidth * 0.8,
                 y: window.innerHeight
             };
         }
         if (Math.random() > 0.5) {
-            return var position = {
+            return {
                 x: 0,
                 y: Math.random() * window.innerHeight
             };
         }
-        return var position = {
+        return {
             x: window.innerWidth * 0.8,
             y: Math.random() * window.innerHeight
         };
@@ -73,6 +73,4 @@ var PartyGoerGenObject = function() {
     this.addUnderage = function() {
         drawUnderage();
     };
-
-    init();
 };

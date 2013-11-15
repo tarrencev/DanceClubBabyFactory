@@ -46,7 +46,7 @@ var GameObject = function() {
 
         window.onresize = function() {
             onResize();
-        }
+        };
 
         stage.addEventListener("pressmove", mousePressMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
@@ -73,7 +73,7 @@ var GameObject = function() {
         stage.scaleY = scale;
 
         stage.canvas.width = ow * scale;
-        stage.canvas.height = oh * scale;     
+        stage.canvas.height = oh * scale;
 
         stage.update();
     }
