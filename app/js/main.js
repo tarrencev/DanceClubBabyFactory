@@ -5,7 +5,8 @@ var GameObject = function() {
         background,
         door,
         babyRepo,
-        goerGen;
+        goerGen,
+        projectiles;
 
     //private funcs
     function init() {
@@ -21,6 +22,10 @@ var GameObject = function() {
         document.body.appendChild(canvas);
         stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
+
+        window.onresize = function() {
+            onResize();
+        };
 
         if(!createjs.Ticker.hasEventListener('tick')) {
             createjs.Ticker.addEventListener('tick', tick);
@@ -39,11 +44,12 @@ var GameObject = function() {
         //init door
         door = new DoorObject();
 
+        //init party goers
         goerGen = new PartyGoerGenObject();
 
-        window.onresize = function() {
-            onResize();
-        };
+        //init projectiles
+        projectiles = new ProjectileGeneratorObject();
+        projectiles.addProjectile();
 
         stage.addEventListener("pressmove", mousePressMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
@@ -84,6 +90,7 @@ var GameObject = function() {
         console.log('click');
         babyRepo.addBaby();
         goerGen.addPartyGoer();
+        projectiles.fireProjectile();
         // sound.playPause();
     }
 
