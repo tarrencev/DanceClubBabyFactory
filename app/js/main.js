@@ -1,14 +1,18 @@
 var GameObject = function() {
     //private vars
-    var background, door, babyRepo;
+    var sound,
+        audioPlayer,
+        background,
+        door,
+        babyRepo;
 
     //private funcs
     function init() {
         canvas = document.createElement('canvas');
 
-        canvas.width = window.innerWidth * 0.7;
+        canvas.width = window.innerWidth * 0.8;
         canvas.height = window.innerHeight;
-        CONSTANTS.WIDTH = window.innerWidth * 0.7;
+        CONSTANTS.WIDTH = window.innerWidth * 0.8;
         CONSTANTS.HEIGHT = window.innerHeight;
 
         canvas.setAttribute('id', 'c');
@@ -21,6 +25,12 @@ var GameObject = function() {
             createjs.Ticker.addEventListener('tick', tick);
         }
         createjs.Ticker.setFPS(30);
+
+        //init sound
+        sound = new SoundObject();
+
+        //init audio player
+        audioPlayer = new AudioPlayerObject();
 
         //init background
         background = new BackgroundObject();
@@ -41,6 +51,7 @@ var GameObject = function() {
 
     //same as perform_logic() in zenilib
     function tick() {
+        sound.tick();
         stage.update();
     }
 
@@ -76,6 +87,7 @@ var GameObject = function() {
     function mouseClickHandler(event) {
         console.log('click');
         babyRepo.addBaby();
+        // sound.playPause();
     }
 
     //public funcs
@@ -85,6 +97,14 @@ var GameObject = function() {
 
     this.getBabyRepo = function() {
         return babyRepo;
+    };
+
+    this.getBackground = function() {
+        return background;
+    };
+
+    this.getSound = function() {
+        return sound;
     };
 };
 
