@@ -21,6 +21,11 @@ var AudioPlayerObject = function(){
 
         //hook into volume slider
         $('#volumeSlider').change(setVolume);
+         
+    }
+
+    function handleEvent(event) {
+        console.log('event received');
     }
 
     function playButtonHandler(event) {

@@ -38,6 +38,9 @@ var GameObject = function() {
         //init background
         background = new BackgroundObject();
 
+        //init projectiles
+        projectiles = new ProjectileGeneratorObject();
+
         //init baby repo
         babyRepo = new BabyRepoObject();
 
@@ -47,9 +50,7 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
-        //init projectiles
-        projectiles = new ProjectileGeneratorObject();
-        projectiles.addProjectile();
+
 
         stage.addEventListener("pressmove", mousePressMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
@@ -90,8 +91,6 @@ var GameObject = function() {
         console.log('click');
         babyRepo.addBaby();
         goerGen.addPartyGoer();
-        projectiles.fireProjectile();
-        // sound.playPause();
     }
 
     //public funcs

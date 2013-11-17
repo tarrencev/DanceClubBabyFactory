@@ -17,9 +17,14 @@ var SoundObject = function(track){
     var freqFloatData, freqByteData, timeByteData;  // arrays to retrieve data from analyserNode
     var dataAverage = [42,42,42,42];   // an array recording data for the last 4 ticks
     var circleFreqChunk;    // The chunk of freqByteData array that is computed per circle
+    var evt;
 
     //private funcs
     function init() {
+        evt = document.createEvent('Event');
+        evt.initEvent('pulse', true, true);
+
+
         if (!createjs.Sound.registerPlugin(createjs.WebAudioPlugin)) { return; }
         var manifest = [
                 {
@@ -121,9 +126,17 @@ var SoundObject = function(track){
             var dataDiff = dataAverage[dataAverage.length-1] - dataSum;
 
             // change color based on large enough changes
-            if(dataDiff>COLOR_CHANGE_THRESHOLD || dataDiff<COLOR_CHANGE_THRESHOLD) {circleHue = circleHue + dataDiff;}
+            if(dataDiff>COLOR_CHANGE_THRESHOLD || dataDiff<COLOR_CHANGE_THRESHOLD) {
+                circleHue = circleHue + dataDiff;
+               
+            }
             // gameObject.getBackground().setFlareColor(hslToRgb((HUE_VARIANCE+circleHue)%360, 50, 10));
             gameObject.getBackground().setFlareChangeInRadius(dataDiff * 0.5);
+            evt.dataDiff = dataDiff;
+            document.dispatchEvent(evt);
+
+
+
         }
     };
 
