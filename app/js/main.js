@@ -53,6 +53,7 @@ var GameObject = function() {
     function tick() {
         audioPlayer.tick();
         stage.update();
+        goerGen.moveAll();
     }
 
     function onResize() {

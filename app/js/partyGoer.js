@@ -48,6 +48,20 @@ var PartyGoerObject = function(type_) {
         stage.addChild(goer);
     }
 
+    function move() {
+        var tmp = goer;
+        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
+        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
+        createjs.Tween.get(goer.getShape()).to(babyRepoPosition, 500 * (dataDiff * 3), createjs.Ease.linear);
+        if (goer.x > babyRepoPosition.x && goer.x < babyRepoPosition + babyRepoRadius) {
+            goer.x = tmp.x;
+        }
+        if (goer.y > babyRepoPosition.y && goer.y < babyRepoPosition + babyRepoRadius) {
+            goer.y = tmp.y;
+        }
+        // timer
+    }
+
     //public funs
     this.setPosition = function(position) {
         goer.x = position.x;

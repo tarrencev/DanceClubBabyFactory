@@ -73,4 +73,10 @@ var PartyGoerGenObject = function() {
     this.addUnderage = function() {
         drawUnderage();
     };
+
+    this.moveAll = function() {
+        for (var i in people) {
+            people[i].move();
+        }
+    };
 };
