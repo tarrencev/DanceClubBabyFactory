@@ -11,7 +11,7 @@ var BabyObject = function(){
 
     function drawBaby() {
         baby = new createjs.Shape();
-            baby.graphics
+        baby.graphics
             .beginStroke('#fff')
             .setStrokeStyle(5)
             .beginFill('#231f20')

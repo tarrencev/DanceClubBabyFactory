@@ -39,9 +39,11 @@ var BackgroundObject = function(){
     };
 
     this.setFlareColor = function(color) {
-        flare.filters = [
-             new createjs.ColorFilter(0,0,0,1, color[0], color[1], color[2], 0)
-         ];
+        flare.graphics
+            .beginRadialGradientFill(["#123456","#000"], [0, 1], 0, 0, 0, 0, 0, 250);
+        // flare.filters = [
+        //      new createjs.ColorFilter(0,0,0,1, color[0], color[1], color[2], 0)
+        //  ];
          flare.cache(-CONSTANTS.WIDTH/2, -CONSTANTS.HEIGHT/2, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         // .getHSL((i/CIRCLES*HUE_VARIANCE+circleHue)%360, 100, 50);
     };
