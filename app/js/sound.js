@@ -134,9 +134,6 @@ var SoundObject = function(track){
             gameObject.getBackground().setFlareChangeInRadius(dataDiff * 0.5);
             evt.dataDiff = dataDiff;
             document.dispatchEvent(evt);
-
-
-
         }
     };
 

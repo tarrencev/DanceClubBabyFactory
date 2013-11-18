@@ -110,6 +110,10 @@ var GameObject = function() {
     this.getSound = function() {
         return sound;
     };
+
+    this.getDoor = function() {
+        return door;
+    };
 };
 
 var gameObject = new GameObject();

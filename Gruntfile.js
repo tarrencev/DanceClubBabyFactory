@@ -5,7 +5,18 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
       files: ['app/js/*.js'],
-      // all: ['Gruntfile.js', 'app/js/*.js']
+      options: {
+          ignores: ['app/js/app.js']
+      }
+    },
+    concat: {
+      options: {
+        separator: ';',
+      },
+      dist: {
+        src: ['app/js/*.js'],
+        dest: 'app/js/app.js',
+      },
     },
     express: {
       options: {
@@ -31,9 +42,10 @@ module.exports = function(grunt) {
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-express-server');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'express:dev', 'watch']);
+  grunt.registerTask('default', ['jshint','express:dev', 'watch']);
 };
