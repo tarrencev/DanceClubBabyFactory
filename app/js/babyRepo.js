@@ -12,11 +12,13 @@ var BabyRepoObject = function() {
 
     function drawContainer() {
         container = new createjs.Shape();
-            container.graphics
+        container.x = CONSTANTS.WIDTH/2;
+        container.y = CONSTANTS.HEIGHT/2;
+        container.graphics
             .beginStroke('#ee2a7b')
             .setStrokeStyle(8)
             .beginFill('#ec87b8')
-            .drawCircle(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, radius);
+            .drawCircle(0, 0, radius);
 
         // container.cache(CONSTANTS.WIDTH/2 - 80, CONSTANTS.HEIGHT/2 - 80, 160, 160);
         stage.addChild(container);

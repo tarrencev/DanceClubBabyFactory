@@ -5,9 +5,9 @@ var PartyGoerGenObject = function() {
 
     //private funcs
     function drawPartyGoer() {
-        var goer = new PartyGoerObject();
+        var goer = new PartyGoerObject("goer");
         while (checkForCollisions(goer)) {
-            goer.setPosition(getRandomPos(goer));
+            goer.setPosition(getRandomEdgePos(goer));
         }
         people.push(goer);
     }
@@ -15,7 +15,7 @@ var PartyGoerGenObject = function() {
     function drawDrugDealer() {
         var goer = new PartyGoerObject("DrugDealer");
         while (checkForCollisions(goer)) {
-            goer.setPosition(getRandomPos(goer));
+            goer.setPosition(getRandomEdgePos(goer));
         }
         people.push(goer);
     }
@@ -23,7 +23,7 @@ var PartyGoerGenObject = function() {
     function drawUnderage() {
         var goer = new PartyGoerObject("Underage");
         while (checkForCollisions(goer)) {
-            goer.setPosition(getRandomPos(goer));
+            goer.setPosition(getRandomEdgePos(goer));
         }
         people.push(goer);
     }
@@ -34,10 +34,6 @@ var PartyGoerGenObject = function() {
                 return true;
         }
         return false;
-    }
-
-    function getRandomPos(goer_) {
-        return getRandomEdgePos();
     }
 
     //public funcs
