@@ -17,6 +17,8 @@ var PartyGoerObject = function(type_) {
         var pos = getRandomEdgePos(goer);
         goer.x = pos.x;
         goer.y = pos.y;
+
+        createjs.Tween.get(goer).to(gameObject.getBabyRepo().getPosition(), 1000, createjs.Ease.linear);
     }
 
     function drawGoer() {
@@ -67,6 +69,10 @@ var PartyGoerObject = function(type_) {
 
     this.getRadius = function() {
         return radius;
+    };
+
+    this.getShape = function() {
+        return goer;
     };
 
     init();

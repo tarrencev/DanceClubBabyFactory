@@ -58,7 +58,7 @@ var GameObject = function() {
     function tick() {
         audioPlayer.tick();
         stage.update();
-        goerGen.moveAll();
+        goerGen.tick();
         projectiles.tick();
     }
 
@@ -114,8 +114,8 @@ var GameObject = function() {
         return babyRepo;
     };
 
-    this.getGoerGen = function(num_) {
-        return goerGen.getGoer(num_);
+    this.getGoerGen = function() {
+        return goerGen.getGoer();
     };
 };
 

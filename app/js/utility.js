@@ -1,3 +1,10 @@
+function getDistance(obj1, obj2) {
+    var xDist = obj1.getPosition().x - obj2.getPosition().x;
+    var yDist = obj1.getPosition().y - obj2.getPosition().y;
+
+    return Math.sqrt(xDist * xDist + yDist * yDist);
+}
+
 function getRandomEdgePos() {
     if (Math.random() > 0.5) {
         if (Math.random() > 0.5) {
