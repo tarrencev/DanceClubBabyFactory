@@ -3,6 +3,8 @@ var AudioPlayerObject = function(){
     //declare private vars her
     var sound,
         playButton,
+        settingsButton,
+        audioControlsOpen = false,
         playing = false;
 
     var track = {
@@ -19,8 +21,12 @@ var AudioPlayerObject = function(){
         playButton = $('#playButton');
         playButton.click(playButtonHandler);
 
+        settingsButton = $('#settingsButton');
+        settingsButton.click(settingsButtonHandler);
+
         //hook into volume slider
         $('#volumeSlider').change(setVolume);
+        $('.onoffswitch-checkbox').change(switchHandler);
          
     }
 
@@ -37,6 +43,34 @@ var AudioPlayerObject = function(){
         } else {
             playing = true;
             playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
+        }
+    }
+
+    function switchHandler(event) {
+        
+        if (event.target.id === 'lowPassSwitch') {
+            console.log('low pass switch');
+            sound.toggleLowPassFilter();
+        } else if (event.target.id === 'bandPass1Switch') {
+            console.log('band pass 1 switch');
+            sound.toggleBandPass1Filter();
+        } else if (event.target.id === 'bandPass2Switch') {
+            console.log('band pass 2 switch');
+            sound.toggleBandPass2Filter();
+        } else if (event.target.id === 'highPassSwitch') {
+            console.log('high pass switch');
+            sound.toggleHighPassFilter();
+        }
+    }
+
+    function settingsButtonHandler(event) {
+        var audioControlsPane = $('.audioControlsPane')[0];
+        if(audioControlsOpen) {
+            audioControlsPane.style.opacity = 0;
+            audioControlsOpen = false;
+        } else {
+            audioControlsPane.style.opacity = 1;
+            audioControlsOpen = true;
         }
     }
 

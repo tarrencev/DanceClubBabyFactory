@@ -16,21 +16,25 @@ var SoundObject = function(track){
 
     //low pass filter
     var lowPassFilter;
+    var lowPassEnabled = true;
     var lowPassAnalyserNode;
     var lpFreqByteData, lpTimeByteData;  // arrays to retrieve data from lowPassAnalyserNode
 
     //band pass filter 1
     var bandPass1Filter;
+    var bandPass1Enabled = true;
     var bandPass1AnalyserNode;
     var bp1FreqByteData, bp1TimeByteData;
 
     //band pass filter 2
     var bandPass2Filter;
+    var bandPass2Enabled = true;
     var bandPass2AnalyserNode;
     var bp2FreqByteData, bp2TimeByteData;
     
     //high pass filter
     var highPassFilter;
+    var highPassEnabled = true;
     var highPassAnalyserNode;
     var hpFreqByteData, hpTimeByteData;  // arrays to retrieve data from highPassAnalyserNode
 
@@ -182,6 +186,22 @@ var SoundObject = function(track){
         soundInstance.pause();
     }
 
+    function refreshFilters() {
+        var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
+        if (lowPassEnabled) {
+            dynamicsNode.connect(lowPassAnalyserNode);
+        }
+        if (bandPass1Enabled) {
+            dynamicsNode.connect(bandPass1AnalyserNode);
+        }
+        if (bandPass2Enabled) {
+            dynamicsNode.connect(bandPass2AnalyserNode);
+        }
+        if (highPassEnabled) {
+            dynamicsNode.connect(highPassAnalyserNode);
+        }
+    }
+
     //public funs
     this.playPause = function() {
         if (playing)
@@ -192,6 +212,50 @@ var SoundObject = function(track){
 
     this.setVolume = function(value) {
         soundInstance.setVolume(value);
+    };
+
+    this.toggleLowPassFilter = function() {
+        if(lowPassEnabled) {
+            var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
+            dynamicsNode.disconnect(0);  // disconnect from destination
+            lowPassEnabled = false;
+        } else {
+            lowPassEnabled = true;
+        }
+        refreshFilters();
+    };
+
+    this.toggleBandPass1Filter = function() {
+        if(bandPass1Enabled) {
+            var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
+            dynamicsNode.disconnect(0);  // disconnect from destination
+            bandPass1Enabled = false;
+        } else {
+            bandPass1Enabled = true;
+        }
+        refreshFilters();
+    };
+
+    this.toggleBandPass2Filter = function() {
+        if(bandPass2Enabled) {
+            var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
+            dynamicsNode.disconnect(0);  // disconnect from destination
+            bandPass2Enabled = false;
+        } else {
+            bandPass2Enabled = true;
+        }
+        refreshFilters();
+    };
+
+    this.toggleHighPassFilter = function() {
+        if(highPassEnabled) {
+            var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
+            dynamicsNode.disconnect(0);  // disconnect from destination
+            highPassEnabled = false;
+        } else {
+            highPassEnabled = true;
+        }
+        refreshFilters();
     };
 
     this.tick = function() {

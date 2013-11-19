@@ -3,6 +3,7 @@
 <head>
     <title>The Infinite Dubstep Baby Factory</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/switch.css">
     <script src="http://code.createjs.com/createjs-2013.09.25.min.js"></script>
     <script type="text/javascript" src="vendor/jquery-2.0.3.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
@@ -54,6 +55,53 @@
                 <div class="volumeSlider">
                     <input id="volumeSlider" type="range" min="0" max="100" />
                 </div>
+                <button id="settingsButton" class="playButton">
+                    <span class="glyphicon glyphicon-cog"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="audioControlsPane">
+        <h2>Audio Controls</h2>
+        <h3>Filters</h3>
+        <div class="audioControlsSection">
+            <span class="audioControlSpan">Low pass:</span>
+            <div class="onoffswitch">
+                <input type="checkbox" name="lowPassSwitch" class="onoffswitch-checkbox" id="lowPassSwitch" checked>
+                <label class="onoffswitch-label" for="lowPassSwitch">
+                    <div class="onoffswitch-inner"></div>
+                    <div class="onoffswitch-switch"></div>
+                </label>
+            </div>
+        </div>
+        <div class="audioControlsSection">
+            <span class="audioControlSpan">Band pass 1:</span>
+            <div class="onoffswitch">
+                <input type="checkbox" name="bandPass1Switch" class="onoffswitch-checkbox" id="bandPass1Switch" checked>
+                <label class="onoffswitch-label" for="bandPass1Switch">
+                    <div class="onoffswitch-inner"></div>
+                    <div class="onoffswitch-switch"></div>
+                </label>
+            </div>
+        </div>
+        <div class="audioControlsSection">
+            <span class="audioControlSpan">Band pass 2:</span>
+            <div class="onoffswitch">
+                <input type="checkbox" name="bandPass2Switch" class="onoffswitch-checkbox" id="bandPass2Switch" checked>
+                <label class="onoffswitch-label" for="bandPass2Switch">
+                    <div class="onoffswitch-inner"></div>
+                    <div class="onoffswitch-switch"></div>
+                </label>
+            </div>
+        </div>
+        <div class="audioControlsSection">
+            <span class="audioControlSpan">High pass:</span>
+            <div class="onoffswitch">
+                <input type="checkbox" name="highPassSwitch" class="onoffswitch-checkbox" id="highPassSwitch" checked>
+                <label class="onoffswitch-label" for="highPassSwitch">
+                    <div class="onoffswitch-inner"></div>
+                    <div class="onoffswitch-switch"></div>
+                </label>
             </div>
         </div>
     </div>
