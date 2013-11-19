@@ -2,6 +2,9 @@ var DoorObject = function(){
     //private vars
     var door, doorGuide;
     var doorPosition = 0;
+    var radius = 250;
+    var doorWidth = Math.PI/5; // in radians
+    var doorThickness = 16;
 
     //private funcs
     function init() {
@@ -14,8 +17,8 @@ var DoorObject = function(){
         door.x = CONSTANTS.WIDTH/2;
         door.y = CONSTANTS.HEIGHT/2;
         door.graphics.beginStroke('#6d6e71')
-                    .setStrokeStyle(16)
-                    .arc(0, 0, 250, 0 + doorPosition, Math.PI/5 + doorPosition)
+                    .setStrokeStyle(doorThickness)
+                    .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                     .endStroke();
         stage.addChild(door);
     }
@@ -43,11 +46,24 @@ var DoorObject = function(){
 
         var deltaY = event.stageY - CONSTANTS.HEIGHT/2;
         var deltaX = event.stageX - CONSTANTS.WIDTH/2;
-        var angle = Math.atan(deltaY/deltaX) * 180/Math.PI - 18;
-        if(event.stageX < CONSTANTS.WIDTH/2)
-            angle = -90 + (angle - 90);
-        console.log(angle);
+        var angle = Math.atan2(deltaY,deltaX) * 180/Math.PI;
         door.rotation = angle;
+    };
+    
+    this.getAngle = function() {
+        return door.rotation;
+    };
+    
+    this.getRadius = function() {
+        return radius;
+    };
+    
+    this.getWidth = function() {
+        return doorWidth;
+    };
+    
+    this.getThickness = function() {
+        return doorThickness;
     };
 
     init();

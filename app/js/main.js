@@ -113,8 +113,8 @@ var GameObject = function() {
         return babyRepo;
     };
 
-    this.getGoerGen = function() {
-        return goerGen;
+    this.getGoerGen = function(num_) {
+        return goerGen.getGoer(num_);
     };
 };
 

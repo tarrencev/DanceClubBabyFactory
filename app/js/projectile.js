@@ -33,12 +33,22 @@ var ProjectileObejct = function(){
         };
     };
 
+    this.getPositionFromCenter = function() {
+        return {
+            x: projectile.x-CONSTANTS.WIDTH/2,
+            y: projectile.y-CONSTANTS.HEIGHT/2
+        };
+    };
+
     this.getRadius = function() {
         return radius;
     };
 
     this.getShape = function() {
         return projectile;
+    };
+    
+    this.tick = function() {
     };
 
     init();

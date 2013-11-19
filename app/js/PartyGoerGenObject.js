@@ -36,6 +36,19 @@ var PartyGoerGenObject = function() {
         return false;
     }
 
+    function updateAll() {
+        var babyRepo = gameObject.getBabyRepo();
+        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
+
+        for (var i in people) {
+            var tmp = people[i].getPosition();
+            createjs.Tween.get(people[i]).to(babyRepoPosition, 1000, createjs.Ease.linear);
+            if (circlesDoCollide(people[i], babyRepo)) {
+                people[i].setPosition(tmp);
+            }
+        }
+    }
+
     //public funcs
     this.addPartyGoer = function() {
         drawPartyGoer();
@@ -50,16 +63,7 @@ var PartyGoerGenObject = function() {
     };
 
     this.moveAll = function() {
-        var babyRepo = gameObject.getBabyRepo();
-        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
-
-        for (var i in people) {
-            var tmp = people[i].getPosition();
-            createjs.Tween.get(people[i]).to(babyRepoPosition, 1000, createjs.Ease.linear);
-            if (circlesDoCollide(people[i], babyRepo)) {
-                people[i].setPosition(tmp);
-            }
-        }
+        updateAll();
     };
 
     this.getGoer = function(num_) {
