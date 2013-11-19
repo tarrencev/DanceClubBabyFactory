@@ -50,8 +50,6 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
-
-
         stage.addEventListener("pressmove", mousePressMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
     }
@@ -60,6 +58,9 @@ var GameObject = function() {
     function tick() {
         audioPlayer.tick();
         stage.update();
+
+        //log fps
+        // console.log(createjs.Ticker.getMeasuredFPS(1));
     }
 
     function onResize() {

@@ -12,9 +12,28 @@ var SoundObject = function(track){
         playing,
         sound_path = 'music/',
         src = sound_path + track;
-    var soundInstance;      // the sound instance we create
-    var analyserNode;       // the analyser node that allows us to visualize the audio
-    var freqFloatData, freqByteData, timeByteData;  // arrays to retrieve data from analyserNode
+    var soundInstance;      // the sound instance we create    
+
+    //low pass filter
+    var lowPassFilter;
+    var lowPassAnalyserNode;
+    var lpFreqByteData, lpTimeByteData;  // arrays to retrieve data from lowPassAnalyserNode
+
+    //band pass filter 1
+    var bandPass1Filter;
+    var bandPass1AnalyserNode;
+    var bp1FreqByteData, bp1TimeByteData;
+
+    //band pass filter 2
+    var bandPass2Filter;
+    var bandPass2AnalyserNode;
+    var bp2FreqByteData, bp2TimeByteData;
+    
+    //high pass filter
+    var highPassFilter;
+    var highPassAnalyserNode;
+    var hpFreqByteData, hpTimeByteData;  // arrays to retrieve data from highPassAnalyserNode
+
     var dataAverage = [42,42,42,42];   // an array recording data for the last 4 ticks
     var circleFreqChunk;    // The chunk of freqByteData array that is computed per circle
     var evt;
@@ -42,26 +61,112 @@ var SoundObject = function(track){
         // createjs.Sound.play("Song");
         var context = createjs.WebAudioPlugin.context;
 
-        // create an analyser node
-        analyserNode = context.createAnalyser();
-        analyserNode.fftSize = FFTSIZE;  //The size of the FFT used for frequency-domain analysis. This must be a power of two
-        analyserNode.smoothingTimeConstant = 0.85;  //A value from 0 -> 1 where 0 represents no time averaging with the last analysis frame
-        analyserNode.connect(context.destination);  // connect to the context.destination, which outputs the audio
-
         // attach visualizer node to our existing dynamicsCompressorNode, which was connected to context.destination
         var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
         dynamicsNode.disconnect();  // disconnect from destination
-        dynamicsNode.connect(analyserNode);
 
-        // set up the arrays that we use to retrieve the analyserNode data
-        freqFloatData = new Float32Array(analyserNode.frequencyBinCount);
-        freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
-        timeByteData = new Uint8Array(analyserNode.frequencyBinCount);
+        //init filters
+        initLowPassFilter(context, dynamicsNode);
+        initBandPassFilter1(context, dynamicsNode);
+        initBandPassFilter2(context, dynamicsNode);
+        initHighPassFilter(context, dynamicsNode);
 
         // calculate the number of array elements that represent each circle
-        circleFreqChunk = analyserNode.frequencyBinCount;
-        console.log(analyserNode.frequencyBinCount);
+        circleFreqChunk = bandPass1AnalyserNode.frequencyBinCount;
+        // console.log(lowPassAnalyserNode.frequencyBinCount);
         // startPlayback();
+    }
+
+    function initLowPassFilter(context, dynamicsNode) {
+        //create lowpass filter
+        lowPassFilter = context.createBiquadFilter();
+        lowPassFilter.type = 0; // Low-pass filter. See BiquadFilterNode docs
+        lowPassFilter.frequency.value = 170; // Set cutoff to 440 HZ
+        lowPassFilter.connect(context.destination);
+
+        // create an lowpass analyser node
+        lowPassAnalyserNode = context.createAnalyser();
+        lowPassAnalyserNode.fftSize = FFTSIZE;  //The size of the FFT used for frequency-domain analysis. This must be a power of two
+        lowPassAnalyserNode.smoothingTimeConstant = 0.85;  //A value from 0 -> 1 where 0 represents no time averaging with the last analysis frame
+        lowPassAnalyserNode.connect(lowPassFilter);  // connect to the context.destination, which outputs the audio
+
+        dynamicsNode.connect(lowPassAnalyserNode);
+
+        // set up the arrays that we use to retrieve the lowPassAnalyserNode data
+        lpFreqByteData = new Uint8Array(lowPassAnalyserNode.frequencyBinCount);
+        lpTimeByteData = new Uint8Array(lowPassAnalyserNode.frequencyBinCount);
+    }
+
+    function initBandPassFilter1(context, dynamicsNode) {
+        bandPass1Filter = context.createBiquadFilter();
+        bandPass1Filter.type = 2;
+        bandPass1Filter.frequency.value = 345;
+        bandPass1Filter.Q = 165;
+        bandPass1Filter.connect(context.destination);
+
+        bandPass1AnalyserNode = context.createAnalyser();
+        bandPass1AnalyserNode.fftSize = FFTSIZE;  //The size of the FFT used for frequency-domain analysis. This must be a power of two
+        bandPass1AnalyserNode.smoothingTimeConstant = 0.85;  //A value from 0 -> 1 where 0 represents no time averaging with the last analysis frame
+        bandPass1AnalyserNode.connect(bandPass1Filter);  // connect to the context.destination, which outputs the audio
+
+        dynamicsNode.connect(bandPass1AnalyserNode);
+
+        // set up the arrays that we use to retrieve the bandPass1AnalyserNode data
+        bp1FreqByteData = new Uint8Array(bandPass1AnalyserNode.frequencyBinCount);
+        bp1TimeByteData = new Uint8Array(bandPass1AnalyserNode.frequencyBinCount);
+    }
+
+    function initBandPassFilter2(context, dynamicsNode) {
+        bandPass2Filter = context.createBiquadFilter();
+        bandPass2Filter.type = 2;
+        bandPass2Filter.frequency.value = 1250;
+        bandPass2Filter.Q = 750;
+        bandPass2Filter.connect(context.destination);
+
+        bandPass2AnalyserNode = context.createAnalyser();
+        bandPass2AnalyserNode.fftSize = FFTSIZE;  //The size of the FFT used for frequency-domain analysis. This must be a power of two
+        bandPass2AnalyserNode.smoothingTimeConstant = 0.85;  //A value from 0 -> 1 where 0 represents no time averaging with the last analysis frame
+        bandPass2AnalyserNode.connect(bandPass2Filter);  // connect to the context.destination, which outputs the audio
+
+        dynamicsNode.connect(bandPass2AnalyserNode);
+
+        // set up the arrays that we use to retrieve the bandPass1AnalyserNode data
+        bp2FreqByteData = new Uint8Array(bandPass2AnalyserNode.frequencyBinCount);
+        bp2TimeByteData = new Uint8Array(bandPass2AnalyserNode.frequencyBinCount);
+    }
+
+    function initHighPassFilter(context, dynamicsNode) {
+        //create highpass filter
+        highPassFilter = context.createBiquadFilter();
+        highPassFilter.type = 1; // Low-pass filter. See BiquadFilterNode docs
+        highPassFilter.frequency.value = 2000;
+        highPassFilter.connect(context.destination);
+
+        // create an highpass analyser node
+        highPassAnalyserNode = context.createAnalyser();
+        highPassAnalyserNode.fftSize = FFTSIZE;  //The size of the FFT used for frequency-domain analysis. This must be a power of two
+        highPassAnalyserNode.smoothingTimeConstant = 0.85;  //A value from 0 -> 1 where 0 represents no time averaging with the last analysis frame
+        highPassAnalyserNode.connect(highPassFilter);  // connect to the context.destination, which outputs the audio
+
+        dynamicsNode.connect(highPassAnalyserNode);
+
+        // set up the arrays that we use to retrieve the highPassAnalyserNode data
+        hpFreqByteData = new Uint8Array(highPassAnalyserNode.frequencyBinCount);
+        hpTimeByteData = new Uint8Array(highPassAnalyserNode.frequencyBinCount);
+    }
+
+    function updateAnalysers() {
+        lowPassAnalyserNode.getByteFrequencyData(lpFreqByteData);  // this gives us the frequency
+        lowPassAnalyserNode.getByteTimeDomainData(lpTimeByteData);  // this gives us the waveform
+
+        bandPass1AnalyserNode.getByteFrequencyData(bp1FreqByteData);
+        bandPass1AnalyserNode.getByteTimeDomainData(bp1TimeByteData);
+
+        bandPass2AnalyserNode.getByteFrequencyData(bp2FreqByteData);
+        bandPass2AnalyserNode.getByteTimeDomainData(bp2TimeByteData);
+
+        highPassAnalyserNode.getByteFrequencyData(hpFreqByteData);
+        highPassAnalyserNode.getByteTimeDomainData(hpTimeByteData);
     }
 
     function startPlayback() {
@@ -91,9 +196,7 @@ var SoundObject = function(track){
 
     this.tick = function() {
         if(playing) {
-            analyserNode.getFloatFrequencyData(freqFloatData);  // this gives us the dBs
-            analyserNode.getByteFrequencyData(freqByteData);  // this gives us the frequency
-            analyserNode.getByteTimeDomainData(timeByteData);  // this gives us the waveform
+            updateAnalysers();
             
             var lastRadius = 0;  // we use this to store the radius of the last circle, making them relative to each other
             var freqSum = 0;
@@ -101,8 +204,8 @@ var SoundObject = function(track){
 
             for(var x = circleFreqChunk; x; x--) {
                 var index = circleFreqChunk-x;
-                freqSum += freqByteData[index];
-                timeSum += timeByteData[index];
+                freqSum += lpFreqByteData[index];
+                timeSum += lpTimeByteData[index];
             }
             freqSum = freqSum / circleFreqChunk / 255;  // gives us a percentage out of the total possible value
             timeSum = timeSum / circleFreqChunk / 255;  // gives us a percentage out of the total possible value
@@ -131,7 +234,8 @@ var SoundObject = function(track){
                
             }
             // gameObject.getBackground().setFlareColor(hslToRgb((HUE_VARIANCE+circleHue)%360, 50, 10));
-            gameObject.getBackground().setFlareChangeInRadius(dataDiff * 0.5);
+            gameObject.getBackground().setFlareChangeInRadius(dataDiff);
+            console.log(dataDiff);
             evt.dataDiff = dataDiff;
             document.dispatchEvent(evt);
         }
