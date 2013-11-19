@@ -59,6 +59,7 @@ var GameObject = function() {
         audioPlayer.tick();
         stage.update();
         goerGen.moveAll();
+        projectiles.tick();
     }
 
     function onResize() {
