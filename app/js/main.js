@@ -61,6 +61,7 @@ var GameObject = function() {
 
         //log fps
         // console.log(createjs.Ticker.getMeasuredFPS(1));
+        goerGen.tick();
     }
 
     function onResize() {
