@@ -13,6 +13,10 @@ var PartyGoerObject = function(type_) {
             drawUnderAge();
         else
             drawGoer();
+
+        var pos = getRandomEdgePos(goer);
+        goer.x = pos.x;
+        goer.y = pos.y;
     }
 
     function drawGoer() {
@@ -23,9 +27,6 @@ var PartyGoerObject = function(type_) {
             .beginFill('#000')
             .drawCircle(0, 0, radius);
 
-        var pos = getRandomEdgePos(goer);
-        goer.x = pos.x;
-        goer.y = pos.y;
         stage.addChild(goer);
     }
 
@@ -37,9 +38,6 @@ var PartyGoerObject = function(type_) {
             .beginFill('#ff0000')
             .drawCircle(0, 0, radius);
 
-        var pos = getRandomEdgePos(goer);
-        goer.x = pos.x;
-        goer.y = pos.y;
         stage.addChild(goer);
     }
 
@@ -51,24 +49,7 @@ var PartyGoerObject = function(type_) {
             .beginFill('#ffff00')
             .drawCircle(0, 0, radius);
 
-        var pos = getRandomEdgePos(goer);
-        goer.x = pos.x;
-        goer.y = pos.y;
         stage.addChild(goer);
-    }
-
-    function move() {
-        var tmp = goer;
-        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
-        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
-        createjs.Tween.get(goer).to(babyRepoPosition, 1000, createjs.Ease.linear);
-        if (goer.x > babyRepoPosition.x && goer.x < babyRepoPosition + babyRepoRadius) {
-            goer.x = tmp.x;
-        }
-        if (goer.y > babyRepoPosition.y && goer.y < babyRepoPosition + babyRepoRadius) {
-            goer.y = tmp.y;
-        }
-        // timer
     }
 
     //public funs
@@ -86,10 +67,6 @@ var PartyGoerObject = function(type_) {
 
     this.getRadius = function() {
         return radius;
-    };
-
-    this.move = function() {
-        move();
     };
 
     init();

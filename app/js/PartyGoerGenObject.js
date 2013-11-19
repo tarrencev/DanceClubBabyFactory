@@ -5,7 +5,7 @@ var PartyGoerGenObject = function() {
 
     //private funcs
     function drawPartyGoer() {
-        var goer = new PartyGoerObject("goer");
+        var goer = new PartyGoerObject();
         while (checkForCollisions(goer)) {
             goer.setPosition(getRandomEdgePos(goer));
         }
@@ -50,8 +50,19 @@ var PartyGoerGenObject = function() {
     };
 
     this.moveAll = function() {
+        var babyRepo = gameObject.getBabyRepo();
+        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
+
         for (var i in people) {
-            people[i].move();
+            var tmp = people[i].getPosition();
+            createjs.Tween.get(people[i]).to(babyRepoPosition, 1000, createjs.Ease.linear);
+            if (circlesDoCollide(people[i], babyRepo)) {
+                people[i].setPosition(tmp);
+            }
         }
+    };
+
+    this.getGoer = function(num_) {
+        return people[num_];
     };
 };

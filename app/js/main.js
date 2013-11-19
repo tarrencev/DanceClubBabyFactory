@@ -50,8 +50,6 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
-
-
         stage.addEventListener("pressmove", mousePressMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
     }
@@ -99,10 +97,6 @@ var GameObject = function() {
         init();
     };
 
-    this.getBabyRepo = function() {
-        return babyRepo;
-    };
-
     this.getBackground = function() {
         return background;
     };
@@ -113,6 +107,14 @@ var GameObject = function() {
 
     this.getDoor = function() {
         return door;
+    };
+
+    this.getBabyRepo = function() {
+        return babyRepo;
+    };
+
+    this.getGoerGen = function() {
+        return goerGen;
     };
 };
 
