@@ -58,7 +58,8 @@ var GameObject = function() {
     function tick() {
         audioPlayer.tick();
         stage.update();
-
+        projectiles.tick();
+        
         //log fps
         // console.log(createjs.Ticker.getMeasuredFPS(1));
         goerGen.tick();
@@ -111,7 +112,7 @@ var GameObject = function() {
     this.getSound = function() {
         return sound;
     };
-
+    
     this.getDoor = function() {
         return door;
     };
