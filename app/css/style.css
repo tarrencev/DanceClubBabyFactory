@@ -136,7 +136,7 @@ h6 {
 
 input[type="range"]{
     background-color: #fff;
-    width: 130px;
+    /*width: 130px;*/
     -webkit-appearance: none;
     border-radius: 8px;
     -moz-border-radius: 8px;
