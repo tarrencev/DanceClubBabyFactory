@@ -71,9 +71,11 @@ var GameObject = function() {
         goerGen.tick();
         projectiles.tick();
         
-        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 100 === 0) {
-            babyRepo.addBaby();
+        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 30 === 0) {
             goerGen.addPartyGoer();
+            if (goerGen.size() > 2) {
+                babyRepo.addBaby();
+            }
         }
         background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
         if (!audioPlayer.isPlaying()) {
