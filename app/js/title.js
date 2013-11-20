@@ -4,6 +4,7 @@ var TitleObject = function(new_stage){
         drawTitle();
         drawInstructions();
         drawStartButton();
+        preload_songs();
     }
 
     function drawTitle() {
@@ -57,9 +58,18 @@ var TitleObject = function(new_stage){
     }
 
     function change_stage() {
+        $('.infoPane').show();
+        $('.audioControlsPane').show();
+        var audio = stage.getChildByName('audio');
         stage.removeAllChildren();
+        stage.addChild(audio);
         new_stage();
         stage.update();
+    }
+
+    function preload_songs() {
+      preloaded_songs = {};
+      preloaded_songs['06 Loud Pipes.m4a'] = new SoundObject('06 Loud Pipes.m4a');
     }
 
     init();

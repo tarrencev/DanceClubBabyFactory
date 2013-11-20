@@ -3,7 +3,7 @@ var CONSTANTS = {
   HEIGHT: 960
 };
 
-var canvas, stage;
+var canvas, stage, preloaded_songs;
 
 function getRandomSign() {
     if(Math.random() > 0.5)

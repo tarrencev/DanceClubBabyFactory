@@ -16,7 +16,8 @@ var AudioPlayerObject = function(){
 
     //private funcs
     function init() {
-        sound = new SoundObject(track.src);
+        //sound = new SoundObject(track.src);
+        sound = preloaded_songs[track.src];
         setSongInfo(track);
         playButton = $('#playButton');
         playButton.click(playButtonHandler);

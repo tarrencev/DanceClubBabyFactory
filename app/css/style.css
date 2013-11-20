@@ -34,6 +34,7 @@ canvas {
     background-color: #f15a29;
     display: block;
     text-align: center;
+    display: none;
 }
 
 .audioControlsPane {
@@ -45,6 +46,7 @@ canvas {
   bottom: 100px;
   background-color: #f15a29;
   text-align: center;
+  display: none;
 }
 
 .audioControlsSection {
