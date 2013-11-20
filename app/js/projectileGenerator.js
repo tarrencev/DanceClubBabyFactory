@@ -38,6 +38,9 @@ var ProjectileGeneratorObject = function() {
         removeProjectile(event.projectileIndex);
         gameObject.setDamage(5);
         gameObject.getBackground().applyTintToBase(gameObject.getDamage()/100); // TEMP REMOVE ME better way to denote health
+        if (gameObject.getDamage() > 100) {
+            gameObject.getAudioPlayer().playPause();
+        }
     }
 
     function drawProjectile() {

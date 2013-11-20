@@ -7,9 +7,10 @@ var GameObject = function() {
         babyRepo,
         goerGen,
         projectiles,
-        damage;
+        damage,
+        highScore; //TEMP REMOVE ME variable
     
-    var sticky = false;
+    var sticky = true;
 
     //private funcs
     function init() {
@@ -82,8 +83,10 @@ var GameObject = function() {
             damage = 0; // TEMP REMOVE ME only reset damage on new game
             background.applyTintToBase(damage/100);
         }
-                
+                 
+        document.getElementById("debug").innerHTML = "High Score: " + highScore + " babies";       
         document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
+        highScore = Math.max(babyRepo.getNumBabies(), highScore);
         document.getElementById("debug").innerHTML += "<br/>Complaint risk: " + Math.min(damage, 100) + "%"; // TEMP REMOVE ME temporary display for damage
     }
 
@@ -133,6 +136,10 @@ var GameObject = function() {
 
     this.getSound = function() {
         return sound;
+    };
+
+    this.getAudioPlayer = function() {
+        return audioPlayer;
     };
 
     this.getDoor = function() {
