@@ -43,13 +43,12 @@ var SoundObject = function(track){
     var hpFreqByteData, hpTimeByteData;  // arrays to retrieve data from highPassAnalyserNode
 
     var dataAverage = [42,42,42,42];   // an array recording data for the last 4 ticks
-    var freqChunk;    // The chunk of freqByteData array that is computed per circle
-    
+    var freqChunk;    // The chunk of freqByteData array that is computed
 
     //private funcs
     function init() {
         
-
+        initEvents();
 
         if (!createjs.Sound.registerPlugin(createjs.WebAudioPlugin)) { return; }
         var manifest = [
@@ -230,6 +229,21 @@ var SoundObject = function(track){
 
         freqSum = freqSum / freqChunk / 255;  // gives us a percentage out of the total possible value
         timeSum = timeSum / freqChunk / 255;  // gives us a percentage out of the total possible value
+
+        // update our dataAverage, by removing the first element and pushing in the new last element
+        dataAverage.shift();
+        dataAverage.push(freqSum);
+
+        // get our average data for the last 3 ticks
+        var dataSum = 0;
+        for(var i = dataAverage.length-1; i; i--) {
+            dataSum += dataAverage[i-1];
+        }
+        dataSum = dataSum / (dataAverage.length-1);
+
+        // calculate latest change
+        var dataDiff = dataAverage[dataAverage.length-1] - dataSum;
+        return dataDiff;
     }
 
     //public funs
@@ -292,7 +306,6 @@ var SoundObject = function(track){
         if(playing) {
             updateAnalysers();
 
-
             if (lowPassEnabled) {
                 lpEvt.dataDiff = calculateDiff(lpFreqByteData, lpTimeByteData);
                 document.dispatchEvent(lpEvt);
@@ -309,46 +322,6 @@ var SoundObject = function(track){
                 hpEvt.dataDiff = calculateDiff(hpFreqByteData, hpTimeByteData);
                 document.dispatchEvent(hpEvt);
             }
-            
-            var lastRadius = 0;  // we use this to store the radius of the last circle, making them relative to each other
-            // var freqSum = 0;
-            // var timeSum = 0;
-
-            // for(var x = freqChunk; x; x--) {
-            //     var index = freqChunk - x;
-            //     freqSum += lpFreqByteData[index];
-            //     timeSum += lpTimeByteData[index];
-            // }
-            // freqSum = freqSum / freqChunk / 255;  // gives us a percentage out of the total possible value
-            // timeSum = timeSum / freqChunk / 255;  // gives us a percentage out of the total possible value
-            // NOTE in testing it was determined that i 1 thru 4 stay 0's most of the time
-
-            // draw circle
-            lastRadius += freqSum*RADIUS_FACTOR + MIN_RADIUS;
-
-            // update our dataAverage, by removing the first element and pushing in the new last element
-            dataAverage.shift();
-            dataAverage.push(lastRadius);
-
-            // get our average data for the last 3 ticks
-            var dataSum = 0;
-            for(var i = dataAverage.length-1; i; i--) {
-                dataSum += dataAverage[i-1];
-            }
-            dataSum = dataSum / (dataAverage.length-1);
-
-            // calculate latest change
-            var dataDiff = dataAverage[dataAverage.length-1] - dataSum;
-
-            // change color based on large enough changes
-            if(dataDiff>COLOR_CHANGE_THRESHOLD || dataDiff<COLOR_CHANGE_THRESHOLD) {
-                circleHue = circleHue + dataDiff;
-               
-            }
-            // gameObject.getBackground().setFlareColor(hslToRgb((HUE_VARIANCE+circleHue)%360, 50, 10));
-            //console.log(dataDiff);
-            // gameObject.getBackground().setFlareChangeInRadius(dataDiff);
-            // console.log(dataDiff);
         }
     };
 

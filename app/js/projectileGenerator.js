@@ -2,6 +2,8 @@ var ProjectileGeneratorObject = function() {
     //private vars
     //declare private vars here
     var projectiles = new createjs.Container();
+    var projectileAngle = 0;
+    var projectileTarget = { x: -15, y: 0};
     var evt;
 
     //private funcs
@@ -9,23 +11,22 @@ var ProjectileGeneratorObject = function() {
         evt = document.createEvent('Event');
         evt.initEvent('noiseViolation', true, true);
         
-        document.addEventListener("pulse",pulseHandler,false);
+        document.addEventListener("lpPulse", lpPulseHandler,false);
         document.addEventListener("noiseViolation", noiseViolationHandler);
     }
 
-    function pulseHandler(event) {
-        var dataDiff = event.dataDiff;
-        if ((dataDiff > 5 || dataDiff < -5)/* && projectiles.getNumChildren() < 1*/)
-            fireProjectile(drawProjectile(), event.dataDiff);
+    function lpPulseHandler(event) {
+        var dataDiff = event.dataDiff * 100;
+
+        fireProjectile(drawProjectile(), dataDiff);
 
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             var projectile = projectiles.getChildAt(i).getShape();
-            if (projectile.x < 0 || projectile.y < 0 || projectile.x > window.width * 0.8 || projectile.y > window.innerHeight) {
+            if (projectile.x < 0 || projectile.y < 0 || projectile.x > window.innerWidth * 0.8 || projectile.y > window.innerHeight) {
                 evt.projectileIndex = i;
                 document.dispatchEvent(evt);
             }
         }
-
     }
 
     function removeProjectile(index) {
@@ -45,16 +46,33 @@ var ProjectileGeneratorObject = function() {
         return projectile;
     }
 
+    var count = 0;
     function fireProjectile(projectile, dataDiff) {
-        var edgePos = getRandomEdgePos();
-        createjs.Tween.get(projectile.getShape()).to(edgePos, 100 * (dataDiff * 3), createjs.Ease.linear);
+
+        if (count === 5) {
+            var edgePos = calculateProjectileDirection(dataDiff);
+            createjs.Tween.get(projectile.getShape()).to(edgePos, 3000, createjs.Ease.linear);
+            count = 0;
+        }
+        count++;
+    }
+
+    function calculateProjectileDirection(dataDiff) {
+
+        projectileAngle = projectileAngle + Math.PI/8 * dataDiff;
+
+        var newPosition = {
+            x: window.innerWidth/2 + 2 * window.innerHeight * Math.cos(projectileAngle),
+            y: window.innerHeight/2 + 2 * window.innerHeight * Math.sin(projectileAngle)
+        };
+
+        return newPosition;
     }
 
     //public funcs
     this.addProjectile = function() {
         drawProjectile();
     };
-
 
     this.spawnAndFire = function(dataDiff) {
         fireProjectile(drawProjectile(), dataDiff);
