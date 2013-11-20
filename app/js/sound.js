@@ -17,35 +17,38 @@ var SoundObject = function(track){
     //low pass filter
     var lowPassFilter;
     var lowPassEnabled = true;
+    var lpEvt;
     var lowPassAnalyserNode;
     var lpFreqByteData, lpTimeByteData;  // arrays to retrieve data from lowPassAnalyserNode
 
     //band pass filter 1
     var bandPass1Filter;
     var bandPass1Enabled = true;
+    var bp1Evt;
     var bandPass1AnalyserNode;
     var bp1FreqByteData, bp1TimeByteData;
 
     //band pass filter 2
     var bandPass2Filter;
     var bandPass2Enabled = true;
+    var bp2Evt;
     var bandPass2AnalyserNode;
     var bp2FreqByteData, bp2TimeByteData;
     
     //high pass filter
     var highPassFilter;
     var highPassEnabled = true;
+    var hpEvt;
     var highPassAnalyserNode;
     var hpFreqByteData, hpTimeByteData;  // arrays to retrieve data from highPassAnalyserNode
 
     var dataAverage = [42,42,42,42];   // an array recording data for the last 4 ticks
-    var circleFreqChunk;    // The chunk of freqByteData array that is computed per circle
-    var evt;
+    var freqChunk;    // The chunk of freqByteData array that is computed per circle
+    
 
     //private funcs
     function init() {
-        evt = document.createEvent('Event');
-        evt.initEvent('pulse', true, true);
+        
 
 
         if (!createjs.Sound.registerPlugin(createjs.WebAudioPlugin)) { return; }
@@ -76,9 +79,7 @@ var SoundObject = function(track){
         initHighPassFilter(context, dynamicsNode);
 
         // calculate the number of array elements that represent each circle
-        circleFreqChunk = bandPass1AnalyserNode.frequencyBinCount;
-        // console.log(lowPassAnalyserNode.frequencyBinCount);
-        // startPlayback();
+        freqChunk = bandPass1AnalyserNode.frequencyBinCount;
     }
 
     function initLowPassFilter(context, dynamicsNode) {
@@ -159,6 +160,20 @@ var SoundObject = function(track){
         hpTimeByteData = new Uint8Array(highPassAnalyserNode.frequencyBinCount);
     }
 
+    function initEvents() {
+        lpEvt = document.createEvent('Event');
+        lpEvt.initEvent('lpPulse', true, true);
+
+        bp1Evt = document.createEvent('Event');
+        bp1Evt.initEvent('bp1Pulse', true, true);
+
+        bp2Evt = document.createEvent('Event');
+        bp2Evt.initEvent('bp2Pulse', true, true);
+
+        hpEvt = document.createEvent('Event');
+        hpEvt.initEvent('hpPulse', true, true);
+    }
+
     function updateAnalysers() {
         lowPassAnalyserNode.getByteFrequencyData(lpFreqByteData);  // this gives us the frequency
         lowPassAnalyserNode.getByteTimeDomainData(lpTimeByteData);  // this gives us the waveform
@@ -200,6 +215,21 @@ var SoundObject = function(track){
         if (highPassEnabled) {
             dynamicsNode.connect(highPassAnalyserNode);
         }
+    }
+
+    function calculateDiff(freqByteData, timeByteData) {
+        var lastRadius = 0;  // we use this to store the radius of the last circle, making them relative to each other
+        var freqSum = 0;
+        var timeSum = 0;
+
+        for(var x = freqChunk; x; x--) {
+            var index = freqChunk - x;
+            freqSum += freqByteData[index];
+            timeSum += timeByteData[index];
+        }
+
+        freqSum = freqSum / freqChunk / 255;  // gives us a percentage out of the total possible value
+        timeSum = timeSum / freqChunk / 255;  // gives us a percentage out of the total possible value
     }
 
     //public funs
@@ -261,18 +291,36 @@ var SoundObject = function(track){
     this.tick = function() {
         if(playing) {
             updateAnalysers();
+
+
+            if (lowPassEnabled) {
+                lpEvt.dataDiff = calculateDiff(lpFreqByteData, lpTimeByteData);
+                document.dispatchEvent(lpEvt);
+            }
+            if (bandPass1Enabled) {
+                bp1Evt.dataDiff = calculateDiff(bp1FreqByteData, bp1TimeByteData);
+                document.dispatchEvent(bp1Evt);
+            }
+            if (bandPass2Enabled) {
+                bp2Evt.dataDiff = calculateDiff(bp2FreqByteData, bp2TimeByteData);
+                document.dispatchEvent(bp2Evt);
+            }
+            if (highPassEnabled) {
+                hpEvt.dataDiff = calculateDiff(hpFreqByteData, hpTimeByteData);
+                document.dispatchEvent(hpEvt);
+            }
             
             var lastRadius = 0;  // we use this to store the radius of the last circle, making them relative to each other
-            var freqSum = 0;
-            var timeSum = 0;
+            // var freqSum = 0;
+            // var timeSum = 0;
 
-            for(var x = circleFreqChunk; x; x--) {
-                var index = circleFreqChunk-x;
-                freqSum += lpFreqByteData[index];
-                timeSum += lpTimeByteData[index];
-            }
-            freqSum = freqSum / circleFreqChunk / 255;  // gives us a percentage out of the total possible value
-            timeSum = timeSum / circleFreqChunk / 255;  // gives us a percentage out of the total possible value
+            // for(var x = freqChunk; x; x--) {
+            //     var index = freqChunk - x;
+            //     freqSum += lpFreqByteData[index];
+            //     timeSum += lpTimeByteData[index];
+            // }
+            // freqSum = freqSum / freqChunk / 255;  // gives us a percentage out of the total possible value
+            // timeSum = timeSum / freqChunk / 255;  // gives us a percentage out of the total possible value
             // NOTE in testing it was determined that i 1 thru 4 stay 0's most of the time
 
             // draw circle
@@ -298,10 +346,9 @@ var SoundObject = function(track){
                
             }
             // gameObject.getBackground().setFlareColor(hslToRgb((HUE_VARIANCE+circleHue)%360, 50, 10));
-            gameObject.getBackground().setFlareChangeInRadius(dataDiff);
             //console.log(dataDiff);
-            evt.dataDiff = dataDiff;
-            document.dispatchEvent(evt);
+            // gameObject.getBackground().setFlareChangeInRadius(dataDiff);
+            // console.log(dataDiff);
         }
     };
 

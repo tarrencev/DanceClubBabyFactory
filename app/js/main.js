@@ -64,11 +64,11 @@ var GameObject = function() {
         goerGen.tick();
         projectiles.tick();
         
-        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 100 == 0) {
+        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 100 === 0) {
             babyRepo.addBaby();
             goerGen.addPartyGoer();
         }
-        background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
+        // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
         if (!audioPlayer.isPlaying()) {
             damage = 0; // TEMP REMOVE ME only reset damage on new game
         }
