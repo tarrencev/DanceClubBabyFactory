@@ -10,7 +10,7 @@ var GameObject = function() {
         damage,
         highScore; //TEMP REMOVE ME variable
     
-    var sticky = true;
+    var sticky = false;
 
     //private funcs
     function init() {
@@ -84,9 +84,9 @@ var GameObject = function() {
             background.applyTintToBase(damage/100);
         }
                  
-        document.getElementById("debug").innerHTML = "High Score: " + highScore + " babies";       
+        //document.getElementById("debug").innerHTML = "High Score: " + highScore + " babies";       
         document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
-        highScore = Math.max(babyRepo.getNumBabies(), highScore);
+        //highScore = Math.max(babyRepo.getNumBabies(), highScore);
         document.getElementById("debug").innerHTML += "<br/>Complaint risk: " + Math.min(damage, 100) + "%"; // TEMP REMOVE ME temporary display for damage
     }
 
