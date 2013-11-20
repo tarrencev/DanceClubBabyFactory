@@ -30,7 +30,7 @@ var BackgroundObject = function(){
         flare.x = position.x;
         flare.y = position.y;
         flare.graphics
-            .beginRadialGradientFill(["rgba(241,90,41,1)","rgba(241,90,41,0)"], [0, 1], 0, 0, 0, 0, 0, 250)
+            .beginRadialGradientFill(["rgba(241,90,41,0.5)","rgba(241,90,41,0)"], [0, 1], 0, 0, 0, 0, 0, 250)
             .drawCircle(0, 0, 250);
         stage.addChild(flare);
     }
@@ -59,12 +59,12 @@ var BackgroundObject = function(){
     };
     
     this.applyTintToBase = function(alpha) { // TEMPORARY SOLUTION REMOVE ME; should have better way to denote health
-        baseBackground.graphics
+        /*baseBackground.graphics
             .beginFill('#000')
             .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         baseBackground.graphics
             .beginFill('rgba(255,255,255,'+alpha+')')
-            .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+            .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);*/
     };
 
     init();

@@ -22,7 +22,7 @@ var ProjectileGeneratorObject = function() {
 
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             var projectile = projectiles.getChildAt(i).getShape();
-            if (projectile.x < 0 || projectile.y < 0 || projectile.x > window.innerWidth * 0.8 || projectile.y > window.innerHeight) {
+            if (projectile.x < 0 || projectile.y < 0 || projectile.x > CONSTANTS.WIDTH || projectile.y > CONSTANTS.HEIGHT) {
                 evt.projectileIndex = i;
                 document.dispatchEvent(evt);
             }
@@ -36,7 +36,8 @@ var ProjectileGeneratorObject = function() {
 
     function noiseViolationHandler(event) {
         removeProjectile(event.projectileIndex);
-        gameObject.setDamage(10);
+        gameObject.setDamage(5);
+        gameObject.getBackground().applyTintToBase(gameObject.getDamage()/100); // TEMP REMOVE ME better way to denote health
     }
 
     function drawProjectile() {
@@ -81,11 +82,19 @@ var ProjectileGeneratorObject = function() {
     this.tick = function() {
         var doorRadius = gameObject.getDoor().getRadius();
         var doorThickness = gameObject.getDoor().getThickness();
-        var doorAngle = gameObject.getDoor().getAngle()+360;
+        var doorAngle = gameObject.getDoor().getAngle();
         var doorHitArc = {
             min: doorAngle - gameObject.getDoor().getWidth()*180/Math.PI/2,
             max: doorAngle + gameObject.getDoor().getWidth()*180/Math.PI/2
         };
+        //document.getElementById("debug").innerHTML = doorHitArc.min+", "+doorHitArc.max;
+        if (doorHitArc.min < -180) {
+            doorHitArc.min = 360+doorHitArc.min;
+        }
+        if (doorHitArc.max > 180) {
+            doorHitArc.max = doorHitArc.max-360;
+        }
+        //document.getElementById("debug").innerHTML = doorAngle+"<br/>"+ doorHitArc.min+", "+doorHitArc.max;
 
         for(var i = 0; i < projectiles.getNumChildren(); i++) {
             //projectiles.getChildAt(i).tick();
@@ -95,9 +104,17 @@ var ProjectileGeneratorObject = function() {
             
             if (distanceFromCenter > doorRadius-doorThickness/2 &&
                 distanceFromCenter < doorRadius+doorThickness/2) {
-                var projAngle = Math.atan2(projPosition.y,projPosition.x)*180/Math.PI+360;
+                var projAngle = Math.atan2(projPosition.y,projPosition.x)*180/Math.PI;
                 //console.log(projAngle + " " + doorAngle);
-                if (projAngle > doorHitArc.min && projAngle < doorHitArc.max) {
+                if (doorHitArc.min > doorHitArc.max) {
+                    /*if (projAngle > doorHitArc.min && projAngle < 180 &&
+                        projAngle < doorHitArc.max && projAngle > -180) {
+                        removeProjectile(i);
+                    }*/
+                    if (projAngle > doorHitArc.min || projAngle < doorHitArc.max) {
+                        removeProjectile(i);
+                    }
+                } else if (projAngle > doorHitArc.min && projAngle < doorHitArc.max) {
                     removeProjectile(i);
                 }
             }
