@@ -88,6 +88,10 @@ var AudioPlayerObject = function(){
     this.tick = function() {
         sound.tick();
     };
+    
+    this.isPlaying = function() {
+        return playing;
+    };
 
     init();
 };

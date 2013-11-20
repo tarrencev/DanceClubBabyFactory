@@ -2,10 +2,15 @@ var ProjectileGeneratorObject = function() {
     //private vars
     //declare private vars here
     var projectiles = new createjs.Container();
+    var evt;
 
     //private funcs
     function init() {
+        evt = document.createEvent('Event');
+        evt.initEvent('noiseViolation', true, true);
+        
         document.addEventListener("pulse",pulseHandler,false);
+        document.addEventListener("noiseViolation", noiseViolationHandler);
     }
 
     function pulseHandler(event) {
@@ -16,11 +21,21 @@ var ProjectileGeneratorObject = function() {
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             var projectile = projectiles.getChildAt(i).getShape();
             if (projectile.x < 0 || projectile.y < 0 || projectile.x > window.width * 0.8 || projectile.y > window.innerHeight) {
-                stage.removeChild(projectiles.getChildAt(i).getShape());
-                projectiles.removeChildAt(i);
+                evt.projectileIndex = i;
+                document.dispatchEvent(evt);
             }
         }
 
+    }
+
+    function removeProjectile(index) {
+        stage.removeChild(projectiles.getChildAt(index).getShape());
+        projectiles.removeChildAt(index);
+    }
+
+    function noiseViolationHandler(event) {
+        removeProjectile(event.projectileIndex);
+        gameObject.setDamage(10);
     }
 
     function drawProjectile() {
@@ -32,7 +47,7 @@ var ProjectileGeneratorObject = function() {
 
     function fireProjectile(projectile, dataDiff) {
         var edgePos = getRandomEdgePos();
-        createjs.Tween.get(projectile.getShape()).to(edgePos, 500 * (dataDiff * 3), createjs.Ease.linear);
+        createjs.Tween.get(projectile.getShape()).to(edgePos, 100 * (dataDiff * 3), createjs.Ease.linear);
     }
 
     //public funcs
@@ -65,8 +80,7 @@ var ProjectileGeneratorObject = function() {
                 var projAngle = Math.atan2(projPosition.y,projPosition.x)*180/Math.PI+360;
                 //console.log(projAngle + " " + doorAngle);
                 if (projAngle > doorHitArc.min && projAngle < doorHitArc.max) {
-                    stage.removeChild(projectiles.getChildAt(i).getShape());
-                    projectiles.removeChildAt(i);
+                    removeProjectile(i);
                 }
             }
         }

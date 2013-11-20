@@ -6,7 +6,10 @@ var GameObject = function() {
         door,
         babyRepo,
         goerGen,
-        projectiles;
+        projectiles,
+        damage;
+    
+    var sticky = false;
 
     //private funcs
     function init() {
@@ -49,8 +52,15 @@ var GameObject = function() {
 
         //init party goers
         goerGen = new PartyGoerGenObject();
-
-        stage.addEventListener("pressmove", mousePressMoveHandler);
+        
+        damage = 0;
+        
+        if (sticky) {
+            stage.enableMouseOver(50);
+            stage.addEventListener("mouseover", mouseOverHandler);
+        } else {
+            stage.addEventListener("pressmove", mousePressMoveHandler);
+        }
         stage.addEventListener("click", mouseClickHandler);
     }
 
@@ -60,6 +70,17 @@ var GameObject = function() {
         stage.update();
         goerGen.tick();
         projectiles.tick();
+        
+        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 100 === 0) {
+            babyRepo.addBaby();
+            goerGen.addPartyGoer();
+        }
+        background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
+        if (!audioPlayer.isPlaying()) {
+            damage = 0; // TEMP REMOVE ME only reset damage on new game
+        }
+                
+        document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
     }
 
     function onResize() {
@@ -82,6 +103,10 @@ var GameObject = function() {
         stage.update();
     }
 
+    function mouseOverHandler(event) {
+        door.moveDoor(event);
+    }
+
     function mousePressMoveHandler(event) {
         console.log('press move');
         door.moveDoor(event);
@@ -89,8 +114,6 @@ var GameObject = function() {
 
     function mouseClickHandler(event) {
         console.log('click');
-        babyRepo.addBaby();
-        goerGen.addPartyGoer();
     }
 
     //public funcs
@@ -116,6 +139,18 @@ var GameObject = function() {
 
     this.getGoerGen = function() {
         return goerGen.getGoer();
+    };
+
+    this.setDamage = function(damagePts, absolute) {
+        if (absolute === undefined) { // Additive damage
+            damage += damagePts;
+        } else {
+            damage = damagePts;
+        }
+    };
+
+    this.getDamage = function() {
+        return damage;
     };
 };
 

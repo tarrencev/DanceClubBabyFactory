@@ -299,7 +299,7 @@ var SoundObject = function(track){
             }
             // gameObject.getBackground().setFlareColor(hslToRgb((HUE_VARIANCE+circleHue)%360, 50, 10));
             gameObject.getBackground().setFlareChangeInRadius(dataDiff);
-            console.log(dataDiff);
+            //console.log(dataDiff);
             evt.dataDiff = dataDiff;
             document.dispatchEvent(evt);
         }
