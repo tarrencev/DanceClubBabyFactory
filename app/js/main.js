@@ -57,7 +57,7 @@ var GameObject = function() {
         
         if (sticky) {
             stage.enableMouseOver(50);
-            stage.addEventListener("mouseover", mouseOverHandler);
+            document.addEventListener("mousemove", mouseMoveHandler);
         } else {
             stage.addEventListener("pressmove", mousePressMoveHandler);
         }
@@ -75,12 +75,14 @@ var GameObject = function() {
             babyRepo.addBaby();
             goerGen.addPartyGoer();
         }
-        background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
-        if (!audioPlayer.isPlaying()) {
+        //
+        if (!audioPlayer.isPlaying() && damage > 0) {
             damage = 0; // TEMP REMOVE ME only reset damage on new game
+            background.applyTintToBase(damage/100);
         }
                 
         document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
+        document.getElementById("debug").innerHTML += "<br/>Complaint risk: " + Math.min(damage, 100) + "%"; // TEMP REMOVE ME temporary display for damage
     }
 
     function onResize() {
@@ -103,8 +105,10 @@ var GameObject = function() {
         stage.update();
     }
 
-    function mouseOverHandler(event) {
-        door.moveDoor(event);
+    function mouseMoveHandler(event) {
+        createjsEvent = {stageX: event.clientX,
+                         stageY: event.clientY};
+        door.moveDoor(createjsEvent);
     }
 
     function mousePressMoveHandler(event) {
