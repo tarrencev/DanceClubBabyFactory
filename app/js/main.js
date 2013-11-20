@@ -8,6 +8,8 @@ var GameObject = function() {
         goerGen,
         projectiles,
         damage;
+    
+    var sticky = false;
 
     //private funcs
     function init() {
@@ -52,8 +54,13 @@ var GameObject = function() {
         goerGen = new PartyGoerGenObject();
         
         damage = 0;
-
-        stage.addEventListener("pressmove", mousePressMoveHandler);
+        
+        if (sticky) {
+            stage.enableMouseOver(50);
+            stage.addEventListener("mouseover", mouseOverHandler);
+        } else {
+            stage.addEventListener("pressmove", mousePressMoveHandler);
+        }
         stage.addEventListener("click", mouseClickHandler);
     }
 
@@ -64,7 +71,7 @@ var GameObject = function() {
         goerGen.tick();
         projectiles.tick();
         
-        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 100 == 0) {
+        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 100 === 0) {
             babyRepo.addBaby();
             goerGen.addPartyGoer();
         }
@@ -94,6 +101,10 @@ var GameObject = function() {
         stage.canvas.height = oh * scale;
 
         stage.update();
+    }
+
+    function mouseOverHandler(event) {
+        door.moveDoor(event);
     }
 
     function mousePressMoveHandler(event) {
