@@ -7,6 +7,8 @@ var BackgroundObject = function(){
     function init() {
         drawBaseBackground();
         drawFlare();
+        document.addEventListener("lpPulse", lpPulseHandler,false);
+
     }
 
     function drawBaseBackground() {
@@ -32,11 +34,15 @@ var BackgroundObject = function(){
         stage.addChild(flare);
     }
 
+    function lpPulseHandler(event) {
+        setFlareChangeInRadius(event.dataDiff);
+    }
+
     //public funcs
-    this.setFlareChangeInRadius = function(radiusDiff) {
-        flare.scaleX = radiusDiff;
-        flare.scaleY = radiusDiff;
-    };
+    function setFlareChangeInRadius(radiusDiff) {
+        flare.scaleX = radiusDiff * 75;
+        flare.scaleY = radiusDiff * 75;
+    }
 
     this.setFlareColor = function(ambientColorFilter) {
         flare.graphics
