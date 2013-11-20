@@ -12,7 +12,7 @@ var TitleObject = function(new_stage){
                                   "#38DFF9");
         title.alpha = 0.4;
         title.x = CONSTANTS.WIDTH / 6;
-        title.y = CONSTANTS.HEIGHT / 10;
+        title.y = CONSTANTS.HEIGHT / 6;
         title.textBaseline = "alphabetic";
         stage.addChild(title);
     }
@@ -52,7 +52,7 @@ var TitleObject = function(new_stage){
         start.x = CONSTANTS.WIDTH / 3 + 302;
         start.y = CONSTANTS.HEIGHT / 7 + 110;
         start.textBaseline = "alphabetic";
-
+        start.addEventListener("click", change_stage);
         stage.addChild(start);
     }
 

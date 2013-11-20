@@ -32,8 +32,29 @@ var GameObject = function() {
         };
 
         if(!createjs.Ticker.hasEventListener('tick')) {
-            createjs.Ticker.addEventListener('tick', tick);
+            createjs.Ticker.addEventListener('tick', title_tick);
         }
+        createjs.Ticker.setFPS(30);
+
+        background = new BackgroundObject();
+
+        title = new TitleObject(game);
+    }
+
+    function title_tick() {
+      stage.update();
+    }
+
+    function game() {
+        //stage = new createjs.Stage(canvas);
+        stage.mouseEventsEnabled = true;
+
+        window.onresize = function() {
+            onResize();
+        };
+
+        createjs.Ticker.removeEventListener('tick', title_tick);
+        createjs.Ticker.addEventListener('tick', tick);
         createjs.Ticker.setFPS(30);
 
         //init audio player
