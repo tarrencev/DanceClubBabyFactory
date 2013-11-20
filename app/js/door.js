@@ -4,7 +4,7 @@ var DoorObject = function(){
     var doorPosition = 0;
     var radius = 250;
     var doorWidth = Math.PI/2; // in radians
-    var doorThickness = 30;
+    var doorThickness = 16;
 
     //private funcs
     function init() {
