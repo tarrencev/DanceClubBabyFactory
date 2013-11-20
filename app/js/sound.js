@@ -59,6 +59,7 @@ var SoundObject = function(track){
             ];
          
         createjs.Sound.addEventListener("fileload", createjs.proxy(handleLoad, this));
+        console.log(src);
         createjs.Sound.registerSound(src);
         audio = createjs.Sound.activePlugin;
     }

@@ -20,6 +20,7 @@ var BackgroundObject = function(){
     }
 
     function drawFlare() {
+        console.log('flate');
         var position = {
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2

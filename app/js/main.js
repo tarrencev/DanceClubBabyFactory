@@ -53,7 +53,7 @@ var GameObject = function() {
 
         //init party goers
         goerGen = new PartyGoerGenObject();
-        
+
         damage = 0;
         
         if (sticky) {

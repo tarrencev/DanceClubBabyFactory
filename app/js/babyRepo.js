@@ -18,6 +18,7 @@ var BabyRepoObject = function() {
             .beginStroke('#ee2a7b')
             .setStrokeStyle(8)
             .beginFill('#ec87b8')
+            //.beginFill('#ffffff')
             .drawCircle(0, 0, radius);
 
         // container.cache(CONSTANTS.WIDTH/2 - 80, CONSTANTS.HEIGHT/2 - 80, 160, 160);
