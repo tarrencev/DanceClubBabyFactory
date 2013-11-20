@@ -39,10 +39,11 @@ var PartyGoerGenObject = function() {
     function moveAll() {
         var babyRepoPosition = gameObject.getBabyRepo().getPosition();
         var babyRepoRadius = gameObject.getBabyRepo().getRadius();
+        var doorRadius = gameObject.getDoor().getRadius();
 
         for (var i in people) {
-            var tmp = people[i].getPosition();
-            if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + people[i].getRadius() + 25) {
+            var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
+            if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + 2 * people[i].getRadius() + offset) {
                 createjs.Tween.removeTweens(people[i].getShape());
             }
         }
@@ -67,5 +68,9 @@ var PartyGoerGenObject = function() {
 
     this.getGoer = function() {
         return people;
+    };
+
+    this.size = function() {
+        return people.length;
     };
 };

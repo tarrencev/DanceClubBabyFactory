@@ -18,7 +18,7 @@ var PartyGoerObject = function(type_) {
         goer.x = pos.x;
         goer.y = pos.y;
 
-        createjs.Tween.get(goer).to(gameObject.getBabyRepo().getPosition(), 1000, createjs.Ease.linear);
+        createjs.Tween.get(goer).to(gameObject.getBabyRepo().getPosition(), 5000, createjs.Ease.bounceInOut);
     }
 
     function drawGoer() {
