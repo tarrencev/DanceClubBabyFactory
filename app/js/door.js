@@ -3,7 +3,7 @@ var DoorObject = function(){
     var door, doorGuide;
     var doorPosition = 0;
     var radius = 250;
-    var doorWidth = Math.PI/5; // in radians
+    var doorWidth = Math.PI/6; // in radians
     var doorThickness = 16;
 
     //private funcs
@@ -42,7 +42,7 @@ var DoorObject = function(){
 
     //public funcs
     this.moveDoor = function(event) {
-        console.log(event.stageY);
+        //console.log(event.stageY);
 
         var deltaY = event.stageY - CONSTANTS.HEIGHT/2;
         var deltaX = event.stageX - CONSTANTS.WIDTH/2;

@@ -65,5 +65,9 @@ var BabyRepoObject = function() {
         return radius;
     };
 
+    this.getNumBabies = function() {
+        return babies.length;
+    };
+
     init();
 };

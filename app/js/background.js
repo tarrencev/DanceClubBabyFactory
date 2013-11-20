@@ -7,6 +7,8 @@ var BackgroundObject = function(){
     function init() {
         drawBaseBackground();
         drawFlare();
+        document.addEventListener("lpPulse", lpPulseHandler,false);
+
     }
 
     function drawBaseBackground() {
@@ -18,6 +20,7 @@ var BackgroundObject = function(){
     }
 
     function drawFlare() {
+        console.log('flate');
         var position = {
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2
@@ -27,25 +30,41 @@ var BackgroundObject = function(){
         flare.x = position.x;
         flare.y = position.y;
         flare.graphics
-            .beginRadialGradientFill(["#f15a29","#000"], [0, 1], 0, 0, 0, 0, 0, 250)
+            .beginRadialGradientFill(["rgba(241,90,41,1)","rgba(241,90,41,0)"], [0, 1], 0, 0, 0, 0, 0, 250)
             .drawCircle(0, 0, 250);
         stage.addChild(flare);
     }
 
-    //public funcs
-    this.setFlareChangeInRadius = function(radiusDiff) {
-        flare.scaleX = radiusDiff;
-        flare.scaleY = radiusDiff;
-    };
+    function lpPulseHandler(event) {
+        setFlareChangeInRadius(event.dataDiff);
+    }
 
-    this.setFlareColor = function(color) {
+    //public funcs
+    function setFlareChangeInRadius(radiusDiff) {
+        flare.scaleX = radiusDiff * 75;
+        flare.scaleY = radiusDiff * 75;
+    }
+
+    this.setFlareColor = function(ambientColorFilter) {
         flare.graphics
             .beginRadialGradientFill(["#123456","#000"], [0, 1], 0, 0, 0, 0, 0, 250);
-        // flare.filters = [
-        //      new createjs.ColorFilter(0,0,0,1, color[0], color[1], color[2], 0)
-        //  ];
-         flare.cache(-CONSTANTS.WIDTH/2, -CONSTANTS.HEIGHT/2, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+        /*flare.filters = [
+            new createjs.ColorFilter(1,1,1,1, 
+                                     ambientColorFilter[0], 
+                                     ambientColorFilter[1], 
+                                     ambientColorFilter[2], 0)
+        ];*/
+        flare.cache(-CONSTANTS.WIDTH/2, -CONSTANTS.HEIGHT/2, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         // .getHSL((i/CIRCLES*HUE_VARIANCE+circleHue)%360, 100, 50);
+    };
+    
+    this.applyTintToBase = function(alpha) { // TEMPORARY SOLUTION REMOVE ME; should have better way to denote health
+        baseBackground.graphics
+            .beginFill('#000')
+            .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+        baseBackground.graphics
+            .beginFill('rgba(255,255,255,'+alpha+')')
+            .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
     };
 
     init();

@@ -7,7 +7,10 @@ var GameObject = function() {
         babyRepo,
         goerGen,
         projectiles,
-        title;
+        title,
+        damage;
+    
+    var sticky = false;
 
     //private funcs
     function init() {
@@ -43,8 +46,8 @@ var GameObject = function() {
     }
 
     function game() {
-        var new_stage = new createjs.Stage(canvas);
-        new_stage.mouseEventsEnabled = true;
+        //stage = new createjs.Stage(canvas);
+        stage.mouseEventsEnabled = true;
 
         window.onresize = function() {
             onResize();
@@ -73,9 +76,15 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
-        new_stage.addEventListener("pressmove", mousePressMoveHandler);
-        new_stage.addEventListener("click", mouseClickHandler);
-        return new_stage;
+        damage = 0;
+        
+        if (sticky) {
+            stage.enableMouseOver(50);
+            stage.addEventListener("mouseover", mouseOverHandler);
+        } else {
+            stage.addEventListener("pressmove", mousePressMoveHandler);
+        }
+        stage.addEventListener("click", mouseClickHandler);
     }
 
     //same as perform_logic() in zenilib
@@ -84,6 +93,19 @@ var GameObject = function() {
         stage.update();
         goerGen.tick();
         projectiles.tick();
+        
+        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 30 === 0) {
+            goerGen.addPartyGoer();
+            if (goerGen.size() > 2) {
+                babyRepo.addBaby();
+            }
+        }
+        // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
+        if (!audioPlayer.isPlaying()) {
+            damage = 0; // TEMP REMOVE ME only reset damage on new game
+        }
+                
+        document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
     }
 
     function onResize() {
@@ -106,6 +128,10 @@ var GameObject = function() {
         stage.update();
     }
 
+    function mouseOverHandler(event) {
+        door.moveDoor(event);
+    }
+
     function mousePressMoveHandler(event) {
         console.log('press move');
         door.moveDoor(event);
@@ -113,8 +139,6 @@ var GameObject = function() {
 
     function mouseClickHandler(event) {
         console.log('click');
-        babyRepo.addBaby();
-        goerGen.addPartyGoer();
     }
 
     //public funcs
@@ -140,6 +164,18 @@ var GameObject = function() {
 
     this.getGoerGen = function() {
         return goerGen.getGoer();
+    };
+
+    this.setDamage = function(damagePts, absolute) {
+        if (absolute === undefined) { // Additive damage
+            damage += damagePts;
+        } else {
+            damage = damagePts;
+        }
+    };
+
+    this.getDamage = function() {
+        return damage;
     };
 };
 
