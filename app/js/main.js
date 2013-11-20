@@ -6,7 +6,8 @@ var GameObject = function() {
         door,
         babyRepo,
         goerGen,
-        projectiles;
+        projectiles,
+        title;
 
     //private funcs
     function init() {
@@ -22,6 +23,28 @@ var GameObject = function() {
         document.body.appendChild(canvas);
         stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
+
+        window.onresize = function() {
+            onResize();
+        };
+
+        if(!createjs.Ticker.hasEventListener('tick')) {
+            createjs.Ticker.addEventListener('tick', title_tick);
+        }
+        createjs.Ticker.setFPS(30);
+
+        background = new BackgroundObject();
+
+        title = new TitleObject(game);
+    }
+
+    function title_tick() {
+      stage.update();
+    }
+
+    function game() {
+        var new_stage = new createjs.Stage(canvas);
+        new_stage.mouseEventsEnabled = true;
 
         window.onresize = function() {
             onResize();
@@ -50,8 +73,9 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
-        stage.addEventListener("pressmove", mousePressMoveHandler);
-        stage.addEventListener("click", mouseClickHandler);
+        new_stage.addEventListener("pressmove", mousePressMoveHandler);
+        new_stage.addEventListener("click", mouseClickHandler);
+        return new_stage;
     }
 
     //same as perform_logic() in zenilib
