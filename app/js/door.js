@@ -4,7 +4,7 @@ var DoorObject = function(){
     var doorPosition = 0;
     var radius = 250;
     var doorWidth = Math.PI/2; // in radians
-    var doorThickness = 16;
+    var doorThickness = 30;
 
     //private funcs
     function init() {
@@ -16,7 +16,7 @@ var DoorObject = function(){
         door = new createjs.Shape();
         door.x = CONSTANTS.WIDTH/2;
         door.y = CONSTANTS.HEIGHT/2;
-        door.graphics.beginStroke('#f7941e')
+        door.graphics.beginStroke('#6d6e71')
                     .setStrokeStyle(doorThickness)
                     .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                     .endStroke();
