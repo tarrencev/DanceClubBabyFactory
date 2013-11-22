@@ -5,6 +5,13 @@ function getDistance(obj1, obj2) {
     return Math.sqrt(xDist * xDist + yDist * yDist);
 }
 
+function getRandomSign() {
+    if (Math.random() > 0.5) {
+        return 1;
+    }
+    return -1;
+}
+
 function getRandomEdgePos() {
     if (Math.random() > 0.5) {
         if (Math.random() > 0.5) {

@@ -36,6 +36,19 @@ var PartyGoerGenObject = function() {
         return false;
     }
 
+    function stopWhenCollide() {
+        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
+        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
+        var doorRadius = gameObject.getDoor().getRadius();
+
+        for (var i in people) {
+            var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
+            if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + people[i].getRadius() + offset) {
+                createjs.Tween.removeTweens(people[i].getShape());
+            }
+        }
+    }
+
     function moveAll() {
         var babyRepoPosition = gameObject.getBabyRepo().getPosition();
         var babyRepoRadius = gameObject.getBabyRepo().getRadius();
@@ -43,8 +56,10 @@ var PartyGoerGenObject = function() {
 
         for (var i in people) {
             var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
-            if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + 2 * people[i].getRadius() + offset) {
-                createjs.Tween.removeTweens(people[i].getShape());
+            if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + people[i].getRadius() + offset) {
+                people[i].wanderInParty();
+            } else {
+                people[i].wanderAround();
             }
         }
     }
@@ -63,6 +78,10 @@ var PartyGoerGenObject = function() {
     };
 
     this.tick = function() {
+        stopWhenCollide();
+    };
+
+    this.wander = function() {
         moveAll();
     };
 

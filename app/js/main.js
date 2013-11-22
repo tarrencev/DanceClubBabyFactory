@@ -98,6 +98,7 @@ var GameObject = function() {
             if (goerGen.size() > 2) {
                 babyRepo.addBaby();
             }
+            goerGen.wander();
         }
         // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
         if (!audioPlayer.isPlaying()) {
