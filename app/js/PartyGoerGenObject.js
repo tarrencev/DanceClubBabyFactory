@@ -2,6 +2,8 @@ var PartyGoerGenObject = function() {
     //private vars
     //declare private vars here
     var people = [];
+    var dealers =[];
+    var teens = [];
 
     //private funcs
     function drawPartyGoer() {
@@ -18,6 +20,7 @@ var PartyGoerGenObject = function() {
             goer.setPosition(getRandomEdgePos(goer));
         }
         people.push(goer);
+        dealers.push(goer);
     }
 
     function drawUnderage() {
@@ -26,6 +29,7 @@ var PartyGoerGenObject = function() {
             goer.setPosition(getRandomEdgePos(goer));
         }
         people.push(goer);
+        teens.push(goer);
     }
 
     function checkForCollisions(goer_) {
@@ -37,31 +41,61 @@ var PartyGoerGenObject = function() {
     }
 
     function stopWhenCollide() {
-        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
-        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
+        var babyRepo = gameObject.getBabyRepo();
+        var babyRepoPosition = babyRepo.getPosition();
+        var babyRepoRadius = babyRepo.getRadius();
         var doorRadius = gameObject.getDoor().getRadius();
 
         for (var i in people) {
             var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
-            if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + people[i].getRadius() + offset) {
+            if (getDistance(people[i], babyRepo) < babyRepoRadius + people[i].getRadius() + offset) {
                 createjs.Tween.removeTweens(people[i].getShape());
             }
         }
     }
 
     function moveAll() {
-        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
-        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
+        var babyRepo = gameObject.getBabyRepo();
+        var babyRepoPosition = babyRepo.getPosition();
+        var babyRepoRadius = babyRepo.getRadius();
         var doorRadius = gameObject.getDoor().getRadius();
 
         for (var i in people) {
             var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
-            if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + people[i].getRadius() + offset) {
-                people[i].wanderInParty();
+            var distance = getDistance(people[i], babyRepo);
+            if (distance < babyRepoRadius + people[i].getRadius() + offset) {
+                createjs.Tween.get(people[i].getShape()).to(getRandomPosInParty(), 10 * distance, createjs.Ease.linear);
             } else {
-                people[i].wanderAround();
+                if (Math.random() < doorRadius / distance) {
+                    createjs.Tween.get(people[i].getShape()).to(getRandomPosInParty(), 10 * distance, createjs.Ease.linear);
+                } else {
+                    createjs.Tween.get(people[i].getShape()).to(getRandomPosOutside(), 10 * distance, createjs.Ease.linear);
+                }
             }
         }
+    }
+
+    function getRandomPosInParty() {
+        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
+        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
+        var doorRadius = gameObject.getDoor().getRadius();
+        var radiusDiff = doorRadius - babyRepoRadius - 10;
+
+        return {
+            x: babyRepoPosition.x + getRandomSign * (babyRepoRadius + Math.random() * radiusDiff),
+            y: babyRepoPosition.y + getRandomSign * (babyRepoRadius + Math.random() * radiusDiff),
+        };
+    }
+
+    function getRandomPosOutside() {
+        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
+        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
+        var doorRadius = gameObject.getDoor().getRadius();
+
+        return {
+            x: babyRepoPosition.x + getRandomSign * (doorRadius + Math.random() * (CONSTANTS.WIDTH - doorRadius)),
+            y: babyRepoPosition.y + getRandomSign * (doorRadius + Math.random() * (CONSTANTS.HEIGHT - doorRadius)),
+        };
     }
 
     //public funcs
@@ -91,5 +125,13 @@ var PartyGoerGenObject = function() {
 
     this.size = function() {
         return people.length;
+    };
+
+    this.drugDealerSize = function() {
+        return dealers.length;
+    };
+
+    this.underageSize = function() {
+        return teens.length;
     };
 };
