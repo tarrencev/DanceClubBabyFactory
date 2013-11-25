@@ -44,6 +44,11 @@ var PartyGoerGenObject = function() {
         for (var i in people) {
             var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
             if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + people[i].getRadius() + offset) {
+                people[i].wanderInParty();
+            } else {
+                people[i].wanderAround();
+            }
+            if (getDistance(people[i], gameObject.getBabyRepo()) < babyRepoRadius + people[i].getRadius() + offset) {
                 createjs.Tween.removeTweens(people[i].getShape());
             }
         }
