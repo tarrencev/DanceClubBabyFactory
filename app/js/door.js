@@ -48,6 +48,17 @@ var DoorObject = function(){
         var deltaX = event.stageX - CONSTANTS.WIDTH/2;
         var angle = Math.atan2(deltaY,deltaX) * 180/Math.PI;
         door.rotation = angle;
+        
+        this.doorHitArc = {
+            min: this.getAngle() - this.getWidth()*180/Math.PI/2,
+            max: this.getAngle() + this.getWidth()*180/Math.PI/2
+        };
+        if (this.doorHitArc.min < -180) {
+            this.doorHitArc.min = 360+this.doorHitArc.min;
+        }
+        if (this.doorHitArc.max > 180) {
+            this.doorHitArc.max = this.doorHitArc.max-360;
+        }
     };
     
     this.getAngle = function() {
@@ -64,6 +75,25 @@ var DoorObject = function(){
     
     this.getThickness = function() {
         return doorThickness;
+    };
+    
+    // x and y are positions relative to the center of the screen
+    this.detectCollision = function(x, y) {
+        var distanceFromCenter = Math.sqrt(Math.pow(x, 2)+
+                                           Math.pow(y, 2));
+        
+        if (distanceFromCenter > this.getRadius()-this.getThickness()/2 &&
+            distanceFromCenter < this.getRadius()+this.getThickness()/2) {
+            var objAngle = Math.atan2(y,x)*180/Math.PI;
+            if (this.doorHitArc.min > this.doorHitArc.max) {
+                if (objAngle > this.doorHitArc.min || objAngle < this.doorHitArc.max) {
+                    return true;
+                }
+            } else if (objAngle > this.doorHitArc.min && objAngle < this.doorHitArc.max) {
+                return true;
+            }
+        }
+        return false;
     };
 
     init();

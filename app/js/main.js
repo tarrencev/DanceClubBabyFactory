@@ -10,7 +10,7 @@ var GameObject = function() {
         damage,
         highScore; //TEMP REMOVE ME variable
     
-    var sticky = false;
+    var sticky = true;
 
     //private funcs
     function init() {
