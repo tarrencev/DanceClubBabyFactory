@@ -24,6 +24,7 @@ var ProjectileGeneratorObject = function() {
     }
 
     function noiseViolation(index) {
+        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition());
         removeProjectile(index);
         gameObject.setDamage(5);
         blocked = 0;
