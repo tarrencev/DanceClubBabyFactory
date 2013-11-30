@@ -1,41 +1,40 @@
-var BabyObject = function(){
-    //private vars
-    //declare private vars her
-    var radius = 5;
-    var baby;
+function BabyObject(){
+    // The following variables can be modified outside the object so they're not private
+    // But this is for the sake of efficiency (and because of scope)
+    this.radius = 5;
 
     //private funcs
     function init() {
-        drawBaby();
+        this.drawBaby();
     }
-
-    function drawBaby() {
-        baby = new createjs.Shape();
-        baby.graphics
-            .beginStroke('#fff')
-            .setStrokeStyle(5)
-            .beginFill('#231f20')
-            .drawCircle(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, radius);
-
-        stage.addChild(baby);
-    }
-
-    //public funs
-    this.setPosition = function(position) {
-        baby.x = position.x;
-        baby.y = position.y;
-    };
-
-    this.getPosition = function() {
-        return {
-            x: baby.x,
-            y: baby.y
-        };
-    };
-
-    this.getRadius = function() {
-        return radius;
-    };
 
     init();
+}
+
+BabyObject.prototype.drawBaby = function() {
+    this.baby = new createjs.Shape();
+    this.baby.graphics
+             .beginStroke('#fff')
+             .setStrokeStyle(5)
+             .beginFill('#231f20')
+             .drawCircle(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, this.radius);
+
+    stage.addChild(this.baby);
+};
+
+//public funs
+BabyObject.prototype.drawBaby = function(position) {
+    this.baby.x = position.x;
+    this.baby.y = position.y;
+};
+
+BabyObject.prototype.drawBaby = function() {
+    return {
+        x: this.baby.x,
+        y: this.baby.y
+    };
+};
+
+BabyObject.prototype.drawBaby = function() {
+    return this.radius;
 };
