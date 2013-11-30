@@ -3,13 +3,12 @@ function BabyObject(){
     // But this is for the sake of efficiency (and because of scope)
     this.radius = 5;
 
-    //private funcs
-    function init() {
-        this.drawBaby();
-    }
-
-    init();
+    this.init();
 }
+
+BabyObject.prototype.init = function() {
+    this.drawBaby();
+};
 
 BabyObject.prototype.drawBaby = function() {
     this.baby = new createjs.Shape();
@@ -23,18 +22,18 @@ BabyObject.prototype.drawBaby = function() {
 };
 
 //public funs
-BabyObject.prototype.drawBaby = function(position) {
+BabyObject.prototype.setPosition = function(position) {
     this.baby.x = position.x;
     this.baby.y = position.y;
 };
 
-BabyObject.prototype.drawBaby = function() {
+BabyObject.prototype.getPosition = function() {
     return {
         x: this.baby.x,
         y: this.baby.y
     };
 };
 
-BabyObject.prototype.drawBaby = function() {
+BabyObject.prototype.getRadius = function() {
     return this.radius;
 };
