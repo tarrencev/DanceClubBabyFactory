@@ -143,10 +143,24 @@ var PartyGoerGenObject = function() {
     };
 
     this.drugDealerSize = function() {
-        return dealers.length;
+        
+        var num = 0;
+        for (var i in dealers) {
+            if (getDistance(dealers[i], babyRepo) < gameObject.getDoor().getRadius()) {
+                num++;
+            }
+        }
+        return num;
     };
 
     this.underageSize = function() {
-        return teens.length;
+        
+        var num = 0;
+        for (var i in teens) {
+            if (getDistance(teens[i], babyRepo) < gameObject.getDoor().getRadius()) {
+                num++;
+            }
+        }
+        return num;
     };
 };

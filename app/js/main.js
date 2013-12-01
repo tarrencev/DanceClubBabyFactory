@@ -91,7 +91,8 @@ var GameObject = function() {
         projectiles.tick();
         
         if (audioPlayer.isPlaying()) {
-            if (createjs.Ticker.getTicks() % 35 === 0) {
+            var t = 35 - goerGen.underageSize();
+            if (createjs.Ticker.getTicks() % t === 0) {
                 if (Math.random() < 0.05 ) {
                     goerGen.addDrugDealer();
                 } else if (Math.random() < 1/19 ) {
