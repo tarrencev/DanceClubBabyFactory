@@ -1,6 +1,7 @@
 var TitleObject = function(new_stage){
     //private funcs
     function init() {
+        $('.HUD').hide();
         drawTitle();
         drawInstructions();
         drawStartButton();
@@ -58,7 +59,7 @@ var TitleObject = function(new_stage){
     }
 
     function change_stage() {
-        $('.infoPane').show();
+        $('.HUD').show();
         $('.audioControlsPane').show();
         var audio = stage.getChildByName('audio');
         stage.removeAllChildren();

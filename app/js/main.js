@@ -10,15 +10,15 @@ var GameObject = function() {
         damage,
         highScore; //TEMP REMOVE ME variable
     
-    var sticky = false;
+    var sticky = true;
 
     //private funcs
     function init() {
         canvas = document.createElement('canvas');
 
-        canvas.width = window.innerWidth * 0.8;
+        canvas.width = window.innerWidth;// * 0.8;
         canvas.height = window.innerHeight;
-        CONSTANTS.WIDTH = window.innerWidth * 0.8;
+        CONSTANTS.WIDTH = window.innerWidth;// * 0.8;
         CONSTANTS.HEIGHT = window.innerHeight;
 
         canvas.setAttribute('id', 'c');
@@ -48,10 +48,6 @@ var GameObject = function() {
     function game() {
         //stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
-
-        window.onresize = function() {
-            onResize();
-        };
 
         createjs.Ticker.removeEventListener('tick', title_tick);
         createjs.Ticker.addEventListener('tick', tick);
@@ -111,18 +107,18 @@ var GameObject = function() {
         // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
         if (!audioPlayer.isPlaying()) {
             damage = 0; // TEMP REMOVE ME only reset damage on new game
-            background.applyTintToBase(damage/100);
+            background.drawDamage(damage);
         }
                  
         //document.getElementById("debug").innerHTML = "High Score: " + highScore + " babies";       
-        document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
+        //document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
         //highScore = Math.max(babyRepo.getNumBabies(), highScore);
-        document.getElementById("debug").innerHTML += "<br/>Complaint risk: " + Math.min(damage, 100) + "%"; // TEMP REMOVE ME temporary display for damage
+        //document.getElementById("debug").innerHTML += "<br/>Complaint risk: " + Math.min(damage, 100) + "%"; // TEMP REMOVE ME temporary display for damage
     }
 
     function onResize() {
         // browser viewport size
-        var w = window.innerWidth * 0.8;
+        var w = window.innerWidth;// * 0.8;
         var h = window.innerHeight;
 
         // stage dimensions
@@ -133,9 +129,15 @@ var GameObject = function() {
         var scale = Math.min(w / ow, h / oh);
         stage.scaleX = scale;
         stage.scaleY = scale;
+        
+        stage.x = (w-scale*ow)/2;
+        stage.y = (h-scale*oh)/2;
+        
+        CONSTANTS.WIDTH = w;
+        CONSTANTS.HEIGHT = h;
 
-        stage.canvas.width = ow * scale;
-        stage.canvas.height = oh * scale;
+        stage.canvas.width = CONSTANTS.WIDTH;
+        stage.canvas.height = CONSTANTS.HEIGHT;
 
         stage.update();
     }
@@ -190,10 +192,16 @@ var GameObject = function() {
         } else {
             damage = damagePts;
         }
+        document.getElementById("risk").innerHTML = damage;
+        this.getBackground().drawDamage(damage);
     };
 
     this.getDamage = function() {
         return damage;
+    };
+    
+    this.updateScore = function(score) {
+        document.getElementById("score").innerHTML = score;
     };
 };
 
