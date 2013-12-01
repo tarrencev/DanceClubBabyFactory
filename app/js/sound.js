@@ -42,7 +42,7 @@ var SoundObject = function(track){
     var highPassAnalyserNode;
     var hpFreqByteData, hpTimeByteData;  // arrays to retrieve data from highPassAnalyserNode
 
-    var dataAverage = [42,42,42,42];   // an array recording data for the last 4 ticks
+    var dataAverage = [42,42,42,42,42,42];   // an array recording data for the last 4 ticks
     var freqChunk;    // The chunk of freqByteData array that is computed
 
     //private funcs
@@ -243,7 +243,8 @@ var SoundObject = function(track){
         dataSum = dataSum / (dataAverage.length-1);
 
         // calculate latest change
-        var dataDiff = dataAverage[dataAverage.length-1] - dataSum;
+        var dataDiff = (dataAverage[dataAverage.length-1] - dataSum) * 100;
+        
         return dataDiff;
     }
 

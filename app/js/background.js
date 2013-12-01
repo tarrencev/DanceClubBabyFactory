@@ -2,13 +2,13 @@ var BackgroundObject = function(){
     //private vars
     //declare private vars her
     var flare, baseBackground;
+    var flareRadius = 250;
 
     //private funcs
     function init() {
         drawBaseBackground();
         drawFlare();
-        document.addEventListener("lpPulse", lpPulseHandler,false);
-
+        // document.addEventListener("lpPulse", lpPulseHandler,false);
     }
 
     function drawBaseBackground() {
@@ -39,18 +39,30 @@ var BackgroundObject = function(){
         flare.y = position.y;
         flare.graphics
             .beginRadialGradientFill(["rgba(241,90,41,0.5)","rgba(241,90,41,0)"], [0, 1], 0, 0, 0, 0, 0, 250)
-            .drawCircle(0, 0, 250);
+            .drawCircle(0, 0, flareRadius);
         stage.addChild(flare);
     }
 
+    var count = 0;
     function lpPulseHandler(event) {
-        setFlareChangeInRadius(event.dataDiff);
+        var dataDiff = event.dataDiff;
+
+        if(count === 2) {
+            // if(-1 < dataDiff && dataDiff < 1) {
+                // console.log(dataDiff);            
+                setFlareChangeInRadius(dataDiff);
+            // }
+            count = 0;
+        }
+        count++;
     }
 
     //public funcs
     function setFlareChangeInRadius(radiusDiff) {
-        flare.scaleX = radiusDiff * 75;
-        flare.scaleY = radiusDiff * 75;
+        flareRadius = radiusDiff;
+        console.log(flareRadius);
+        flare.scaleX = flareRadius;
+        flare.scaleY = flareRadius;
     }
 
     this.setFlareColor = function(ambientColorFilter) {

@@ -4,7 +4,7 @@
     <title>The Infinite Dubstep Baby Factory</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/switch.css">
-    <script src="http://code.createjs.com/createjs-2013.09.25.min.js"></script>
+    <script src="vendor/createjs-2013.09.25.min.js"></script>
     <script type="text/javascript" src="vendor/jquery-2.0.3.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/utility.js"></script>
@@ -24,9 +24,17 @@
 </head>
 <body>
     <div id="HUD" class="HUD">
-        <p id="scoretext">Score: <span id="score">0</span> babies</p>
-        <p id="risktext">Risk: <span id="risk">0</span>%</p>
-
+        <div class="statsContainer">
+            <span class="stat">
+                Babies: <span id="score">0</span>
+            </span>
+            <span class="stat">
+                Risk: <span id="risk">0</span>%
+            </span>
+            <span class="stat">
+                Stars: <span id="stars">0</span>
+            </span>
+        </div>
         <div class="audioPlayer">
             <div class="albumInfoPane">
                 <div class="albumCoverContainer">

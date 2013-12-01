@@ -8,7 +8,8 @@ var GameObject = function() {
         goerGen,
         projectiles,
         damage,
-        highScore; //TEMP REMOVE ME variable
+        highScore,
+        stars = 0; //TEMP REMOVE ME variable
     
     var sticky = true;
 
@@ -194,6 +195,11 @@ var GameObject = function() {
         }
         document.getElementById("risk").innerHTML = damage;
         this.getBackground().drawDamage(damage);
+    };
+
+    this.incrementStars = function() {
+        stars++;
+        document.getElementById("stars").innerHTML = stars;
     };
 
     this.getDamage = function() {

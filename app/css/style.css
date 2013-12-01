@@ -68,30 +68,18 @@ h3 {
 }
 
 /* HUD */
-#scoretext {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 50px;
-    margin: 5px;
-    font-weight: 100;
-    color: rgba(255,255,255,0.3);
-}
-#score {
-    font-weight: normal;
-    color: #fff;
+
+.statsContainer {
+  position: absolute;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+  font-size: 25px;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-#risktext {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    text-align: left;
-    font-size: 50px;
-    margin: 5px;
-}
-#risk {
+.stat {
+  padding: 0 10px;
 }
 
 /*song title*/

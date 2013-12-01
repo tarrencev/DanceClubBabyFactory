@@ -13,8 +13,7 @@ var ProjectileGeneratorObject = function() {
     }
 
     function lpPulseHandler(event) {
-        var dataDiff = event.dataDiff * 100;
-
+        var dataDiff = event.dataDiff;
         fireProjectile(dataDiff);
     }
 
@@ -24,7 +23,7 @@ var ProjectileGeneratorObject = function() {
     }
 
     function noiseViolation(index) {
-        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition());
+        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 500, "rgba(255,0,0,0.2)");
         removeProjectile(index);
         gameObject.setDamage(5);
         blocked = 0;
@@ -43,10 +42,10 @@ var ProjectileGeneratorObject = function() {
     var count = 0;
     function fireProjectile(dataDiff) {
 
-        if (count === 5) {
+        if (count === 8) {
             var projectile = drawProjectile();
             var edgePos = calculateProjectileDirection(dataDiff);
-            createjs.Tween.get(projectile.getShape()).to(edgePos, 3000, createjs.Ease.linear);
+            createjs.Tween.get(projectile.getShape()).to(edgePos, 6000 + (500 * dataDiff), createjs.Ease.linear);
             count = 0;
         }
         count++;
@@ -65,6 +64,8 @@ var ProjectileGeneratorObject = function() {
     }
     
     function blockProjectile(index) {
+        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 25, "#ABF000");
+        gameObject.incrementStars();
         removeProjectile(index);
         blocked++;
     }
