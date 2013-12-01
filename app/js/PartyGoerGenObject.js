@@ -146,7 +146,7 @@ var PartyGoerGenObject = function() {
         
         var num = 0;
         for (var i in dealers) {
-            if (getDistance(dealers[i], babyRepo) < gameObject.getDoor().getRadius()) {
+            if (getDistance(dealers[i], gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
                 num++;
             }
         }
@@ -157,7 +157,7 @@ var PartyGoerGenObject = function() {
         
         var num = 0;
         for (var i in teens) {
-            if (getDistance(teens[i], babyRepo) < gameObject.getDoor().getRadius()) {
+            if (getDistance(teens[i], gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
                 num++;
             }
         }
