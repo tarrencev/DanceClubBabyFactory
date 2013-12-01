@@ -94,9 +94,17 @@ var GameObject = function() {
         projectiles.tick();
         
         if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 30 === 0) {
-            goerGen.addPartyGoer();
+            if (Math.random() < 0.1 ) {
+                goerGen.addDrugDealer();
+            } else if (Math.random() < 1/9 ) {
+                goerGen.addUnderage();
+            } else {
+                goerGen.addPartyGoer();
+            }
             if (goerGen.size() > 2) {
                 babyRepo.addBaby();
+                if (goerGen.drugDealerSize && Math.random() < 0.3)
+                    babyRepo.addBaby();
             }
             goerGen.wander();
         }

@@ -18,7 +18,7 @@ var PartyGoerObject = function(type_) {
         goer.x = pos.x;
         goer.y = pos.y;
 
-        wanderOutside();
+        createjs.Tween.get(goer).to(gameObject.getBabyRepo().getPosition(), 5000, createjs.Ease.linear);
     }
 
     function drawGoer() {
@@ -54,52 +54,6 @@ var PartyGoerObject = function(type_) {
         stage.addChild(goer);
     }
 
-    function distance(a, b_obj) {
-      var b = b_obj.getPosition();
-
-      return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-    }
-
-    function moveWithMusic() {
-        var dist = distance(goer, gameObject.getBabyRepo());
-        console.log(dist);
-        createjs.Tween.get(goer).to(getRandomPosInParty(), dist, createjs.Ease.linear);
-    }
-
-    function wanderOutside() {
-        var babyRepo = gameObject.getBabyRepo();
-        var dist = distance(goer, babyRepo);
-        if (Math.random() < gameObject.getDoor().getRadius() / dist) {
-            createjs.Tween.get(goer).to(getRandomPosInParty(), dist, createjs.Ease.linear);
-        } else {
-            var destination = getRandomPosOutside();
-            createjs.Tween.get(goer).to(destination, destination, createjs.Ease.linear);
-        }
-    }
-
-    function getRandomPosInParty() {
-        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
-        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
-        var doorRadius = gameObject.getDoor().getRadius();
-        var radiusDiff = doorRadius - babyRepoRadius - 2 * radius;
-
-        return {
-            x: babyRepoPosition.x + getRandomSign * (babyRepoRadius + Math.random() * radiusDiff),
-            y: babyRepoPosition.y + getRandomSign * (babyRepoRadius + Math.random() * radiusDiff),
-        };
-    }
-
-    function getRandomPosOutside() {
-        var babyRepoPosition = gameObject.getBabyRepo().getPosition();
-        var babyRepoRadius = gameObject.getBabyRepo().getRadius();
-        var doorRadius = gameObject.getDoor().getRadius();
-
-        return {
-            x: babyRepoPosition.x + getRandomSign * (doorRadius + Math.random() * (CONSTANTS.WIDTH - doorRadius)),
-            y: babyRepoPosition.y + getRandomSign * (doorRadius + Math.random() * (CONSTANTS.HEIGHT - doorRadius)),
-        };
-    }
-
     //public funs
     this.setPosition = function(position) {
         goer.x = position.x;
@@ -119,14 +73,6 @@ var PartyGoerObject = function(type_) {
 
     this.getShape = function() {
         return goer;
-    };
-
-    this.wanderInParty = function() {
-        moveWithMusic();
-    };
-
-    this.wanderAround = function() {
-        wanderOutside();
     };
 
     init();
