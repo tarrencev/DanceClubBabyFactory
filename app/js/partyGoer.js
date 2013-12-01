@@ -4,6 +4,7 @@ var PartyGoerObject = function(type_) {
     var type = type_;
     var radius = 8;
     var goer;
+    var beenToParty = false;
 
     //private funcs
     function init() {
@@ -73,6 +74,14 @@ var PartyGoerObject = function(type_) {
 
     this.getShape = function() {
         return goer;
+    };
+
+    this.checkHasBeenToParty = function() {
+        return beenToParty;
+    };
+
+    this.hasBeenToParty = function() {
+        beenToParty = true;
     };
 
     init();

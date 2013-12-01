@@ -6,6 +6,7 @@ var GameObject = function() {
         door,
         babyRepo,
         goerGen,
+        partyLimit = 25,
         projectiles,
         damage,
         highScore,
@@ -90,27 +91,33 @@ var GameObject = function() {
         goerGen.tick();
         projectiles.tick();
         
-        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 30 === 0) {
-            if (Math.random() < 0.1 ) {
-                goerGen.addDrugDealer();
-            } else if (Math.random() < 1/9 ) {
-                goerGen.addUnderage();
-            } else {
-                goerGen.addPartyGoer();
+        if (audioPlayer.isPlaying()) {
+            var t = 35 - goerGen.underageSize();
+            if (createjs.Ticker.getTicks() % t === 0) {
+                if (Math.random() < 0.05 ) {
+                    goerGen.addDrugDealer();
+                } else if (Math.random() < 1/19 ) {
+                    goerGen.addUnderage();
+                } else {
+                    goerGen.addPartyGoer();
+                }
             }
-            if (goerGen.size() > 2) {
-                babyRepo.addBaby();
-                if (goerGen.drugDealerSize && Math.random() < 0.3)
+            if (createjs.Ticker.getTicks() % 50 === 0) {
+                if (goerGen.size() > 2) {
                     babyRepo.addBaby();
+                    if (goerGen.drugDealerSize() && goerGen.drugDealerSize() * Math.random() < 1)
+                        babyRepo.addBaby();
+                }
             }
-            goerGen.wander();
-        }
-        // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
-        if (!audioPlayer.isPlaying()) {
+            if (createjs.Ticker.getTicks() % 100 === 0) {
+                goerGen.wander();
+            }
+        } else {
             damage = 0; // TEMP REMOVE ME only reset damage on new game
             background.drawDamage(damage);
         }
-                 
+
+        // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
         //document.getElementById("debug").innerHTML = "High Score: " + highScore + " babies";       
         //document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
         //highScore = Math.max(babyRepo.getNumBabies(), highScore);
@@ -185,6 +192,10 @@ var GameObject = function() {
 
     this.getGoerGen = function() {
         return goerGen.getGoer();
+    };
+
+    this.getPartyLimit = function() {
+        return partyLimit;
     };
 
     this.setDamage = function(damagePts, absolute) {
