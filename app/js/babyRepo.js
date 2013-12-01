@@ -31,6 +31,8 @@ var BabyRepoObject = function() {
             baby.setPosition(getRandomPos(baby));
         }
         babies.push(baby);
+        gameObject.updateScore(babies.length);
+        //alert(this.getNumBabies());
     }
 
     function checkForCollisions(baby_) {

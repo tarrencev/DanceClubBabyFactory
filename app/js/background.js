@@ -13,14 +13,22 @@ var BackgroundObject = function(){
 
     function drawBaseBackground() {
         baseBackground = new createjs.Shape();
+        var position = {
+            x: CONSTANTS.WIDTH/2,
+            y: CONSTANTS.HEIGHT/2
+        };
+        baseBackground.x = position.x;
+        baseBackground.y = position.y;
+        
+        var radius = Math.max(CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         baseBackground.graphics
-            .beginFill('#000')
-            .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+                      .beginFill('#000')
+                      .drawCircle(0, 0, radius, radius);
         stage.addChild(baseBackground);
     }
 
     function drawFlare() {
-        console.log('flate');
+        //console.log('flare');
         var position = {
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2
@@ -58,13 +66,12 @@ var BackgroundObject = function(){
         // .getHSL((i/CIRCLES*HUE_VARIANCE+circleHue)%360, 100, 50);
     };
     
-    this.applyTintToBase = function(alpha) { // TEMPORARY SOLUTION REMOVE ME; should have better way to denote health
-        /*baseBackground.graphics
-            .beginFill('#000')
-            .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+    this.drawDamage = function(damage) {
+        baseBackground.graphics.clear();
+        var radius = Math.max(CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         baseBackground.graphics
-            .beginFill('rgba(255,255,255,'+alpha+')')
-            .drawRect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);*/
+                      .beginRadialGradientFill(['rgba(0,0,0,1)', 'rgba(255,0,0,1)'], [0, 1], 0,0,0,0,0,radius*100/(damage+1))
+                      .drawCircle(0, 0, radius*100/(damage+1), radius*100/(damage+1));
     };
 
     init();
