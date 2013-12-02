@@ -2,6 +2,7 @@ var ProjectileGeneratorObject = function() {
     //private vars
     //declare private vars here
     var projectiles = new createjs.Container();
+    var powerUps = new createjs.Container();
     var projectileAngle = 0;
     var projectileTarget = { x: -15, y: 0};
     var blocked = 0;
@@ -9,7 +10,8 @@ var ProjectileGeneratorObject = function() {
     //private funcs
     function init() {
         
-        document.addEventListener("lpPulse", lpPulseHandler,false);
+        document.addEventListener("lpPulse", lpPulseHandler, false);
+        document.addEventListener("oneKey", firePowerUp, false);
     }
 
     function lpPulseHandler(event) {
@@ -20,6 +22,11 @@ var ProjectileGeneratorObject = function() {
     function removeProjectile(index) {
         stage.removeChild(projectiles.getChildAt(index).getShape());
         projectiles.removeChildAt(index);
+    }
+
+    function removePowerUp(index) {
+        stage.removeChild(powerUps.getChildAt(index).getShape());
+        powerUps.removeChildAt(index);
     }
 
     function noiseViolation(index) {
@@ -39,16 +46,34 @@ var ProjectileGeneratorObject = function() {
         return projectile;
     }
 
+    function drawPowerUp() {
+        var powerUp = new PowerUpObject();
+        powerUps.addChild(powerUp);
+        
+        return powerUp;
+    }
+
     var count = 0;
     function fireProjectile(dataDiff) {
-
-        if (count === 8) {
+        if (800 < count && count <= 900) {
             var projectile = drawProjectile();
             var edgePos = calculateProjectileDirection(dataDiff);
-            createjs.Tween.get(projectile.getShape()).to(edgePos, 6000 + (500 * dataDiff), createjs.Ease.linear);
+            createjs.Tween.get(projectile.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
             count = 0;
         }
-        count++;
+        count += parseInt(volumeModifier, 10);
+    }
+
+    function firePowerUp() {
+        console.log('fire powerup');
+        var stars = gameObject.getNumStars();
+        if(stars >= 50) {
+            var dataDiff = 1;
+            var powerUp = drawPowerUp();
+            var edgePos = calculateProjectileDirection(dataDiff);
+            createjs.Tween.get(powerUp.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
+            gameObject.setNumStars(stars - 50);
+        }
     }
 
     function calculateProjectileDirection(dataDiff) {
@@ -70,6 +95,16 @@ var ProjectileGeneratorObject = function() {
         blocked++;
     }
 
+    function gotPowerUp(index) {
+        var juice = new JuicySplosion(powerUps.getChildAt(index).getPosition(), 50, "#FF00FF");
+        speedModifier = 0.5;
+        gameObject.incrementStars();
+        removePowerUp(index);
+        setTimeout(function() {
+            speedModifier = 1;
+        }, 10000);
+    }
+
     //public funcs
     // NOT USED?
     this.addProjectile = function() {
@@ -87,12 +122,23 @@ var ProjectileGeneratorObject = function() {
             var projectile = projectiles.getChildAt(i).getShape();
             if (projectile.x < 0 || projectile.y < 0 || projectile.x > CONSTANTS.WIDTH || projectile.y > CONSTANTS.HEIGHT) {
                 noiseViolation(i);
-                continue;
             }
             
             var projPosition = projectiles.getChildAt(i).getPositionFromCenter();
             if (gameObject.getDoor().detectCollision(projPosition.x, projPosition.y)) {
                 blockProjectile(i);
+            }
+        }
+
+        for (i = 0; i < powerUps.getNumChildren(); i++) {
+            var powerUp = powerUps.getChildAt(i).getShape();
+            if (powerUp.x < 0 || powerUp.y < 0 || powerUp.x > CONSTANTS.WIDTH || powerUp.y > CONSTANTS.HEIGHT) {
+                removePowerUp(i);
+            }
+            
+            var powerUpPosition = powerUps.getChildAt(i).getPositionFromCenter();
+            if (gameObject.getDoor().detectCollision(powerUpPosition.x, powerUpPosition.y)) {
+                gotPowerUp(i);
             }
         }
 
