@@ -73,7 +73,7 @@ var ProjectileGeneratorObject = function() {
     function firePowerUp() {
         console.log('fire powerup');
         var stars = gameObject.getNumStars();
-        if(stars >= 50) {
+        if(stars >= 25) {
             var dataDiff = 1;
             var powerUp = drawPowerUp();
             var edgePos = calculateProjectileDirection(dataDiff);

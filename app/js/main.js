@@ -10,8 +10,10 @@ var GameObject = function() {
         projectiles,
         damage,
         highScore,
+        hud,
         stars = 0; //TEMP REMOVE ME variable
-    
+
+    var slowMoShown = false;
 
     //private funcs
     function init() {
@@ -40,10 +42,16 @@ var GameObject = function() {
         background = new BackgroundObject();
 
         title = new TitleObject(game);
+        document.addEventListener("oneKey", removePowerUp, false);
     }
 
     function title_tick() {
       stage.update();
+    }
+
+    function removePowerUp(event) {
+        slowMoShown = false;
+        hud.removePowerUp('slowmo');
     }
 
     function game() {
@@ -53,6 +61,9 @@ var GameObject = function() {
         createjs.Ticker.removeEventListener('tick', title_tick);
         createjs.Ticker.addEventListener('tick', tick);
         createjs.Ticker.setFPS(30);
+
+        //init hud
+        hud = new HudObject();
 
         //init audio player
         audioPlayer = new AudioPlayerObject();
@@ -109,6 +120,11 @@ var GameObject = function() {
             if (createjs.Ticker.getTicks() % 100 === 0) {
                 goerGen.wander();
             }
+        }
+
+        if(stars === 25 && !slowMoShown) {
+            slowMoShown = true;
+            hud.addPowerUp('slowmo');
         }
     }
 
