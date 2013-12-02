@@ -105,8 +105,10 @@ var ProjectileGeneratorObject = function() {
         speedModifier = 0.5;
         gameObject.incrementStars();
         removePowerUp(index);
+        document.LOLaudio.playbackRate.value = 0.5;
         setTimeout(function() {
             speedModifier = 1;
+            document.LOLaudio.playbackRate.value = 1;
         }, 10000);
     }
 
