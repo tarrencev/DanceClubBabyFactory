@@ -8,7 +8,7 @@ var PartyGoerObject = function(type_) {
     this.init();
 };
 
-    //private funcs
+//private funcs
 PartyGoerObject.prototype.init = function() {
     if (this.type === "DrugDealer")
         this.drawDrugDealer();
@@ -20,8 +20,6 @@ PartyGoerObject.prototype.init = function() {
     var pos = getRandomEdgePos(this.goer);
     this.goer.x = pos.x;
     this.goer.y = pos.y;
-
-    createjs.Tween.get(this.goer).to(gameObject.getBabyRepo().getPosition(), 5000, createjs.Ease.linear);
 };
 
 PartyGoerObject.prototype.drawGoer = function() {

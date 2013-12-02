@@ -103,7 +103,7 @@ var GameObject = function() {
             audioPlayer.tick();
             goerGen.tick();
         
-            var t = 35 - goerGen.underageSize();
+            var t = 35 - goerGen.underageInPartySize();
             if (createjs.Ticker.getTicks() % t === 0) {
                 if (Math.random() < 0.05 ) {
                     goerGen.addDrugDealer();
@@ -114,9 +114,9 @@ var GameObject = function() {
                 }
             }
             if (createjs.Ticker.getTicks() % 50 === 0) {
-                if (goerGen.size() > 2) {
+                if (goerGen.partySize() > 2) {
                     babyRepo.addBaby();
-                    if (goerGen.drugDealerSize() && goerGen.drugDealerSize() * Math.random() < 1)
+                    if (goerGen.drugDealerInPartySize() && goerGen.drugDealerInPartySize() * Math.random() < 1)
                         babyRepo.addBaby();
                 }
             }
