@@ -44,7 +44,7 @@ var ProjectileGeneratorObject = function() {
         var offsetPosition = {
             x: CONSTANTS.WIDTH/2+gameObject.getBabyRepo().getRadius()*Math.cos(projectileAngle), 
             y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
-        }
+        };
         projectile.setPosition(offsetPosition);
         projectiles.addChild(projectile);
         
@@ -60,22 +60,13 @@ var ProjectileGeneratorObject = function() {
 
     var count = 0;
     function fireProjectile(dataDiff) {
-        if (dataDiff > 0.5) {
-            count += dataDiff;
-            if (count > 3) {
-                var projectile = drawProjectile();
-                var edgePos = calculateProjectileDirection(dataDiff);
-                createjs.Tween.get(projectile.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
-                count = 0;
-            }
-        }
-        /*if (800 < count && count <= 900) {
+        if (800 < count && count <= 900) {
             var projectile = drawProjectile();
             var edgePos = calculateProjectileDirection(dataDiff);
             createjs.Tween.get(projectile.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
             count = 0;
         }
-        count += parseInt(volumeModifier, 10);*/
+        count += parseInt(volumeModifier, 10);
     }
 
     function firePowerUp() {
@@ -92,7 +83,7 @@ var ProjectileGeneratorObject = function() {
 
     function calculateProjectileDirection(dataDiff) {
 
-        projectileAngle = projectileAngle + Math.PI/8 * dataDiff/10;
+        projectileAngle = projectileAngle + Math.PI/8 * dataDiff;
 
         var newPosition = {
             x: window.innerWidth/2 + 2 * window.innerHeight * Math.cos(projectileAngle),
