@@ -10,7 +10,10 @@ var GameObject = function() {
         projectiles,
         damage,
         highScore,
+        hud,
         stars = 0; //TEMP REMOVE ME variable
+
+    var slowMoShown = false;
     
     var sticky = true;
 
@@ -41,10 +44,16 @@ var GameObject = function() {
         background = new BackgroundObject();
 
         title = new TitleObject(game);
+        document.addEventListener("oneKey", removePowerUp, false);
     }
 
     function title_tick() {
       stage.update();
+    }
+
+    function removePowerUp(event) {
+        slowMoShown = false;
+        hud.removePowerUp('slowmo');
     }
 
     function game() {
@@ -54,6 +63,9 @@ var GameObject = function() {
         createjs.Ticker.removeEventListener('tick', title_tick);
         createjs.Ticker.addEventListener('tick', tick);
         createjs.Ticker.setFPS(30);
+
+        //init hud
+        hud = new HudObject();
 
         //init audio player
         audioPlayer = new AudioPlayerObject();
@@ -115,6 +127,11 @@ var GameObject = function() {
         } else {
             damage = 0; // TEMP REMOVE ME only reset damage on new game
             background.drawDamage(damage);
+        }
+
+        if(stars === 25 && !slowMoShown) {
+            slowMoShown = true;
+            hud.addPowerUp('slowmo');
         }
 
         // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
