@@ -9,7 +9,7 @@ var GameObject = function() {
         partyLimit = 25,
         projectiles,
         damage,
-        highScore,
+        highScore = 0,
         hud,
         stars = 0; //TEMP REMOVE ME variable
         
@@ -91,6 +91,7 @@ var GameObject = function() {
         stage.addEventListener("click", mouseClickHandler);
         document.addEventListener("violation", violationHandler, false);
         document.addEventListener("blocked", blockedHandler, false);
+        document.addEventListener("birth", birthHandler, false);
     }
 
     //same as perform_logic() in zenilib
@@ -124,7 +125,7 @@ var GameObject = function() {
             }
         }
 
-        if(stars === 25 && !slowMoShown) {
+        if(stars > 25 && !slowMoShown) {
             slowMoShown = true;
             hud.addPowerUp('slowmo');
         }
@@ -175,6 +176,7 @@ var GameObject = function() {
         } else {
             damage = damagePts;
         }
+        damage = Math.min(100, damage);
         document.getElementById("risk").innerHTML = damage;
         background.drawDamage(damage);
     }
@@ -188,13 +190,15 @@ var GameObject = function() {
         instance.setNumStars(parseInt(instance.getNumStars()/2, 10));
         if (getDamage() >= 100) {
             audioPlayer.stopPlayback();
-            instance.setNumStars(0); // reset stars here for now (cannot do it in public func)
-            highScore = Math.max(highScore, score);
         }
     }
     
     function blockedHandler(event) {
         instance.incrementStars();
+    }
+    
+    function birthHandler(event) {
+        instance.updateScore(babyRepo.getNumBabies());
     }
 
     //public funcs
@@ -232,6 +236,8 @@ var GameObject = function() {
     
     this.updateScore = function(score) {
         document.getElementById("score").innerHTML = score;
+        highScore = Math.max(highScore, score);
+        document.getElementById("highScore").innerHTML = highScore;
     };
 
     this.incrementStars = function() {
@@ -250,6 +256,7 @@ var GameObject = function() {
     
     this.resetGame = function() {
         setDamage(0, true);
+        this.setNumStars(0);
         this.updateScore(0);
         babyRepo.reset();
         projectiles.reset();

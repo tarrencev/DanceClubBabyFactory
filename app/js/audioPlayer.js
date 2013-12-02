@@ -134,10 +134,13 @@ var AudioPlayerObject = function(){
     };
     
     this.stopPlayback = function() {
-        sound.stop();
-        playing = false;
-        stopped = true;
-        playButton.children().removeClass('glyphicon-play').addClass('glyphicon-stop');
+        if (!stopped) {
+            createjs.Sound.play("Rewind");
+            sound.stop();
+            playing = false;
+            stopped = true;
+            playButton.children().removeClass('glyphicon-play').addClass('glyphicon-stop');
+        }
     };
     
     // this.playPause = function() {

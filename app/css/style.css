@@ -70,16 +70,45 @@ h3 {
 /* HUD */
 
 .statsContainer {
-  position: absolute;
-  top: 5px;
   width: 100%;
-  text-align: center;
-  font-size: 25px;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.statsContainer span {
+  padding: 5px 10px;
 }
 
 .stat {
-  padding: 0 10px;
+  font-size: 48px;
+}
+
+#scoreText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#riskText {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: left;
+  color: rgba(255, 0, 0, 0.8);
+}
+
+#starsText {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  color: rgba(255, 255, 0, 0.8);
+}
+
+#highScore {
+  font-size: 24px;
 }
 
 /*song title*/

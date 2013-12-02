@@ -1,6 +1,7 @@
 var PowerUpHudObject = function(){
     this.titleColor = "#FF00FF";
     this.font = "Arial";
+    this.top = 100;
 };
 
 PowerUpHudObject.prototype.drawSlowMotion = function() {
@@ -15,7 +16,7 @@ PowerUpHudObject.prototype.drawPowerUpTitle = function(text) {
                               this.titleColor);
     this.title.alpha = 0.2;
     this.title.x = CONSTANTS.WIDTH - 150;
-    this.title.y = 40;
+    this.title.y = this.top+40;
     this.title.textBaseline = "alphabetic";
 };
 
@@ -25,10 +26,10 @@ PowerUpHudObject.prototype.drawPowerUpCost = function(cost) {
                               "#FFFFFF");
     this.subtext.alpha = 0.2;
     this.subtext.x = CONSTANTS.WIDTH - 100;
-    this.subtext.y = 65;
+    this.subtext.y = this.top+65;
     this.subtext.textBaseline = "alphabetic";
     this.star = new ProjectileObject();
-    this.star.setPosition({x: CONSTANTS.WIDTH - 120, y: 60});
+    this.star.setPosition({x: CONSTANTS.WIDTH - 120, y: this.top+60});
 };
 
 PowerUpHudObject.prototype.animateIn = function() {
