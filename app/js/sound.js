@@ -190,13 +190,16 @@ var SoundObject = function(track){
 
     function startPlayback() {
         playing = true;
-        if (soundInstance)
-            soundInstance.play();
-        else
+        if (soundInstance) {
+            if (!soundInstance.resume()) {
+                soundInstance.play();
+            }
+        } else {
             soundInstance = createjs.Sound.play(src);
+        }
     }
 
-    function stopPlayback() {
+    function pausePlayback() {
         playing = false;
         soundInstance.pause();
     }
@@ -250,10 +253,17 @@ var SoundObject = function(track){
 
     //public funs
     this.playPause = function() {
+        console.log("was playing"+playing);
         if (playing)
-            stopPlayback();
+            pausePlayback();
         else
             startPlayback();
+        console.log("now playing"+playing);
+    };
+    
+    this.stop = function() {
+        soundInstance.stop();
+        playing = false;
     };
 
     this.setVolume = function(value) {

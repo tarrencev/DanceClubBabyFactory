@@ -5,11 +5,16 @@ var ProjectileGeneratorObject = function() {
     var powerUps = new createjs.Container();
     var projectileAngle = 0;
     var projectileTarget = { x: -15, y: 0};
-    var blocked = 0;
+    var violationEvt;
+    var blockedEvt;
 
     //private funcs
     function init() {
-        
+        violationEvt = document.createEvent('Event');
+        violationEvt.initEvent('violation', true, true);
+        blockedEvt = document.createEvent('Event');
+        blockedEvt.initEvent('blocked', true, true);
+
         document.addEventListener("lpPulse", lpPulseHandler, false);
         document.addEventListener("oneKey", firePowerUp, false);
     }
@@ -32,11 +37,7 @@ var ProjectileGeneratorObject = function() {
     function noiseViolation(index) {
         var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 500, "rgba(255,0,0,0.2)");
         removeProjectile(index);
-        gameObject.setDamage(5);
-        blocked = 0;
-        if (gameObject.getDamage() > 100) {
-            gameObject.getAudioPlayer().playPause();
-        }
+        document.dispatchEvent(violationEvt);
     }
 
     function drawProjectile() {
@@ -95,9 +96,8 @@ var ProjectileGeneratorObject = function() {
     
     function blockProjectile(index) {
         var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 25, "#ABF000");
-        gameObject.incrementStars();
+        document.dispatchEvent(blockedEvt);
         removeProjectile(index);
-        blocked++;
     }
 
     function gotPowerUp(index) {
@@ -121,27 +121,43 @@ var ProjectileGeneratorObject = function() {
         fireProjectile(dataDiff);
     };
 
+    this.reset = function() {
+        for (var i = 0; i < projectiles.getNumChildren(); i++) {
+            stage.removeChild(projectiles.getChildAt(i).getShape());
+            projectiles.removeChildAt(i);
+        }
+        for (i = 0; i < powerUps.getNumChildren(); i++) {
+            stage.removeChild(powerUps.getChildAt(i).getShape());
+            powerUps.removeChildAt(i);
+        }
+    };
+
     this.tick = function() {
         // Checks for when to remove projectiles
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
+            // outside stage
             var projectile = projectiles.getChildAt(i).getShape();
             if (projectile.x < 0 || projectile.y < 0 || projectile.x > CONSTANTS.WIDTH || projectile.y > CONSTANTS.HEIGHT) {
                 noiseViolation(i);
                 continue;
             }
             
+            // blocked by door
             var projPosition = projectiles.getChildAt(i).getPositionFromCenter();
             if (gameObject.getDoor().detectCollision(projPosition.x, projPosition.y)) {
                 blockProjectile(i);
             }
         }
 
+        // Checks for when to remove powerups
         for (i = 0; i < powerUps.getNumChildren(); i++) {
+            // outside stage
             var powerUp = powerUps.getChildAt(i).getShape();
             if (powerUp.x < 0 || powerUp.y < 0 || powerUp.x > CONSTANTS.WIDTH || powerUp.y > CONSTANTS.HEIGHT) {
                 removePowerUp(i);
             }
             
+            // blocked by door
             var powerUpPosition = powerUps.getChildAt(i).getPositionFromCenter();
             if (gameObject.getDoor().detectCollision(powerUpPosition.x, powerUpPosition.y)) {
                 gotPowerUp(i);

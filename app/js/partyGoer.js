@@ -84,5 +84,9 @@ var PartyGoerObject = function(type_) {
         beenToParty = true;
     };
 
+    this.removeFromStage = function() {
+        stage.removeChild(goer);
+    };
+
     init();
 };

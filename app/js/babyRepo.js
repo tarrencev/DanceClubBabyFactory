@@ -71,5 +71,12 @@ var BabyRepoObject = function() {
         return babies.length;
     };
 
+    this.reset = function() {
+        for (var i in babies) {
+            stage.removeChild(babies[i].baby);
+        }
+        babies = [];
+    };
+
     init();
 };

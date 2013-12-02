@@ -28,6 +28,7 @@ $(document).keydown(function(e) {
 	} else if (e.keyCode === 40) {
 		document.dispatchEvent(downKey);
 	} else if (e.keyCode === 32) {
+		e.preventDefault(); // Prevents activating button twice
 		document.dispatchEvent(spaceKey);
 	} else if (e.keyCode === 49) {
 		// console.log('one');

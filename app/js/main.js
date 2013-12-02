@@ -12,7 +12,6 @@ var GameObject = function() {
         highScore,
         stars = 0; //TEMP REMOVE ME variable
     
-    var sticky = true;
 
     //private funcs
     function init() {
@@ -75,23 +74,21 @@ var GameObject = function() {
 
         damage = 0;
         
-        if (sticky) {
-            stage.enableMouseOver(50);
-            document.addEventListener("mousemove", mouseMoveHandler);
-        } else {
-            stage.addEventListener("pressmove", mousePressMoveHandler);
-        }
+        document.addEventListener("mousemove", mouseMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
+        document.addEventListener("violation", violationHandler, false);
+        document.addEventListener("blocked", blockedHandler, false);
     }
 
     //same as perform_logic() in zenilib
     function tick() {
-        audioPlayer.tick();
         stage.update();
-        goerGen.tick();
         projectiles.tick();
-        
+    
         if (audioPlayer.isPlaying()) {
+            audioPlayer.tick();
+            goerGen.tick();
+        
             var t = 35 - goerGen.underageSize();
             if (createjs.Ticker.getTicks() % t === 0) {
                 if (Math.random() < 0.05 ) {
@@ -112,16 +109,7 @@ var GameObject = function() {
             if (createjs.Ticker.getTicks() % 100 === 0) {
                 goerGen.wander();
             }
-        } else {
-            damage = 0; // TEMP REMOVE ME only reset damage on new game
-            background.drawDamage(damage);
         }
-
-        // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
-        //document.getElementById("debug").innerHTML = "High Score: " + highScore + " babies";       
-        //document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
-        //highScore = Math.max(babyRepo.getNumBabies(), highScore);
-        //document.getElementById("debug").innerHTML += "<br/>Complaint risk: " + Math.min(damage, 100) + "%"; // TEMP REMOVE ME temporary display for damage
     }
 
     function onResize() {
@@ -151,18 +139,58 @@ var GameObject = function() {
     }
 
     function mouseMoveHandler(event) {
-        createjsEvent = {stageX: event.clientX,
-                         stageY: event.clientY};
-        door.moveDoor(createjsEvent);
+        door.moveDoor(event);
     }
 
     function mousePressMoveHandler(event) {
         console.log('press move');
-        door.moveDoor(event);
+        //door.moveDoor(event);
     }
 
     function mouseClickHandler(event) {
         console.log('click');
+    }
+
+    function incrementStars() {
+        stars++;
+        document.getElementById("stars").innerHTML = stars;
+    }
+
+    function getNumStars() {
+        return stars;
+    }
+
+    function setNumStars(value) {
+        stars = value;
+        document.getElementById("stars").innerHTML = stars;
+    }
+
+    function setDamage(damagePts, absolute) {
+        if (absolute === undefined) { // Additive damage
+            damage += damagePts;
+        } else {
+            damage = damagePts;
+        }
+        document.getElementById("risk").innerHTML = damage;
+        background.drawDamage(damage);
+    }
+
+    function getDamage() {
+        return damage;
+    }
+    
+    function violationHandler(event) {
+        setDamage(5);
+        setNumStars(parseInt(getNumStars()/2, 10));
+        if (getDamage() >= 100) {
+            audioPlayer.stopPlayback();
+            setNumStars(0); // reset stars here for now (cannot do it in public func)
+            highScore = Math.max(highScore, score);
+        }
+    }
+    
+    function blockedHandler(event) {
+        incrementStars();
     }
 
     //public funcs
@@ -197,36 +225,17 @@ var GameObject = function() {
     this.getPartyLimit = function() {
         return partyLimit;
     };
-
-    this.setDamage = function(damagePts, absolute) {
-        if (absolute === undefined) { // Additive damage
-            damage += damagePts;
-        } else {
-            damage = damagePts;
-        }
-        document.getElementById("risk").innerHTML = damage;
-        this.getBackground().drawDamage(damage);
-    };
-
-    this.incrementStars = function() {
-        stars++;
-        document.getElementById("stars").innerHTML = stars;
-    };
-
-    this.getNumStars = function() {
-        return stars;
-    };
-
-    this.setNumStars = function(value) {
-        stars = value;
-    };
-
-    this.getDamage = function() {
-        return damage;
-    };
     
     this.updateScore = function(score) {
         document.getElementById("score").innerHTML = score;
+    };
+    
+    this.resetGame = function() {
+        setDamage(0, true);
+        this.updateScore(0);
+        babyRepo.reset();
+        projectiles.reset();
+        goerGen.reset();
     };
 };
 

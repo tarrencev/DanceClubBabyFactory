@@ -164,4 +164,19 @@ var PartyGoerGenObject = function() {
         }
         return num;
     };
+    
+    this.reset = function() {
+        for (var i in people) {
+            people[i].removeFromStage();
+        }
+        for (i in dealers) {
+            people[i].removeFromStage();
+        }
+        for (i in teens) {
+            people[i].removeFromStage();
+        }
+        people = [];
+        dealers = [];
+        teens = [];
+    };
 };

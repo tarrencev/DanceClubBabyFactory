@@ -5,6 +5,7 @@ var AudioPlayerObject = function(){
         playButton,
         settingsButton,
         audioControlsOpen = false,
+        stopped = true,
         playing = false;
 
     var track = {
@@ -45,8 +46,12 @@ var AudioPlayerObject = function(){
             playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
         } else {
             playing = true;
-            playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
+            playButton.children().removeClass('glyphicon-stop').removeClass('glyphicon-play').addClass('glyphicon-pause');
         }
+        if (stopped) {
+            gameObject.resetGame();
+        }
+        stopped = false;
     }
 
     function switchHandler(event) {
@@ -126,6 +131,13 @@ var AudioPlayerObject = function(){
     
     this.isPlaying = function() {
         return playing;
+    };
+    
+    this.stopPlayback = function() {
+        sound.stop();
+        playing = false;
+        stopped = true;
+        playButton.children().removeClass('glyphicon-play').addClass('glyphicon-stop');
     };
     
     // this.playPause = function() {
