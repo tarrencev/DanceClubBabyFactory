@@ -12,6 +12,9 @@ var PartyGoerGenObject = function() {
             goer.setPosition(getRandomEdgePos(goer));
         }
         people.push(goer);
+        var pos = getRandomPosOutside();
+        //console.log(getDistance(goer.getPosition(), pos));
+        createjs.Tween.get(goer.getShape()).to(pos, 5000, createjs.Ease.linear);
     }
 
     function drawDrugDealer() {
@@ -21,6 +24,8 @@ var PartyGoerGenObject = function() {
         }
         people.push(goer);
         dealers.push(goer);
+        var pos = getRandomPosOutside();
+        createjs.Tween.get(goer.getShape()).to(pos, 5000, createjs.Ease.linear);
     }
 
     function drawUnderage() {
@@ -30,6 +35,8 @@ var PartyGoerGenObject = function() {
         }
         people.push(goer);
         teens.push(goer);
+        var pos = getRandomPosOutside();
+        createjs.Tween.get(goer.getShape()).to(pos, 5000, createjs.Ease.linear);
     }
 
     function checkForCollisions(goer_) {
@@ -51,13 +58,13 @@ var PartyGoerGenObject = function() {
             var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
             if (distance < babyRepoRadius + people[i].getRadius() + offset) {
                 createjs.Tween.removeTweens(people[i].getShape());
-                createjs.Tween.get(people[i].getShape()).to(getRandomPosInParty(), 10 * distance, createjs.Ease.linear);
+                createjs.Tween.get(people[i].getShape()).to(getRandomPosInParty(), 100 * distance, createjs.Ease.linear);
             }
         }
     }
 
     function moveAll() {
-        var babyRepo = gameObject.getBabyRepo();
+        /*var babyRepo = gameObject.getBabyRepo();
         var babyRepoPosition = babyRepo.getPosition();
         var babyRepoRadius = babyRepo.getRadius();
         var doorRadius = gameObject.getDoor().getRadius();
@@ -85,10 +92,20 @@ var PartyGoerGenObject = function() {
             }
         }
         
-        // Are you sure this comparison is correct?
-        for (var j = 0; people.length > gameObject.getPartyLimit(); j++) {
+        var overflow = getPartySize() - gameObject.getPartyLimit();
+        for (var j = 0; j < overflow; j++) {
             createjs.Tween.get(people[j].getShape()).to(getRandomPosOutside(), 10 * getDistance(people[j], babyRepo), createjs.Ease.linear);
+        }*/
+    }
+
+    function getPartySize() {
+        var num = 0;
+        for (var i in people) {
+            if (getDistance(people[i], gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
+                num++;
+            }
         }
+        return num;
     }
 
     function getRandomPosInParty() {
@@ -98,8 +115,8 @@ var PartyGoerGenObject = function() {
         var radiusDiff = doorRadius - babyRepoRadius - 10;
 
         return {
-            x: babyRepoPosition.x + getRandomSign * (babyRepoRadius + Math.random() * radiusDiff),
-            y: babyRepoPosition.y + getRandomSign * (babyRepoRadius + Math.random() * radiusDiff),
+            x: babyRepoPosition.x + getRandomSign() * (babyRepoRadius + Math.random() * radiusDiff),
+            y: babyRepoPosition.y + getRandomSign() * (babyRepoRadius + Math.random() * radiusDiff)
         };
     }
 
@@ -109,8 +126,8 @@ var PartyGoerGenObject = function() {
         var doorRadius = gameObject.getDoor().getRadius();
 
         return {
-            x: babyRepoPosition.x + getRandomSign * (doorRadius + Math.random() * (CONSTANTS.WIDTH - doorRadius)),
-            y: babyRepoPosition.y + getRandomSign * (doorRadius + Math.random() * (CONSTANTS.HEIGHT - doorRadius)),
+            x: babyRepoPosition.x + getRandomSign() * (doorRadius + Math.random() * (CONSTANTS.WIDTH - doorRadius)),
+            y: babyRepoPosition.y + getRandomSign() * (doorRadius + Math.random() * (CONSTANTS.HEIGHT - doorRadius))
         };
     }
 
@@ -143,7 +160,15 @@ var PartyGoerGenObject = function() {
         return people.length;
     };
 
+    this.partySize = function() {
+        return getPartySize();
+    };
+
     this.drugDealerSize = function() {
+        return dealers.length;
+    };    
+
+    this.drugDealerInPartySize = function() {
         
         var num = 0;
         for (var i in dealers) {
@@ -155,6 +180,10 @@ var PartyGoerGenObject = function() {
     };
 
     this.underageSize = function() {
+        return teens.length;
+    };
+
+    this.underageInPartySize = function() {
         
         var num = 0;
         for (var i in teens) {
