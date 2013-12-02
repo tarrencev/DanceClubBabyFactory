@@ -84,7 +84,8 @@ var PartyGoerGenObject = function() {
                 }
             }
         }
-
+        
+        // Are you sure this comparison is correct?
         for (var j = 0; people.length > gameObject.getPartyLimit(); j++) {
             createjs.Tween.get(people[j].getShape()).to(getRandomPosOutside(), 10 * getDistance(people[j], babyRepo), createjs.Ease.linear);
         }

@@ -8,7 +8,7 @@ var BackgroundObject = function(){
     function init() {
         drawBaseBackground();
         drawFlare();
-        // document.addEventListener("lpPulse", lpPulseHandler,false);
+        document.addEventListener("lpPulse", lpPulseHandler,false);
     }
 
     function drawBaseBackground() {
@@ -60,7 +60,7 @@ var BackgroundObject = function(){
     //public funcs
     function setFlareChangeInRadius(radiusDiff) {
         flareRadius = radiusDiff;
-        console.log(flareRadius);
+        //console.log(flareRadius);
         flare.scaleX = flareRadius;
         flare.scaleY = flareRadius;
     }

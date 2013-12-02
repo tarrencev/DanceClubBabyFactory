@@ -8,9 +8,9 @@ var AudioPlayerObject = function(){
         playing = false;
 
     var track = {
-        artist: 'Ratatat',
-        title: 'Loud Pipes',
-        src: '06 Loud Pipes.m4a',
+        artist: 'Flight Facilities',
+        title: 'Crave You (Adventure Club Dubstep Remix)',
+        src: 'Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3',
         cover: 'Ratatat-Classics.png'
     };
 
