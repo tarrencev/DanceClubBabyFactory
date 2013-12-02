@@ -168,5 +168,9 @@ var ProjectileGeneratorObject = function() {
 
     };
 
+    this.getProjectiles = function() {
+        return projectiles;
+    };
+
     init();
 };

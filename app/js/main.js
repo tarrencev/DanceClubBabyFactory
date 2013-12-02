@@ -7,6 +7,7 @@ var GameObject = function() {
         babyRepo,
         goerGen,
         partyLimit = 25,
+        copGen,
         projectiles,
         damage,
         highScore = 0,
@@ -85,6 +86,9 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
+        //init the fuzz
+        copGen = new CopGenObject();
+
         damage = 0;
         
         document.addEventListener("mousemove", mouseMoveHandler);
@@ -98,6 +102,11 @@ var GameObject = function() {
     function tick() {
         stage.update();
         projectiles.tick();
+        copGen.tick();
+
+        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
+            copGen.addCop();
+        }
     
         if (audioPlayer.isPlaying()) {
             audioPlayer.tick();
@@ -232,6 +241,10 @@ var GameObject = function() {
 
     this.getPartyLimit = function() {
         return partyLimit;
+    };
+
+    this.getProjectiles = function() {
+        return projectiles;
     };
     
     this.updateScore = function(score) {

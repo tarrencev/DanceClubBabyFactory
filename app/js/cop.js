@@ -1,42 +1,44 @@
 var CopObject = function() {
     //private vars
     //declare private vars here
-    var radius = 8;
+    var radius = 8 * 2;
+    var invade = false;
     var cop;
+    var clock = 1;
 
     //private funcs
     function init() {
         drawCop();
+    }
 
-        var pos = getRandomEdgePos(cop);
-        cop.x = pos.x;
-        cop.y = pos.y;
-
-        wanderOutside();
+    function patrol() {
+       var safety = 20;
+       cop.x = CONSTANTS.WIDTH / 2 +
+               (CONSTANTS.HEIGHT / 2 - safety) * Math.cos(clock);
+       cop.y = CONSTANTS.HEIGHT / 2 +
+               (CONSTANTS.HEIGHT / 2 - safety) * Math.sin(clock);
+       clock = (clock + 0.005) % (2 * Math.PI);
     }
 
     function drawCop() {
+        console.log('drawing cop');
         cop = new createjs.Shape();
         cop.graphics
             .beginStroke('#00f')
-            .setStrokeStyle(5)
-            .beginFill('#00f')
+            .setStrokeStyle(7)
+            .beginFill('#aaa')
             .drawCircle(0, 0, radius);
 
         stage.addChild(cop);
     }
 
-    function patrol() {
-        var babyRepo = gameObject.getBabyRepo();
-        var babyRepoPosition = babyRepo.getPosition();
-        var babyRepoRadius = babyRepo.getRadius();
-        var doorRadius = gameObject.getDoor().getRadius();
-
-        var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
-        if (getDistance(people[i], babyRepo) < babyRepoRadius + people[i].getRadius() + offset) {
-            createjs.Tween.removeTweens(people[i].getShape());
+    this.tick = function() {
+        if (invade) {
+          moveIn();
+        } else {
+          patrol();
         }
-    }
+    };
 
     //public funs
     this.setPosition = function(position) {
@@ -51,20 +53,20 @@ var CopObject = function() {
         };
     };
 
+    this.setInvade = function(invade_) {
+        invade = invade_;
+    };
+
+    this.getInvade = function() {
+        return invade;
+    };
+
     this.getRadius = function() {
         return radius;
     };
 
     this.getShape = function() {
         return cop;
-    };
-
-    this.tick = function() {
-        if (inside) {
-          patrol();
-        } else {
-          invade();
-        }
     };
 
     init();
