@@ -41,11 +41,6 @@ var ProjectileGeneratorObject = function() {
 
     function drawProjectile() {
         var projectile = new ProjectileObject();
-        var offsetPosition = {
-            x: CONSTANTS.WIDTH/2+gameObject.getBabyRepo().getRadius()*Math.cos(projectileAngle), 
-            y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
-        };
-        projectile.setPosition(offsetPosition);
         projectiles.addChild(projectile);
         
         return projectile;
@@ -63,6 +58,11 @@ var ProjectileGeneratorObject = function() {
         if (800 < count && count <= 900) {
             var projectile = drawProjectile();
             var edgePos = calculateProjectileDirection(dataDiff);
+            var offsetPosition = {
+                x: CONSTANTS.WIDTH/2+gameObject.getBabyRepo().getRadius()*Math.cos(projectileAngle), 
+                y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
+            };
+            projectile.setPosition(offsetPosition);
             createjs.Tween.get(projectile.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
             count = 0;
         }
