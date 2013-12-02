@@ -237,16 +237,16 @@ var GameObject = function() {
     this.incrementStars = function() {
         stars++;
         document.getElementById("stars").innerHTML = stars;
-    }
+    };
 
     this.getNumStars = function() {
         return stars;
-    }
+    };
 
     this.setNumStars = function(value) {
         stars = value;
         document.getElementById("stars").innerHTML = stars;
-    }
+    };
     
     this.resetGame = function() {
         setDamage(0, true);

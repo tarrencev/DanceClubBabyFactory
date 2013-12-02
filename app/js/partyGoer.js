@@ -1,92 +1,91 @@
 var PartyGoerObject = function(type_) {
     //private vars
     //declare private vars here
-    var type = type_;
-    var radius = 8;
-    var goer;
-    var beenToParty = false;
+    this.type = type_;
+    this.radius = 8;
+    this.beenToParty = false;
+
+    this.init();
+};
 
     //private funcs
-    function init() {
-        if (type === "DrugDealer")
-            drawDrugDealer();
-        else if (type === "Underage")
-            drawUnderAge();
-        else
-            drawGoer();
+PartyGoerObject.prototype.init = function() {
+    if (this.type === "DrugDealer")
+        this.drawDrugDealer();
+    else if (this.type === "Underage")
+        this.drawUnderAge();
+    else
+        this.drawGoer();
 
-        var pos = getRandomEdgePos(goer);
-        goer.x = pos.x;
-        goer.y = pos.y;
+    var pos = getRandomEdgePos(this.goer);
+    this.goer.x = pos.x;
+    this.goer.y = pos.y;
 
-        createjs.Tween.get(goer).to(gameObject.getBabyRepo().getPosition(), 5000, createjs.Ease.linear);
-    }
+    createjs.Tween.get(this.goer).to(gameObject.getBabyRepo().getPosition(), 5000, createjs.Ease.linear);
+};
 
-    function drawGoer() {
-        goer = new createjs.Shape();
-        goer.graphics
-            .beginStroke('#aaa')
-            .setStrokeStyle(5)
-            .beginFill('#000')
-            .drawCircle(0, 0, radius);
+PartyGoerObject.prototype.drawGoer = function() {
+    this.goer = new createjs.Shape();
+    this.goer.graphics
+             .beginStroke('#aaa')
+             .setStrokeStyle(5)
+             .beginFill('#000')
+             .drawCircle(0, 0, this.radius);
 
-        stage.addChild(goer);
-    }
+    stage.addChild(this.goer);
+};
 
-    function drawDrugDealer() {
-        goer = new createjs.Shape();
-        goer.graphics
-            .beginStroke('#a0a0a0')
-            .setStrokeStyle(5)
-            .beginFill('#ff0000')
-            .drawCircle(0, 0, radius);
+PartyGoerObject.prototype.drawDrugDealer = function() {
+    this.goer = new createjs.Shape();
+    this.goer.graphics
+             .beginStroke('#a0a0a0')
+             .setStrokeStyle(5)
+             .beginFill('#ff0000')
+             .drawCircle(0, 0, this.radius);
 
-        stage.addChild(goer);
-    }
+    stage.addChild(this.goer);
+};
 
-    function drawUnderAge() {
-        goer = new createjs.Shape();
-        goer.graphics
-            .beginStroke('#a0a0a0')
-            .setStrokeStyle(5)
-            .beginFill('#ffff00')
-            .drawCircle(0, 0, radius);
+PartyGoerObject.prototype.drawUnderAge = function() {
+    this.goer = new createjs.Shape();
+    this.goer.graphics
+             .beginStroke('#a0a0a0')
+             .setStrokeStyle(5)
+             .beginFill('#ffff00')
+             .drawCircle(0, 0, this.radius);
 
-        stage.addChild(goer);
-    }
+    stage.addChild(this.goer);
+};
 
-    //public funs
-    this.setPosition = function(position) {
-        goer.x = position.x;
-        goer.y = position.y;
+//public funs
+PartyGoerObject.prototype.setPosition = function(position) {
+    this.goer.x = position.x;
+    this.goer.y = position.y;
+};
+
+PartyGoerObject.prototype.getPosition = function() {
+    return {
+        x: this.goer.x,
+        y: this.goer.y
     };
+};
 
-    this.getPosition = function() {
-        return {
-            x: goer.x,
-            y: goer.y
-        };
-    };
+PartyGoerObject.prototype.getRadius = function() {
+    return this.radius;
+};
 
-    this.getRadius = function() {
-        return radius;
-    };
+PartyGoerObject.prototype.getShape = function() {
+    return this.goer;
+};
 
-    this.getShape = function() {
-        return goer;
-    };
+PartyGoerObject.prototype.checkHasBeenToParty = function() {
+    return this.beenToParty;
+};
 
-    this.checkHasBeenToParty = function() {
-        return beenToParty;
-    };
+PartyGoerObject.prototype.hasBeenToParty = function() {
+    this.beenToParty = true;
+};
 
-    this.hasBeenToParty = function() {
-        beenToParty = true;
-    };
-
-    this.removeFromStage = function() {
-        stage.removeChild(goer);
-    };
-
-    init();
+PartyGoerObject.prototype.removeFromStage = function() {
+    stage.removeChild(this.goer);
 };
