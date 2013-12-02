@@ -28,7 +28,9 @@ var AudioPlayerObject = function(){
         //hook into volume slider
         $('#volumeSlider').change(setVolume);
         $('.onoffswitch-checkbox').change(switchHandler);
-         
+        document.addEventListener("upKey", increaseVolume, false);
+        document.addEventListener("downKey", decreaseVolume, false);
+        document.addEventListener("spaceKey", playButtonHandler, false);
     }
 
     function handleEvent(event) {
@@ -48,7 +50,6 @@ var AudioPlayerObject = function(){
     }
 
     function switchHandler(event) {
-        
         if (event.target.id === 'lowPassSwitch') {
             console.log('low pass switch');
             sound.toggleLowPassFilter();
@@ -76,7 +77,40 @@ var AudioPlayerObject = function(){
     }
 
     function setVolume(event) {
-        sound.setVolume(event.target.value/100);
+        if(playing) {
+            if(10 < event.target.value) {
+                volumeModifier = event.target.value;
+            } else {
+                volumeModifier = 10;
+            }
+            sound.setVolume(volumeModifier/100);
+        }
+    }
+
+    function increaseVolume(event) {
+        if(playing) {
+        console.log('increase volume');
+            if(volumeModifier < 100) {
+                volumeModifier += 10;
+            } else {
+                volumeModifier = 100;
+            }
+            sound.setVolume(volumeModifier/100);
+            $('#volumeSlider').val(volumeModifier);
+        }
+    }
+
+    function decreaseVolume(event) {
+        if(playing) {
+            console.log('decrease volume');
+            if(volumeModifier > 10) {
+                volumeModifier -= 10;
+            } else {
+                volumeModifier = 10;
+            }
+            sound.setVolume(volumeModifier/100);
+            $('#volumeSlider').val(volumeModifier);
+        }
     }
 
     function setSongInfo(track) {
@@ -94,16 +128,16 @@ var AudioPlayerObject = function(){
         return playing;
     };
     
-    this.playPause = function() {
-        sound.playPause();
-        if(playing) {
-            playing = false;
-            playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
-        } else {
-            playing = true;
-            playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
-        }
-    };
+    // this.playPause = function() {
+    //     sound.playPause();
+    //     if(playing) {
+    //         playing = false;
+    //         playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
+    //     } else {
+    //         playing = true;
+    //         playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
+    //     }
+    // };
 
     init();
 };

@@ -213,6 +213,14 @@ var GameObject = function() {
         document.getElementById("stars").innerHTML = stars;
     };
 
+    this.getNumStars = function() {
+        return stars;
+    };
+
+    this.setNumStars = function(value) {
+        stars = value;
+    };
+
     this.getDamage = function() {
         return damage;
     };
