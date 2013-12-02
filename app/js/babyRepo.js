@@ -4,10 +4,13 @@ var BabyRepoObject = function() {
     var container;
     var radius = 75;
     var babies = [];
+    var birthEvt;
 
     //private funcs
     function init() {
         drawContainer();
+        birthEvt = document.createEvent('Event');
+        birthEvt.initEvent('birth', true, true);
     }
 
     function drawContainer() {
@@ -31,7 +34,7 @@ var BabyRepoObject = function() {
             baby.setPosition(getRandomPos(baby));
         }
         babies.push(baby);
-        gameObject.updateScore(babies.length);
+        document.dispatchEvent(birthEvt);
         //alert(this.getNumBabies());
     }
 
@@ -69,6 +72,13 @@ var BabyRepoObject = function() {
 
     this.getNumBabies = function() {
         return babies.length;
+    };
+
+    this.reset = function() {
+        for (var i in babies) {
+            stage.removeChild(babies[i].baby);
+        }
+        babies = [];
     };
 
     init();

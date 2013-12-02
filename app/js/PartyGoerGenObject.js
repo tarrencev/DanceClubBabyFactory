@@ -47,9 +47,11 @@ var PartyGoerGenObject = function() {
         var doorRadius = gameObject.getDoor().getRadius();
 
         for (var i in people) {
+            var distance = getDistance(people[i], babyRepo);
             var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
-            if (getDistance(people[i], babyRepo) < babyRepoRadius + people[i].getRadius() + offset) {
+            if (distance < babyRepoRadius + people[i].getRadius() + offset) {
                 createjs.Tween.removeTweens(people[i].getShape());
+                createjs.Tween.get(people[i].getShape()).to(getRandomPosInParty(), 10 * distance, createjs.Ease.linear);
             }
         }
     }
@@ -61,17 +63,31 @@ var PartyGoerGenObject = function() {
         var doorRadius = gameObject.getDoor().getRadius();
 
         for (var i in people) {
-            var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
+
             var distance = getDistance(people[i], babyRepo);
-            if (distance < babyRepoRadius + people[i].getRadius() + offset) {
+            if (distance < doorRadius) {
+                people[i].hasBeenToParty();
+            }
+
+            var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
+            if (distance < babyRepoRadius + people[i].getRadius() + offset && !people[i].checkHasBeenToParty()) {
+                createjs.Tween.removeTweens(people[i].getShape());
                 createjs.Tween.get(people[i].getShape()).to(getRandomPosInParty(), 10 * distance, createjs.Ease.linear);
             } else {
-                if (Math.random() < doorRadius / distance) {
+                
+                if (Math.random() < doorRadius / distance && !people[i].checkHasBeenToParty()) {
+                    createjs.Tween.removeTweens(people[i].getShape());
                     createjs.Tween.get(people[i].getShape()).to(getRandomPosInParty(), 10 * distance, createjs.Ease.linear);
                 } else {
+                    createjs.Tween.removeTweens(people[i].getShape());
                     createjs.Tween.get(people[i].getShape()).to(getRandomPosOutside(), 10 * distance, createjs.Ease.linear);
                 }
             }
+        }
+        
+        // Are you sure this comparison is correct?
+        for (var j = 0; people.length > gameObject.getPartyLimit(); j++) {
+            createjs.Tween.get(people[j].getShape()).to(getRandomPosOutside(), 10 * getDistance(people[j], babyRepo), createjs.Ease.linear);
         }
     }
 
@@ -128,10 +144,39 @@ var PartyGoerGenObject = function() {
     };
 
     this.drugDealerSize = function() {
-        return dealers.length;
+        
+        var num = 0;
+        for (var i in dealers) {
+            if (getDistance(dealers[i], gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
+                num++;
+            }
+        }
+        return num;
     };
 
     this.underageSize = function() {
-        return teens.length;
+        
+        var num = 0;
+        for (var i in teens) {
+            if (getDistance(teens[i], gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
+                num++;
+            }
+        }
+        return num;
+    };
+    
+    this.reset = function() {
+        for (var i in people) {
+            people[i].removeFromStage();
+        }
+        for (i in dealers) {
+            people[i].removeFromStage();
+        }
+        for (i in teens) {
+            people[i].removeFromStage();
+        }
+        people = [];
+        dealers = [];
+        teens = [];
     };
 };

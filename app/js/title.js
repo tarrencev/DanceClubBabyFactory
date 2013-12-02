@@ -70,7 +70,7 @@ var TitleObject = function(new_stage){
 
     function preload_songs() {
       preloaded_songs = {};
-      preloaded_songs['06 Loud Pipes.m4a'] = new SoundObject('06 Loud Pipes.m4a');
+      preloaded_songs['Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3'] = new SoundObject('Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3');
     }
 
     init();

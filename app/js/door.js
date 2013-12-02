@@ -3,7 +3,7 @@ var DoorObject = function(){
     var door, doorGuide;
     var doorPosition = 0;
     var radius = 250;
-    var doorWidth = Math.PI/2; // in radians
+    var doorWidth = Math.PI/4; // in radians
     var doorThickness = 16;
 
     //private funcs
@@ -44,8 +44,8 @@ var DoorObject = function(){
     this.moveDoor = function(event) {
         //console.log(event.stageY);
 
-        var deltaY = event.stageY - CONSTANTS.HEIGHT/2;
-        var deltaX = event.stageX - CONSTANTS.WIDTH/2;
+        var deltaY = event.clientY - CONSTANTS.HEIGHT/2;
+        var deltaX = event.clientX - CONSTANTS.WIDTH/2;
         var angle = Math.atan2(deltaY,deltaX) * 180/Math.PI;
         door.rotation = angle;
         

@@ -5,12 +5,13 @@ var AudioPlayerObject = function(){
         playButton,
         settingsButton,
         audioControlsOpen = false,
+        stopped = true,
         playing = false;
 
     var track = {
-        artist: 'Ratatat',
-        title: 'Loud Pipes',
-        src: '06 Loud Pipes.m4a',
+        artist: 'Flight Facilities',
+        title: 'Crave You (Adventure Club Dubstep Remix)',
+        src: 'Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3',
         cover: 'Ratatat-Classics.png'
     };
 
@@ -28,7 +29,9 @@ var AudioPlayerObject = function(){
         //hook into volume slider
         $('#volumeSlider').change(setVolume);
         $('.onoffswitch-checkbox').change(switchHandler);
-         
+        document.addEventListener("upKey", increaseVolume, false);
+        document.addEventListener("downKey", decreaseVolume, false);
+        document.addEventListener("spaceKey", playButtonHandler, false);
     }
 
     function handleEvent(event) {
@@ -45,10 +48,13 @@ var AudioPlayerObject = function(){
             playing = true;
             playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
         }
+        if (stopped) {
+            gameObject.resetGame();
+        }
+        stopped = false;
     }
 
     function switchHandler(event) {
-        
         if (event.target.id === 'lowPassSwitch') {
             console.log('low pass switch');
             sound.toggleLowPassFilter();
@@ -76,7 +82,40 @@ var AudioPlayerObject = function(){
     }
 
     function setVolume(event) {
-        sound.setVolume(event.target.value/100);
+        if(playing) {
+            if(10 < event.target.value) {
+                volumeModifier = event.target.value;
+            } else {
+                volumeModifier = 10;
+            }
+            sound.setVolume(volumeModifier/100);
+        }
+    }
+
+    function increaseVolume(event) {
+        if(playing) {
+        console.log('increase volume');
+            if(volumeModifier < 100) {
+                volumeModifier += 10;
+            } else {
+                volumeModifier = 100;
+            }
+            sound.setVolume(volumeModifier/100);
+            $('#volumeSlider').val(volumeModifier);
+        }
+    }
+
+    function decreaseVolume(event) {
+        if(playing) {
+            console.log('decrease volume');
+            if(volumeModifier > 10) {
+                volumeModifier -= 10;
+            } else {
+                volumeModifier = 10;
+            }
+            sound.setVolume(volumeModifier/100);
+            $('#volumeSlider').val(volumeModifier);
+        }
     }
 
     function setSongInfo(track) {
@@ -94,16 +133,26 @@ var AudioPlayerObject = function(){
         return playing;
     };
     
-    this.playPause = function() {
-        sound.playPause();
-        if(playing) {
+    this.stopPlayback = function() {
+        if (!stopped) {
+            createjs.Sound.play("Rewind");
+            sound.stop();
             playing = false;
+            stopped = true;
             playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
-        } else {
-            playing = true;
-            playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
         }
     };
+    
+    // this.playPause = function() {
+    //     sound.playPause();
+    //     if(playing) {
+    //         playing = false;
+    //         playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
+    //     } else {
+    //         playing = true;
+    //         playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
+    //     }
+    // };
 
     init();
 };

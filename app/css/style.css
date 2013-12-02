@@ -68,30 +68,47 @@ h3 {
 }
 
 /* HUD */
-#scoretext {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 50px;
-    margin: 5px;
-    font-weight: 100;
-    color: rgba(255,255,255,0.3);
-}
-#score {
-    font-weight: normal;
-    color: #fff;
+
+.statsContainer {
+  width: 100%;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
 }
 
-#risktext {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    text-align: left;
-    font-size: 50px;
-    margin: 5px;
+.statsContainer span {
+  padding: 5px 10px;
 }
-#risk {
+
+.stat {
+  font-size: 48px;
+}
+
+#scoreText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#riskText {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: left;
+  color: rgba(255, 0, 0, 0.8);
+}
+
+#starsText {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  color: rgba(255, 255, 0, 0.8);
+}
+
+#highScore {
+  font-size: 24px;
 }
 
 /*song title*/

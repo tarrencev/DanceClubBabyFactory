@@ -42,7 +42,7 @@ var SoundObject = function(track){
     var highPassAnalyserNode;
     var hpFreqByteData, hpTimeByteData;  // arrays to retrieve data from highPassAnalyserNode
 
-    var dataAverage = [42,42,42,42];   // an array recording data for the last 4 ticks
+    var dataAverage = [42,42,42,42,42,42];   // an array recording data for the last 4 ticks
     var freqChunk;    // The chunk of freqByteData array that is computed
 
     //private funcs
@@ -55,31 +55,37 @@ var SoundObject = function(track){
                 {
                     id: "Song",
                     src: sound_path+track
+                },
+                {
+                    src: "music/rewind_sound.mp3",
+                    id: "Rewind"
                 }
-            ];
+        ];
          
         createjs.Sound.addEventListener("fileload", createjs.proxy(handleLoad, this));
-        console.log(src);
-        createjs.Sound.registerSound(src);
+        createjs.Sound.registerManifest(manifest, "");
         audio = createjs.Sound.activePlugin;
     }
 
     function handleLoad(event) {
         // createjs.Sound.play("Song");
-        var context = createjs.WebAudioPlugin.context;
+        if (event.id != "Rewind") {
+            var context = createjs.WebAudioPlugin.context;
 
-        // attach visualizer node to our existing dynamicsCompressorNode, which was connected to context.destination
-        var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
-        dynamicsNode.disconnect();  // disconnect from destination
+            // attach visualizer node to our existing dynamicsCompressorNode, which was connected to context.destination
+            var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
+            dynamicsNode.disconnect();  // disconnect from destination
 
-        //init filters
-        initLowPassFilter(context, dynamicsNode);
-        initBandPassFilter1(context, dynamicsNode);
-        initBandPassFilter2(context, dynamicsNode);
-        initHighPassFilter(context, dynamicsNode);
+            //init filters
+            initLowPassFilter(context, dynamicsNode);
+            initBandPassFilter1(context, dynamicsNode);
+            initBandPassFilter2(context, dynamicsNode);
+            initHighPassFilter(context, dynamicsNode);
 
-        // calculate the number of array elements that represent each circle
-        freqChunk = bandPass1AnalyserNode.frequencyBinCount;
+            // calculate the number of array elements that represent each circle
+            freqChunk = bandPass1AnalyserNode.frequencyBinCount;
+        }
+        console.log("loaded"+event.src);
     }
 
     function initLowPassFilter(context, dynamicsNode) {
@@ -190,13 +196,16 @@ var SoundObject = function(track){
 
     function startPlayback() {
         playing = true;
-        if (soundInstance)
-            soundInstance.play();
-        else
+        if (soundInstance) {
+            if (!soundInstance.resume()) {
+                soundInstance.play();
+            }
+        } else {
             soundInstance = createjs.Sound.play(src);
+        }
     }
 
-    function stopPlayback() {
+    function pausePlayback() {
         playing = false;
         soundInstance.pause();
     }
@@ -243,16 +252,22 @@ var SoundObject = function(track){
         dataSum = dataSum / (dataAverage.length-1);
 
         // calculate latest change
-        var dataDiff = dataAverage[dataAverage.length-1] - dataSum;
+        var dataDiff = (dataAverage[dataAverage.length-1] - dataSum) * 100;
+        
         return dataDiff;
     }
 
     //public funs
     this.playPause = function() {
         if (playing)
-            stopPlayback();
+            pausePlayback();
         else
             startPlayback();
+    };
+    
+    this.stop = function() {
+        soundInstance.stop();
+        playing = false;
     };
 
     this.setVolume = function(value) {

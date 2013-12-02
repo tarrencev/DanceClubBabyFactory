@@ -15,7 +15,7 @@ BabyObject.prototype.drawBaby = function() {
     this.baby.graphics
              .beginStroke('#fff')
              .setStrokeStyle(5)
-             .beginFill('#231f20')
+             .beginFill('#ec87b8')//'#231f20')
              .drawCircle(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, this.radius);
 
     stage.addChild(this.baby);
