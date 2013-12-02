@@ -24,7 +24,6 @@ var CopGenObject = function() {
     function stopWhenHearSound() {
         for (var i in cops) {
             if (soundCollision(cops[i])) {
-                console.log(cops[i]);
                 cops[i].setInvade(true);
             }
         }
@@ -32,7 +31,7 @@ var CopGenObject = function() {
 
     function soundCollision(cop_) {
       var projs = gameObject.getProjectiles().getProjectiles();
-      var num_stars = projs.getNumChildren()
+      var num_stars = projs.getNumChildren();
       for(var i = 0;
           i < num_stars;
           i++) {
@@ -43,6 +42,17 @@ var CopGenObject = function() {
       return false;
     }
 
+    function removeCop(i) {
+        stage.removeChild(cops[i]).getShape();
+        cops.splice(i, 1);
+    }
+
+    function removeAll() {
+        for(var i in cops) {
+            removeCop(i);
+        }
+    }
+
     //public funcs
     this.addCop = function() {
         drawCop();
@@ -51,6 +61,12 @@ var CopGenObject = function() {
     this.tick = function() {
         for(var i in cops) {
             cops[i].tick();
+
+            if (cops[i].isDead()) {
+                // removeCop(i);
+                removeAllCops();
+                return;
+            }
         }
         stopWhenHearSound();
     };

@@ -3,6 +3,8 @@ var CopObject = function() {
     //declare private vars here
     var radius = 8 * 2;
     var invade = false;
+    var moved = false;
+    var dead = false;
     var cop;
     var clock = 1;
 
@@ -20,8 +22,21 @@ var CopObject = function() {
        clock = (clock + 0.005) % (2 * Math.PI);
     }
 
+    function moveIn() {
+      if (!moved) {
+        moved = true;
+
+        var babyRepo = gameObject.getBabyRepo();
+        var babyRepoPos = babyRepo.getPosition();
+        createjs.Tween.get(cop).to(babyRepoPos, 5000, createjs.Ease.linear)
+                               .to({x: CONSTANTS.WIDTH / 2,
+                                    y: CONSTANTS.HEIGHT + 50},
+                                   5000, createjs.Ease.linear)
+                               .call(function() { dead = false; });
+      }
+    }
+
     function drawCop() {
-        console.log('drawing cop');
         cop = new createjs.Shape();
         cop.graphics
             .beginStroke('#00f')
@@ -67,6 +82,10 @@ var CopObject = function() {
 
     this.getShape = function() {
         return cop;
+    };
+
+    this.isDead = function() {
+        return dead;
     };
 
     init();
