@@ -12,10 +12,9 @@ var GameObject = function() {
         highScore,
         hud,
         stars = 0; //TEMP REMOVE ME variable
-        
-    var instance = this;
 
     var slowMoShown = false;
+    
 
     //private funcs
     function init() {
@@ -123,11 +122,20 @@ var GameObject = function() {
                 goerGen.wander();
             }
         }
+<<<<<<< HEAD
+=======
 
         if(stars === 25 && !slowMoShown) {
             slowMoShown = true;
             hud.addPowerUp('slowmo');
         }
+
+        // background.applyTintToBase(damage/100); // TEMP REMOVE ME better way to denote health
+        //document.getElementById("debug").innerHTML = "High Score: " + highScore + " babies";       
+        //document.getElementById("debug").innerHTML = "Score: " + babyRepo.getNumBabies() + " babies"; // TEMP REMOVE ME temporary display for score
+        //highScore = Math.max(babyRepo.getNumBabies(), highScore);
+        //document.getElementById("debug").innerHTML += "<br/>Complaint risk: " + Math.min(damage, 100) + "%"; // TEMP REMOVE ME temporary display for damage
+>>>>>>> 4238e5d5ff2a292b6b7c381b29326cbd3bdc9bf3
     }
 
     function onResize() {
@@ -169,6 +177,20 @@ var GameObject = function() {
         console.log('click');
     }
 
+    function incrementStars() {
+        stars++;
+        document.getElementById("stars").innerHTML = stars;
+    }
+
+    function getNumStars() {
+        return stars;
+    }
+
+    function setNumStars(value) {
+        stars = value;
+        document.getElementById("stars").innerHTML = stars;
+    }
+
     function setDamage(damagePts, absolute) {
         if (absolute === undefined) { // Additive damage
             damage += damagePts;
@@ -185,16 +207,16 @@ var GameObject = function() {
     
     function violationHandler(event) {
         setDamage(5);
-        instance.setNumStars(parseInt(instance.getNumStars()/2, 10));
+        setNumStars(parseInt(getNumStars()/2, 10));
         if (getDamage() >= 100) {
             audioPlayer.stopPlayback();
-            instance.setNumStars(0); // reset stars here for now (cannot do it in public func)
+            setNumStars(0); // reset stars here for now (cannot do it in public func)
             highScore = Math.max(highScore, score);
         }
     }
     
     function blockedHandler(event) {
-        instance.incrementStars();
+        incrementStars();
     }
 
     //public funcs
@@ -233,20 +255,6 @@ var GameObject = function() {
     this.updateScore = function(score) {
         document.getElementById("score").innerHTML = score;
     };
-
-    this.incrementStars = function() {
-        stars++;
-        document.getElementById("stars").innerHTML = stars;
-    }
-
-    this.getNumStars = function() {
-        return stars;
-    }
-
-    this.setNumStars = function(value) {
-        stars = value;
-        document.getElementById("stars").innerHTML = stars;
-    }
     
     this.resetGame = function() {
         setDamage(0, true);
