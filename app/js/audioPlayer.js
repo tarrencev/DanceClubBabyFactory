@@ -135,11 +135,21 @@ var AudioPlayerObject = function(){
     
     this.stopPlayback = function() {
         if (!stopped) {
-            createjs.Sound.play("Rewind");
-            sound.stop();
+            var enterEasing = setInterval(function() {
+                speedModifier = speedModifier*0.95;
+                if (speedModifier < 0.1) {
+                    speedModifier = 1;
+                    document.LOLaudio.playbackRate.value = speedModifier;
+                    clearInterval(enterEasing);
+                    sound.stop();
+                    createjs.Sound.play("Rewind");
+                }
+                document.LOLaudio.playbackRate.value = speedModifier;
+            }, 10);
             playing = false;
             stopped = true;
-            playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
+            playButton.children().removeClass('glyphicon-pause')
+                                 .addClass('glyphicon-play');
         }
     };
     

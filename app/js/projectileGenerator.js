@@ -7,6 +7,8 @@ var ProjectileGeneratorObject = function() {
     var projectileTarget = { x: -15, y: 0};
     var violationEvt;
     var blockedEvt;
+    
+    var slowPowerTimer;
 
     //private funcs
     function init() {
@@ -73,12 +75,12 @@ var ProjectileGeneratorObject = function() {
     function firePowerUp() {
         console.log('fire powerup');
         var stars = gameObject.getNumStars();
-        if(stars >= 25) {
+        if(stars >= SLOWDOWNCOST) {
             var dataDiff = 1;
             var powerUp = drawPowerUp();
             var edgePos = calculateProjectileDirection(dataDiff);
             createjs.Tween.get(powerUp.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
-            gameObject.setNumStars(stars - 50);
+            gameObject.setNumStars(stars - SLOWDOWNCOST);
         }
     }
 
@@ -102,13 +104,27 @@ var ProjectileGeneratorObject = function() {
 
     function gotPowerUp(index) {
         var juice = new JuicySplosion(powerUps.getChildAt(index).getPosition(), 50, "#FF00FF");
-        speedModifier = 0.5;
         gameObject.incrementStars();
         removePowerUp(index);
-        document.LOLaudio.playbackRate.value = 0.5;
-        setTimeout(function() {
-            speedModifier = 1;
-            document.LOLaudio.playbackRate.value = 1;
+        var enterEasing = setInterval(function() {
+            speedModifier = speedModifier*0.99 + 0.5*0.01;
+            if (speedModifier < 0.51) {
+                speedModifier = 0.5;
+                clearInterval(enterEasing);
+            }
+            document.LOLaudio.playbackRate.value = speedModifier;
+        }, 10);
+        clearTimeout(slowPowerTimer);
+        slowPowerTimer = setTimeout(function() {
+            speedModifier = 0.51;
+            var exitEasing = setInterval(function() {
+                speedModifier = (speedModifier-0.5*0.01)/0.99;
+                if (speedModifier > 0.99) {
+                    speedModifier = 1;
+                    clearInterval(exitEasing);
+                }
+                document.LOLaudio.playbackRate.value = speedModifier;
+            }, 10);
         }, 10000);
     }
 

@@ -6,7 +6,7 @@ var PowerUpHudObject = function(){
 
 PowerUpHudObject.prototype.drawSlowMotion = function() {
     this.drawPowerUpTitle("1 Slow Motion");
-    this.drawPowerUpCost(50);
+    this.drawPowerUpCost(SLOWDOWNCOST);
     this.animateIn();
 };
 
