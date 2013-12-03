@@ -52,21 +52,18 @@ var CopGenObject = function() {
         var copPos = cop.getPosition();
 
         // how far away we are from the center
-        var d_x = babyRepoPos.x - copPos.x + 20;
-        var d_y = babyRepoPos.y - copPos.y + 20;
+        var d_x = babyRepoPos.x - copPos.x;
+        var d_y = babyRepoPos.y - copPos.y;
 
-        var m = d_y / d_x;
+        // is the nearest exit up?
+        var up = d_y > 0;
 
-        // how many times we'd have to repeat that distance to be free
-        var x = (copPos.x / d_x) + 1;
-        var y = (copPos.y / d_y) + 1;
-
-        var opposite_x = copPos.x * m;
-        var opposite_y = copPos.y * m;
+        var goal_x = copPos.x;
+        var goal_y = up ? -20 : CONSTANTS.HEIGHT + 20;
 
         createjs.Tween.removeTweens(cop.getShape());
-        createjs.Tween.get(cop.getShape()).to({x: opposite_x,
-                                               y: opposite_y},
+        createjs.Tween.get(cop.getShape()).to({x: goal_x,
+                                               y: goal_y},
                                               5000, createjs.Ease.linear)
                                           .call(function() { removeCop(cop); });
     }
