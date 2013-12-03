@@ -42,15 +42,42 @@ var CopGenObject = function() {
       return false;
     }
 
-    function removeCop(i) {
-        stage.removeChild(cops[i]).getShape();
-        cops.splice(i, 1);
+    function removeCop(cop) {
+        stage.removeChild(cop.getShape());
     }
 
-    function removeAll() {
-        for(var i in cops) {
-            removeCop(i);
+    function exeuntCop(cop) {
+        var babyRepo = gameObject.getBabyRepo();
+        var babyRepoPos = babyRepo.getPosition();
+        var copPos = cop.getPosition();
+
+        // how far away we are from the center
+        var d_x = babyRepoPos.x - copPos.x + 20;
+        var d_y = babyRepoPos.y - copPos.y + 20;
+
+        var m = d_y / d_x;
+
+        // how many times we'd have to repeat that distance to be free
+        var x = (copPos.x / d_x) + 1;
+        var y = (copPos.y / d_y) + 1;
+
+        var opposite_x = copPos.x * m;
+        var opposite_y = copPos.y * m;
+
+        createjs.Tween.removeTweens(cop.getShape());
+        createjs.Tween.get(cop.getShape()).to({x: opposite_x,
+                                               y: opposite_y},
+                                              5000, createjs.Ease.linear)
+                                          .call(function() { removeCop(cop); });
+    }
+
+    function exeuntCops() {
+        // in place array modificaiton
+        // so we need to iterate in reverse
+        while(cops.length > 0) {
+            exeuntCop(cops.pop());
         }
+        cops = [];
     }
 
     //public funcs
@@ -63,8 +90,7 @@ var CopGenObject = function() {
             cops[i].tick();
 
             if (cops[i].isDead()) {
-                // removeCop(i);
-                removeAllCops();
+                exeuntCops();
                 return;
             }
         }

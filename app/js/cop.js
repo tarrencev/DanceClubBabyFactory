@@ -32,7 +32,7 @@ var CopObject = function() {
                                .to({x: CONSTANTS.WIDTH / 2,
                                     y: CONSTANTS.HEIGHT + 50},
                                    5000, createjs.Ease.linear)
-                               .call(function() { dead = false; });
+                               .call(function() { dead = true; });
       }
     }
 
