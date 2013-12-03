@@ -16,12 +16,12 @@ function getRandomEdgePos() {
     if (Math.random() > 0.5) {
         if (Math.random() > 0.5) {
             return {
-                x: Math.random() * window.innerWidth * 0.8,
+                x: Math.random() * window.innerWidth,
                 y: -15
             };
         }
         return {
-            x: Math.random() * window.innerWidth * 0.8,
+            x: Math.random() * window.innerWidth,
             y: window.innerHeight + 15
         };
     }
