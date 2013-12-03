@@ -7,6 +7,8 @@ var canvas, stage, preloaded_songs;
 var volumeModifier = 50;
 var speedModifier = 1;
 
+var SLOWDOWNCOST = 50;
+
 function getRandomSign() {
     if(Math.random() > 0.5)
         return -1;
