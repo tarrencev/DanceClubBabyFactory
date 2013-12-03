@@ -114,11 +114,11 @@ var PartyGoerGenObject = function() {
                 if (Math.random() < doorRadius / distance && !people[i].checkHasBeenToParty()) {
                     createjs.Tween.removeTweens(people[i].getShape());
                     pos = getRandomPosInParty();
-                    createjs.Tween.get(people[i].getShape()).to(getRandomPosInParty(), 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
+                    createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
                 } else {
                     createjs.Tween.removeTweens(people[i].getShape());
                     pos = getRandomPosOutside();
-                    createjs.Tween.get(people[i].getShape()).to(getRandomPosOutside(), 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
+                    createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
                 }
             }
         }
@@ -231,10 +231,10 @@ var PartyGoerGenObject = function() {
         for (var i in people) {
             createjs.Tween.removeTweens(people[i].getShape());
             pos = getRandomPosOutside();
-            createjs.Tween.get(people[i].getShape()).to(getRandomPosOutside(), 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
-            people[i].removeFromStage();
+            createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
+            //people[i].removeFromStage();
         }
-        for (i in dealers) {
+        /*for (i in dealers) {
             dealers[i].removeFromStage();
         }
         for (i in teens) {
@@ -242,6 +242,6 @@ var PartyGoerGenObject = function() {
         }
         people = [];
         dealers = [];
-        teens = [];
+        teens = [];*/
     };
 };
