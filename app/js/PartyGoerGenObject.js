@@ -85,8 +85,8 @@ var PartyGoerGenObject = function() {
 
     function getANearByPosition(pos) {
         return {
-            x: pos.x + 50 * Math.random(),
-            y: pos.y + 50 * Math.random()
+            x: pos.x + getRandomSign() * 50 * Math.random(),
+            y: pos.y + getRandomSign() * 50 * Math.random()
         };
     }
 
