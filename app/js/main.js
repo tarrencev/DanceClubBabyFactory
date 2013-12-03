@@ -238,7 +238,7 @@ var GameObject = function() {
     };
 
     this.getGoerGen = function() {
-        return goerGen.getGoer();
+        return goerGen;
     };
 
     this.getPartyLimit = function() {

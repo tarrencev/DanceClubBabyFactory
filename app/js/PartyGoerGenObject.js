@@ -189,10 +189,6 @@ var PartyGoerGenObject = function() {
         moveAll();
     };
 
-    this.getGoer = function() {
-        return people;
-    };
-
     this.size = function() {
         return people.length;
     };
@@ -231,14 +227,19 @@ var PartyGoerGenObject = function() {
         return num;
     };
     
-    this.reset = function() {
+    this.makeEveryoneLeave = function() {
         for (var i in people) {
             createjs.Tween.removeTweens(people[i].getShape());
             pos = getRandomPosOutside();
             createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
-            //people[i].removeFromStage();
         }
-        /*for (i in dealers) {
+    };
+    
+    this.reset = function() {
+        for (var i in people) {
+            people[i].removeFromStage();
+        }
+        for (i in dealers) {
             dealers[i].removeFromStage();
         }
         for (i in teens) {
@@ -246,6 +247,6 @@ var PartyGoerGenObject = function() {
         }
         people = [];
         dealers = [];
-        teens = [];*/
+        teens = [];
     };
 };
