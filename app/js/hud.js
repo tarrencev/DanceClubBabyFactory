@@ -19,12 +19,16 @@ var HudObject = function(){
         document.addEventListener("birth", incrementScore, false);
         document.addEventListener("blocked", incrementStars, false);
         document.addEventListener("oneKey", function(){
-                                                if(stars >= SLOWDOWNCOST)
+                                                if(stars >= SLOWDOWNCOST) {
+                                                    renderTextAlert('Slow Motion');
                                                     decrementStarsBy(SLOWDOWNCOST);
+                                                }
                                             }, false);
         document.addEventListener("twoKey", function(){
-                                                if(stars >= EXTENZECOST)
+                                                if(stars >= EXTENZECOST) {
+                                                    renderTextAlert('ExtenZe');
                                                     decrementStarsBy(EXTENZECOST);
+                                                }
                                             }, false);
         document.addEventListener("threeKey", function(){
                                         if(stars >= SLOWDOWNCOST)
@@ -75,6 +79,19 @@ var HudObject = function(){
             extenzePowerup = new PowerUpHudObject();
             extenzePowerup.drawExtenze();
         }
+    }
+
+    function renderTextAlert(text) {
+        var alert = new createjs.Text(text,
+                              "bold 24px Helvetica",
+                              "#FFFFFF");
+        alert.alpha = 0.8;
+        alert.textAlign = "center";
+        alert.textBaseline = "middle";
+        alert.x = CONSTANTS.WIDTH/2;
+        alert.y = CONSTANTS.HEIGHT/2;
+        createjs.Tween.get(alert).to({scaleX: 20, scaleY: 20, alpha:0}, 900).call(this.destroy, [], this);
+        stage.addChild(alert);
     }
 
     function decrementScoreBy(value) {
