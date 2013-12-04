@@ -57,8 +57,7 @@ var TitleObject = function(new_stage){
         stage.addChild(instr1);
 
         instr2 = new createjs.Text("2. hit 1 to slow down the stars\n" +
-                                   "          2 to NOT YET IMPLEMENTED\n" +
-                                   "          3 to NOT YET IMPLEMENTED\n" +
+                                   "       2 toextend the paddle\n" +
                                    "          space to play/pause the music\n" +
                                    "          up/down to control the volume",
                                   "20px Georgia",
