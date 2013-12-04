@@ -41,9 +41,9 @@ var threeKey = document.createEvent('Event');
 threeKey.initEvent('threeKey', true, true);
 
 $(document).keydown(function(e) {
-	if (e.keyCode === 38) {
+	if (e.keyCode === 38 || e.keyCode === 87) {
 		document.dispatchEvent(upKey);
-	} else if (e.keyCode === 40) {
+	} else if (e.keyCode === 40 || e.keyCode === 81) {
 		document.dispatchEvent(downKey);
 	} else if (e.keyCode === 32) {
 		e.preventDefault(); // Prevents activating button twice
