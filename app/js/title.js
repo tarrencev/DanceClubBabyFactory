@@ -36,7 +36,8 @@ var TitleObject = function(new_stage){
     }
 
     function drawInstructions() {
-        instr1 = new createjs.Text("1. click to add a partygoer",
+        instr1 = new createjs.Text("1. move the mouse to control the door\n" +
+                                   "   (block the stars that come out!)",
                                    "20px Georgia",
                                    "#38DFF9");
         instr1.x = CONSTANTS.WIDTH / 3 + 250;
@@ -48,7 +49,7 @@ var TitleObject = function(new_stage){
                                   "20px Georgia",
                                   "#38DFF9");
         instr2.x = CONSTANTS.WIDTH / 3 + 250;
-        instr2.y = CONSTANTS.HEIGHT / 7 + 75;
+        instr2.y = CONSTANTS.HEIGHT / 7 + 100;
         instr2.textBaseline = "alphabetic";
         stage.addChild(instr2);
     }
@@ -58,7 +59,7 @@ var TitleObject = function(new_stage){
         button.graphics
             .beginFill('#FFBA36')
             .drawRect(CONSTANTS.WIDTH / 3 + 275,
-                      CONSTANTS.HEIGHT / 7 + 90,
+                      CONSTANTS.HEIGHT / 7 + 110,
                       100,
                       30);
         button.addEventListener("click", change_stage);
@@ -68,7 +69,7 @@ var TitleObject = function(new_stage){
                                   "20px Georgia",
                                   "#000");
         start.x = CONSTANTS.WIDTH / 3 + 302;
-        start.y = CONSTANTS.HEIGHT / 7 + 110;
+        start.y = CONSTANTS.HEIGHT / 7 + 130;
         start.textBaseline = "alphabetic";
         start.addEventListener("click", change_stage);
         stage.addChild(start);
@@ -77,9 +78,9 @@ var TitleObject = function(new_stage){
     function change_stage() {
         $('.HUD').show();
         $('.audioControlsPane').show();
-        var audio = stage.getChildByName('audio');
+        //var audio = stage.getChildByName('audio');
         stage.removeAllChildren();
-        stage.addChild(audio);
+        //stage.addChild(audio);
         new_stage();
         stage.update();
     }

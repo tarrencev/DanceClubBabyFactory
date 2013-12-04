@@ -91,7 +91,7 @@ var GameObject = function() {
         copGen.tick();
 
         if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
-            if (Math.random() < (damage / 100.0)) {
+            if (Math.random() < (damage / 200.0)) {
                 copGen.addCop();
             }
         }
