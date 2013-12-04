@@ -50,6 +50,7 @@ var AudioPlayerObject = function(){
         }
         if (stopped) {
             gameObject.resetGame();
+            gameObject.getGoerGen().reset();
         }
         stopped = false;
     }

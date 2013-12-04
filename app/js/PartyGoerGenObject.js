@@ -56,37 +56,44 @@ var PartyGoerGenObject = function() {
         return false;
     }
 
-    function stopWhenCollide() {
+    function collisionBehaviors() {
         var babyRepo = gameObject.getBabyRepo();
         var babyRepoPosition = babyRepo.getPosition();
         var babyRepoRadius = babyRepo.getRadius();
         var doorRadius = gameObject.getDoor().getRadius();
+        var pos;
 
         /*for (var i in people) {
-            if (checkForCollisions(people[i]) {
+            if (checkForCollisions(people[i])) {
                 createjs.Tween.removeTweens(people[i].getShape());
-                var pos = getANearByPosition(people[i].getPosition());
+                pos = getANearByPosition(people[i].getPosition());
                 createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
             }
         }*/
         
-        for (var i in people) {
-            var distance = getDistance(people[i], babyRepo);
-            if (distance < babyRepoRadius + 2 * people[i].getRadius()) {
-                createjs.Tween.removeTweens(people[i].getShape());
-                var pos;
+        for (var j in people) {
+            var distance = getDistance(people[j], babyRepo);
+            if (distance < doorRadius) {
+                people[j].hasBeenToParty();
+            }
+            if (distance < babyRepoRadius + 1.5 * people[j].getRadius()) {
+                createjs.Tween.removeTweens(people[j].getShape());
                 do {
-                    pos = getANearByPosition(people[i].getPosition());
+                    pos = getANearByPosition(people[j].getPosition());
                 } while (distance > getDistanceBtwObjectAndPos(babyRepo, pos));
-                createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
+                createjs.Tween.get(people[j].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[j], pos), createjs.Ease.linear);
+            } else if (distance > 3/4 * doorRadius) {
+                createjs.Tween.removeTweens(people[j].getShape());
+                pos = getRandomPosInParty();
+                createjs.Tween.get(people[j].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[j], pos), createjs.Ease.linear);
             }
         }
     }
 
     function getANearByPosition(pos) {
         return {
-            x: pos.x + getRandomSign() * 50 * Math.random(),
-            y: pos.y + getRandomSign() * 50 * Math.random()
+            x: pos.x + getRandomSign() * 30 * Math.random(),
+            y: pos.y + getRandomSign() * 30 * Math.random()
         };
     }
 
@@ -100,11 +107,7 @@ var PartyGoerGenObject = function() {
         for (var i in people) {
 
             var distance = getDistance(people[i], babyRepo);
-            if (distance < doorRadius) {
-                people[i].hasBeenToParty();
-            }
-
-            var offset = 4/5 * Math.random() * (doorRadius - babyRepoRadius);
+            var offset = 2/3 * Math.random() * (doorRadius - babyRepoRadius);
             if (distance < babyRepoRadius + people[i].getRadius() + offset && !people[i].checkHasBeenToParty()) {
                 createjs.Tween.removeTweens(people[i].getShape());
                 pos = getRandomPosInParty();
@@ -123,12 +126,13 @@ var PartyGoerGenObject = function() {
             }
         }
         
-        var overflow = getPartySize() - gameObject.getPartyLimit();
+        //leave policy TBD
+        /*var overflow = getPartySize() - gameObject.getPartyLimit();
         for (var j = 0; j < overflow; j++) {
             createjs.Tween.removeTweens(people[i].getShape());
             pos = getRandomPosOutside();
             createjs.Tween.get(people[j].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
-        }
+        }*/
     }
 
     function getPartySize() {
@@ -145,7 +149,7 @@ var PartyGoerGenObject = function() {
         var babyRepoPosition = gameObject.getBabyRepo().getPosition();
         var babyRepoRadius = gameObject.getBabyRepo().getRadius();
         var doorRadius = gameObject.getDoor().getRadius();
-        var radiusDiff = doorRadius - babyRepoRadius - 10;
+        var radiusDiff = doorRadius - babyRepoRadius;
 
         return {
             x: babyRepoPosition.x + getRandomSign() * (babyRepoRadius + Math.random() * radiusDiff),
@@ -159,8 +163,8 @@ var PartyGoerGenObject = function() {
         var doorRadius = gameObject.getDoor().getRadius();
 
         return {
-            x: babyRepoPosition.x + getRandomSign() * (doorRadius + Math.random() * (CONSTANTS.WIDTH - doorRadius)),
-            y: babyRepoPosition.y + getRandomSign() * (doorRadius + Math.random() * (CONSTANTS.HEIGHT - doorRadius))
+            x: babyRepoPosition.x + getRandomSign() * (doorRadius + 30 + Math.random() * (CONSTANTS.WIDTH - doorRadius)),
+            y: babyRepoPosition.y + getRandomSign() * (doorRadius + 30 + Math.random() * (CONSTANTS.HEIGHT - doorRadius))
         };
     }
 
@@ -178,15 +182,11 @@ var PartyGoerGenObject = function() {
     };
 
     this.tick = function() {
-        stopWhenCollide();
+        collisionBehaviors();
     };
 
     this.wander = function() {
         moveAll();
-    };
-
-    this.getGoer = function() {
-        return people;
     };
 
     this.size = function() {
@@ -227,14 +227,19 @@ var PartyGoerGenObject = function() {
         return num;
     };
     
-    this.reset = function() {
+    this.makeEveryoneLeave = function() {
         for (var i in people) {
             createjs.Tween.removeTweens(people[i].getShape());
             pos = getRandomPosOutside();
             createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
-            //people[i].removeFromStage();
         }
-        /*for (i in dealers) {
+    };
+    
+    this.reset = function() {
+        for (var i in people) {
+            people[i].removeFromStage();
+        }
+        for (i in dealers) {
             dealers[i].removeFromStage();
         }
         for (i in teens) {
@@ -242,6 +247,6 @@ var PartyGoerGenObject = function() {
         }
         people = [];
         dealers = [];
-        teens = [];*/
+        teens = [];
     };
 };

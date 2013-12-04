@@ -12,8 +12,8 @@ var PartyGoerObject = function(type_) {
 PartyGoerObject.prototype.init = function() {
     if (this.type === "DrugDealer")
         this.drawDrugDealer();
-    else if (this.type === "Underage")
-        this.drawUnderAge();
+    /*else if (this.type === "Underage")
+        this.drawUnderAge();*/
     else
         this.drawGoer();
 

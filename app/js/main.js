@@ -100,7 +100,7 @@ var GameObject = function() {
             audioPlayer.tick();
             goerGen.tick();
         
-            var t = 35 - goerGen.underageInPartySize();
+            var t = 50 - goerGen.underageInPartySize();
             if (createjs.Ticker.getTicks() % t === 0) {
                 if (Math.random() < 0.05 ) {
                     goerGen.addDrugDealer();
@@ -217,7 +217,7 @@ var GameObject = function() {
     };
 
     this.getGoerGen = function() {
-        return goerGen.getGoer();
+        return goerGen;
     };
 
     this.getPartyLimit = function() {
