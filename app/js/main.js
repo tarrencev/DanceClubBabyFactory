@@ -187,7 +187,6 @@ var GameObject = function() {
     function violationHandler(event) {
         if (audioPlayer.isPlaying()) {
             setDamage(5);
-            instance.setNumStars(parseInt(instance.getNumStars()*3/4, 10));
             if (getDamage() >= 100) {
                 audioPlayer.stopPlayback();
             }

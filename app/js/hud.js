@@ -13,7 +13,7 @@ var HudObject = function(){
         drawScore();
         drawStars();
         addPowerUp('slowmo');
-        addPowerUp('drugLord');
+        // addPowerUp('drugLord');
         addPowerUp('extenze');
 
         document.addEventListener("birth", incrementScore, false);
@@ -22,8 +22,14 @@ var HudObject = function(){
                                                 if(stars >= SLOWDOWNCOST)
                                                     decrementStarsBy(SLOWDOWNCOST);
                                             }, false);
-        document.addEventListener("twoKey", function(){decrementStarsBy(50);}, false);
-        document.addEventListener("threeKey", function(){decrementStarsBy(50);}, false);
+        document.addEventListener("twoKey", function(){
+                                                if(stars >= EXTENZECOST)
+                                                    decrementStarsBy(EXTENZECOST);
+                                            }, false);
+        document.addEventListener("threeKey", function(){
+                                        if(stars >= SLOWDOWNCOST)
+                                            decrementStarsBy(50);
+                                    } , false);
     }
 
     function drawScore() {

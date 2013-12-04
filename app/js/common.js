@@ -15,6 +15,7 @@ var volumeModifier = 50;
 var speedModifier = 1;
 
 var SLOWDOWNCOST = 25;
+var EXTENZECOST = 0;
 
 function getRandomSign() {
     if(Math.random() > 0.5)
