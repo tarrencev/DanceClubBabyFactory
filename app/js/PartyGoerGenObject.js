@@ -262,6 +262,12 @@ var PartyGoerGenObject = function() {
         teens = [];
     };
 
+    this.clearPeople = function() {
+        people = [];
+        dealers = [];
+        teens = [];
+    };
+
     this.getPeopleInParty = function() {
         var peeps = [];
         for (var i in people) {

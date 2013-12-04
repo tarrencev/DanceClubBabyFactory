@@ -75,23 +75,9 @@ var CopGenObject = function() {
 
     function evictPerson(person) {
         var goerGen = gameObject.getPartyGoerGen();
-        var index;
 
-        // kill from people
-        index = goerGen.getGoer().indexOf(person);
-        if (index > -1) goerGen.getGoer().splice(index, 1);
-
-        // kill from drugdealers
-        index = goerGen.getDealers().indexOf(person);
-        if (index > -1) goerGen().getDealers().splice(index, 1);
-
-        // kill from teens
-        index = goerGen.getTeens().indexOf(person);
-        if (index > -1) goerGen().getTeens().splice(index, 1);
-
-        console.log(getRandomEdgePos());
-        createjs.Tween.removeTweens(person);
-        createjs.Tween.get(person).to(getRandomEdgePos(),
+        createjs.Tween.removeTweens(person.getShape());
+        createjs.Tween.get(person.getShape()).to(getRandomEdgePos(),
                                                  3000, createjs.Ease.linear)
                                              .call(function() { removeThing(person); });
     }
@@ -102,12 +88,11 @@ var CopGenObject = function() {
         var gen = gameObject.getPartyGoerGen();
         var peeps = gen.getPeopleInParty();
 
-        //console.log("evicting " + peeps.length + " people");
-        //console.log("         " + gen.drugDealerInPartySize() + " dealers");
-        //console.log("         " + gen.underageInPartySize() + " teens");
         while(peeps.length > 0) {
             evictPerson(peeps.pop());
         }
+
+        gen.clearPeople();
     };
 
     //public funcs
