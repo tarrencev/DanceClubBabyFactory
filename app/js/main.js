@@ -38,8 +38,6 @@ var GameObject = function() {
         }
         createjs.Ticker.setFPS(30);
 
-        background = new BackgroundObject();
-
         title = new TitleObject(game);
     }
 
@@ -93,7 +91,9 @@ var GameObject = function() {
         copGen.tick();
 
         if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
-            copGen.addCop();
+            if (Math.random() < (damage / 100.0)) {
+                copGen.addCop();
+            }
         }
     
         if (audioPlayer.isPlaying()) {

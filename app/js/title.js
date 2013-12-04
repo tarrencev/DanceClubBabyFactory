@@ -2,10 +2,26 @@ var TitleObject = function(new_stage){
     //private funcs
     function init() {
         $('.HUD').hide();
+        drawBox();
         drawTitle();
         drawInstructions();
         drawStartButton();
         preload_songs();
+    }
+
+    function drawBox() {
+        var position = {
+            x: CONSTANTS.WIDTH/2,
+            y: CONSTANTS.HEIGHT/2
+        };
+
+        box = new createjs.Shape();
+        box.x = position.x;
+        box.y = position.y;
+        box.graphics
+           .beginFill("#44a")
+           .drawRoundRect(-CONSTANTS.WIDTH / 2 + 50, -CONSTANTS.HEIGHT / 2 + 50, CONSTANTS.WIDTH - 100, CONSTANTS.HEIGHT - 100, 10);
+        stage.addChild(box);
     }
 
     function drawTitle() {
