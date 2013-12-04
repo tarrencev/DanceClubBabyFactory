@@ -189,6 +189,18 @@ var PartyGoerGenObject = function() {
         moveAll();
     };
 
+    this.getGoer = function() {
+        return people;
+    };
+
+    this.getDealers = function() {
+        return dealers;
+    };
+
+    this.getTeens = function() {
+        return teens;
+    };
+
     this.size = function() {
         return people.length;
     };
@@ -248,5 +260,21 @@ var PartyGoerGenObject = function() {
         people = [];
         dealers = [];
         teens = [];
+    };
+
+    this.clearPeople = function() {
+        people = [];
+        dealers = [];
+        teens = [];
+    };
+
+    this.getPeopleInParty = function() {
+        var peeps = [];
+        for (var i in people) {
+            if (getDistance(people[i], gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
+                peeps.push(people[i]);
+            }
+        }
+        return peeps;
     };
 };

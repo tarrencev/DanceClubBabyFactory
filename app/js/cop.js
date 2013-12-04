@@ -34,6 +34,11 @@ var CopObject = function() {
                                    5000, createjs.Ease.linear)
                                .call(function() { dead = true; });
       }
+
+      if (seeDrugDealers()) {
+        console.log("i command you to evict");
+        gameObject.getCopGen().evictPeople();
+      }
     }
 
     function drawCop() {
@@ -45,6 +50,28 @@ var CopObject = function() {
             .drawCircle(0, 0, radius);
 
         stage.addChild(cop);
+    }
+
+    function seeDrugDealers() {
+        var babyRepo = gameObject.getBabyRepo();
+        var babyRepoPos = babyRepo.getPosition();
+        var doorRadius = gameObject.getDoor().getRadius();
+        var x1 = babyRepoPos.x - doorRadius;
+        var x2 = babyRepoPos.x + doorRadius;
+        var y1 = babyRepoPos.y - doorRadius;
+        var y2 = babyRepoPos.y + doorRadius;
+
+        if ((cop.x > x1) &&
+            (cop.x < x2) &&
+            (cop.y > y1) &&
+            (cop.y < y2)) {
+          if (gameObject.getPartyGoerGen().drugDealerInPartySize() > 0) {
+            console.log("spotted");
+            return true;
+          }
+        }
+
+        return false;
     }
 
     this.tick = function() {

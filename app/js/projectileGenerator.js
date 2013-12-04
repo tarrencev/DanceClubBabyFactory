@@ -11,6 +11,8 @@ var ProjectileGeneratorObject = function() {
     var rotateDirection = 1;
     var violationEvt;
     var blockedEvt;
+    var stars = 0;
+    var sloMoActive = false;
     
     var slowPowerTimer;
 
@@ -76,7 +78,7 @@ var ProjectileGeneratorObject = function() {
                 y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
             };
             projectile.setPosition(offsetPosition);
-            createjs.Tween.get(projectile.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
+            createjs.Tween.get(projectile.getShape()).to(edgePos, (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
             ticksSinceProjectile = 0;
             if (count++%10 === 0) {
                 rotateDirection *= getRandomSign(); // maybe direction every 10 shots
@@ -91,7 +93,7 @@ var ProjectileGeneratorObject = function() {
                 y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
             };
             projectile.setPosition(offsetPosition);
-            createjs.Tween.get(projectile.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
+            createjs.Tween.get(projectile.getShape()).to(edgePos, (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
             count = 0;
         }
         count += parseInt(volumeModifier, 10);
@@ -99,14 +101,8 @@ var ProjectileGeneratorObject = function() {
     }
 
     function firePowerUp() {
-        console.log('fire powerup');
-        var stars = gameObject.getNumStars();
-        if(stars >= SLOWDOWNCOST) {
-            var dataDiff = 1;
-            var powerUp = drawPowerUp();
-            var edgePos = calculateProjectileDirection(dataDiff);
-            createjs.Tween.get(powerUp.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
-            gameObject.setNumStars(stars - SLOWDOWNCOST);
+        if(stars >= SLOWDOWNCOST && !sloMoActive) {
+            gotPowerUp();
         }
     }
 
@@ -125,24 +121,26 @@ var ProjectileGeneratorObject = function() {
     function blockProjectile(index) {
         var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 25, "#ABF000");
         document.dispatchEvent(blockedEvt);
+        stars++;
         removeProjectile(index);
     }
 
-    function gotPowerUp(index) {
-        var juice = new JuicySplosion(powerUps.getChildAt(index).getPosition(), 50, "#FF00FF");
-        gameObject.incrementStars();
-        removePowerUp(index);
+    function gotPowerUp() {
+        // var juice = new JuicySplosion(powerUps.getChildAt(index).getPosition(), 50, "#FF00FF");
+        // gameObject.incrementStars();
+        // removePowerUp(index);
+        sloMoActive = true;
         var enterEasing = setInterval(function() {
-            speedModifier = speedModifier*0.99 + 0.5*0.01;
-            if (speedModifier < 0.51) {
-                speedModifier = 0.5;
+            speedModifier = speedModifier*0.99 + 0.75*0.01;
+            if (speedModifier < 0.76) {
+                speedModifier = 0.75;
                 clearInterval(enterEasing);
             }
             document.LOLaudio.playbackRate.value = speedModifier;
         }, 10);
         clearTimeout(slowPowerTimer);
         slowPowerTimer = setTimeout(function() {
-            speedModifier = 0.51;
+            speedModifier = 0.76;
             var exitEasing = setInterval(function() {
                 speedModifier = (speedModifier-0.5*0.01)/0.99;
                 if (speedModifier > 0.99) {
@@ -152,6 +150,7 @@ var ProjectileGeneratorObject = function() {
                 document.LOLaudio.playbackRate.value = speedModifier;
             }, 10);
         }, 10000);
+        sloMoActive = false;
     }
 
     //public funcs
@@ -192,24 +191,6 @@ var ProjectileGeneratorObject = function() {
                 blockProjectile(i);
             }
         }
-
-        // Checks for when to remove powerups
-        for (i = 0; i < powerUps.getNumChildren(); i++) {
-            // outside stage
-            var powerUp = powerUps.getChildAt(i).getShape();
-            if (powerUp.x < 0 || powerUp.y < 0 || powerUp.x > CONSTANTS.WIDTH || powerUp.y > CONSTANTS.HEIGHT) {
-                removePowerUp(i);
-            }
-            
-            // blocked by door
-            var powerUpPosition = powerUps.getChildAt(i).getPositionFromCenter();
-            if (gameObject.getDoor().detectCollision(powerUpPosition.x, powerUpPosition.y)) {
-                gotPowerUp(i);
-            }
-        }
-        
-        ticksSinceProjectile++;
-
     };
 
     this.getProjectiles = function() {

@@ -74,8 +74,8 @@ var SoundObject = function(track){
     }
 
     function handleLoad(event) {
-        // createjs.Sound.play("Song");
-        console.log("loaded "+event.src);
+        gameObject.getTitle().progress();
+
         if (event.id != "Rewind") {
             var context = createjs.WebAudioPlugin.context;
 
@@ -93,7 +93,7 @@ var SoundObject = function(track){
 
             // calculate the number of array elements that represent each circle
             freqChunk = bandPass1AnalyserNode.frequencyBinCount;
-            console.log("Analysis initialisation complete.");
+            gameObject.getTitle().makeReadyForStart();
         }
     }
 
