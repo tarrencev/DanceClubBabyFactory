@@ -56,7 +56,11 @@ var TitleObject = function(new_stage){
         instr1.textBaseline = "alphabetic";
         stage.addChild(instr1);
 
-        instr2 = new createjs.Text("2. click and drag to move the door",
+        instr2 = new createjs.Text("2. hit 1 to slow down the stars\n" +
+                                   "          2 to NOT YET IMPLEMENTED\n" +
+                                   "          3 to NOT YET IMPLEMENTED\n" +
+                                   "          space to play/pause the music\n" +
+                                   "          up/down to control the volume",
                                   "20px Georgia",
                                   "#38DFF9");
         instr2.x = CONSTANTS.WIDTH / 3 + 250;
@@ -70,7 +74,7 @@ var TitleObject = function(new_stage){
         button.graphics
             .beginFill('#FFBA36')
             .drawRect(CONSTANTS.WIDTH / 3 + 275,
-                      CONSTANTS.HEIGHT / 7 + 110,
+                      CONSTANTS.HEIGHT / 7 + 280,
                       100,
                       30);
         stage.addChild(button);
@@ -79,7 +83,7 @@ var TitleObject = function(new_stage){
                                   "20px Georgia",
                                   "#000");
         start.x = CONSTANTS.WIDTH / 3 + 282;
-        start.y = CONSTANTS.HEIGHT / 7 + 130;
+        start.y = CONSTANTS.HEIGHT / 7 + 300;
         start.textBaseline = "alphabetic";
         stage.addChild(start);
     }
