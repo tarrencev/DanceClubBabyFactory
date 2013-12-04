@@ -100,9 +100,9 @@ var GameObject = function() {
 
     //same as perform_logic() in zenilib
     function tick() {
-        stage.update();
         projectiles.tick();
         copGen.tick();
+        background.tick();
 
         if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
             copGen.addCop();
@@ -138,6 +138,8 @@ var GameObject = function() {
             slowMoShown = true;
             hud.addPowerUp('slowmo');
         }
+        
+        stage.update();
     }
 
     function onResize() {

@@ -1,3 +1,5 @@
+MINTICKSPERPROJECTILE = 5;
+
 var ProjectileGeneratorObject = function() {
     //private vars
     //declare private vars here
@@ -5,6 +7,8 @@ var ProjectileGeneratorObject = function() {
     var powerUps = new createjs.Container();
     var projectileAngle = 0;
     var projectileTarget = { x: -15, y: 0};
+    var ticksSinceProjectile = 0;
+    var rotateDirection = 1;
     var violationEvt;
     var blockedEvt;
     
@@ -18,14 +22,20 @@ var ProjectileGeneratorObject = function() {
         blockedEvt.initEvent('blocked', true, true);
 
         document.addEventListener("lpPulse", lpPulseHandler, false);
+        document.addEventListener("hpPulse", hpPulseHandler, false);
         document.addEventListener("oneKey", firePowerUp, false);
     }
 
     function lpPulseHandler(event) {
         var dataDiff = event.dataDiff;
-        fireProjectile(dataDiff);
+        fireProjectile(dataDiff, LO);
     }
 
+    function hpPulseHandler(event) {
+        var dataDiff = event.dataDiff;
+        fireProjectile(dataDiff, HI);
+        //console.log(dataDiff);
+    }
     function removeProjectile(index) {
         stage.removeChild(projectiles.getChildAt(index).getShape());
         projectiles.removeChildAt(index);
@@ -42,8 +52,8 @@ var ProjectileGeneratorObject = function() {
         document.dispatchEvent(violationEvt);
     }
 
-    function drawProjectile() {
-        var projectile = new ProjectileObject();
+    function drawProjectile(type) {
+        var projectile = new ProjectileObject(type);
         projectiles.addChild(projectile);
         
         return projectile;
@@ -57,7 +67,22 @@ var ProjectileGeneratorObject = function() {
     }
 
     var count = 0;
-    function fireProjectile(dataDiff) {
+    function fireProjectile(dataDiff, type) {
+        if (ticksSinceProjectile > MINTICKSPERPROJECTILE/(volumeModifier/100) && dataDiff > 1) {
+            var projectile = drawProjectile(type);
+            var edgePos = calculateProjectileDirection(rotateDirection*dataDiff);
+            var offsetPosition = {
+                x: CONSTANTS.WIDTH/2+gameObject.getBabyRepo().getRadius()*Math.cos(projectileAngle), 
+                y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
+            };
+            projectile.setPosition(offsetPosition);
+            createjs.Tween.get(projectile.getShape()).to(edgePos, (6000 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
+            ticksSinceProjectile = 0;
+            if (count++%10 === 0) {
+                rotateDirection *= getRandomSign(); // maybe direction every 10 shots
+            }
+        }
+        /*
         if (800 < count && count <= 900) {
             var projectile = drawProjectile();
             var edgePos = calculateProjectileDirection(dataDiff);
@@ -70,6 +95,7 @@ var ProjectileGeneratorObject = function() {
             count = 0;
         }
         count += parseInt(volumeModifier, 10);
+        */
     }
 
     function firePowerUp() {
@@ -86,7 +112,7 @@ var ProjectileGeneratorObject = function() {
 
     function calculateProjectileDirection(dataDiff) {
 
-        projectileAngle = projectileAngle + Math.PI/8 * dataDiff;
+        projectileAngle = projectileAngle + Math.PI/8 * dataDiff/5;
 
         var newPosition = {
             x: window.innerWidth/2 + 2 * window.innerHeight * Math.cos(projectileAngle),
@@ -181,6 +207,8 @@ var ProjectileGeneratorObject = function() {
                 gotPowerUp(i);
             }
         }
+        
+        ticksSinceProjectile++;
 
     };
 

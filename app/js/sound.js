@@ -3,7 +3,6 @@ var SoundObject = function(track){
     //declare private vars her
     var FFTSIZE = 32;      // number of samples for the analyser node FFT, min 32
     var RADIUS_FACTOR = 120; // the radius of the circles, factored for which ring we are drawing
-    var MIN_RADIUS = 1;     // the minimum radius of each circle
     var COLOR_CHANGE_THRESHOLD = 10;    // amount of change before we change color
     var circleHue = 300;   // the base color hue used when drawing circles, which can change
     var HUE_VARIANCE = 120;  // amount hue can vary by
@@ -12,7 +11,14 @@ var SoundObject = function(track){
         playing,
         sound_path = 'music/',
         src = sound_path + track;
-    var soundInstance;      // the sound instance we create    
+    var soundInstance;      // the sound instance we create
+    
+    var sampleRate;
+    var analysisResults = {};
+    
+    //analyser
+    var AnalyserNode;
+    var FreqByteData, TimeByteData;  // arrays to retrieve data from AnalyserNode
 
     //low pass filter
     var lowPassFilter;
@@ -42,7 +48,7 @@ var SoundObject = function(track){
     var highPassAnalyserNode;
     var hpFreqByteData, hpTimeByteData;  // arrays to retrieve data from highPassAnalyserNode
 
-    var dataAverage = [42,42,42,42,42,42];   // an array recording data for the last 4 ticks
+    var dataAverage = [42,42];   // an array recording data for the last 2 ticks
     var freqChunk;    // The chunk of freqByteData array that is computed
 
     //private funcs
@@ -69,6 +75,7 @@ var SoundObject = function(track){
 
     function handleLoad(event) {
         // createjs.Sound.play("Song");
+        console.log("loaded "+event.src);
         if (event.id != "Rewind") {
             var context = createjs.WebAudioPlugin.context;
 
@@ -81,18 +88,34 @@ var SoundObject = function(track){
             initBandPassFilter1(context, dynamicsNode);
             initBandPassFilter2(context, dynamicsNode);
             initHighPassFilter(context, dynamicsNode);
+            /*initAnalyser(context, dynamicsNode);*/
+            sampleRate = context.sampleRate;
 
             // calculate the number of array elements that represent each circle
             freqChunk = bandPass1AnalyserNode.frequencyBinCount;
+            console.log("Analysis initialisation complete.");
         }
-        console.log("loaded"+event.src);
+    }
+
+    function initAnalyser(context, dynamicsNode) {
+
+        AnalyserNode = context.createAnalyser();
+        AnalyserNode.fftSize = FFTSIZE;  //The size of the FFT used for frequency-domain analysis. This must be a power of two
+        AnalyserNode.smoothingTimeConstant = 0.85;  //A value from 0 -> 1 where 0 represents no time averaging with the last analysis frame
+        AnalyserNode.connect(context.destination);  // connect to the context.destination, which outputs the audio
+
+        dynamicsNode.connect(AnalyserNode);
+
+        // set up the arrays that we use to retrieve the bandPass1AnalyserNode data
+        FreqByteData = new Uint8Array(AnalyserNode.frequencyBinCount);
+        TimeByteData = new Uint8Array(AnalyserNode.frequencyBinCount);
     }
 
     function initLowPassFilter(context, dynamicsNode) {
         //create lowpass filter
         lowPassFilter = context.createBiquadFilter();
         lowPassFilter.type = 0; // Low-pass filter. See BiquadFilterNode docs
-        lowPassFilter.frequency.value = 170; // Set cutoff to 440 HZ
+        lowPassFilter.frequency.value = 40; // Set cutoff to 170 HZ
         lowPassFilter.connect(context.destination);
 
         // create an lowpass analyser node
@@ -149,7 +172,7 @@ var SoundObject = function(track){
     function initHighPassFilter(context, dynamicsNode) {
         //create highpass filter
         highPassFilter = context.createBiquadFilter();
-        highPassFilter.type = 1; // Low-pass filter. See BiquadFilterNode docs
+        highPassFilter.type = 1; // Hi-pass filter. See BiquadFilterNode docs
         highPassFilter.frequency.value = 2000;
         highPassFilter.connect(context.destination);
 
@@ -192,6 +215,12 @@ var SoundObject = function(track){
 
         highPassAnalyserNode.getByteFrequencyData(hpFreqByteData);
         highPassAnalyserNode.getByteTimeDomainData(hpTimeByteData);
+        
+        /*AnalyserNode.getByteFrequencyData(FreqByteData);
+        AnalyserNode.getByteTimeDomainData(TimeByteData);
+        
+        analysisResults.lo = analysisFilter(LO, FreqByteData, 40);
+        analysisResults.hi = analysisFilter(HI, FreqByteData, 8000);*/
     }
 
     function startPlayback() {
@@ -225,26 +254,39 @@ var SoundObject = function(track){
             dynamicsNode.connect(highPassAnalyserNode);
         }
     }
+    
+    // Takes freqDomain, which is an array of freqByteData
+    // returns the indices in direction given, starting from frequency
+    function analysisFilter(direction, freqDomain, frequency) {
+        var nyquist = sampleRate/2;
+        var index = Math.round(frequency/nyquist * freqDomain.length);
+        if (direction === HI) {
+            return freqDomain.subarray(index);
+        }
+        if (direction === LO) {
+            return freqDomain.subarray(0, index+1);
+        }
+    }
 
     function calculateDiff(freqByteData, timeByteData) {
-        var lastRadius = 0;  // we use this to store the radius of the last circle, making them relative to each other
         var freqSum = 0;
-        var timeSum = 0;
+        //var timeSum = 0;
 
-        for(var x = freqChunk; x; x--) {
-            var index = freqChunk - x;
-            freqSum += freqByteData[index];
-            timeSum += timeByteData[index];
+        for(var x = 0; x<freqByteData.length; x++) {
+            freqSum += freqByteData[x];
+            //timeSum += timeByteData[index];
         }
-
-        freqSum = freqSum / freqChunk / 255;  // gives us a percentage out of the total possible value
-        timeSum = timeSum / freqChunk / 255;  // gives us a percentage out of the total possible value
+        
+        // gives us a percentage out of the total possible value
+        //freqSum = freqSum / freqChunk / 255;
+        freqSum = freqSum / freqByteData.length / 255;
+        //timeSum = timeSum / freqChunk / 255;
 
         // update our dataAverage, by removing the first element and pushing in the new last element
         dataAverage.shift();
         dataAverage.push(freqSum);
 
-        // get our average data for the last 3 ticks
+        // get our average data for the last dataAverage.length ticks
         var dataSum = 0;
         for(var i = dataAverage.length-1; i; i--) {
             dataSum += dataAverage[i-1];
@@ -321,9 +363,15 @@ var SoundObject = function(track){
     this.tick = function() {
         if(playing) {
             updateAnalysers();
+            
+            /*lpEvt.dataDiff = Math.abs(calculateDiff(analysisResults.lo, TimeByteData))/60;
+            hpEvt.dataDiff = Math.abs(calculateDiff(analysisResults.hi, TimeByteData))/60;
+            document.dispatchEvent(lpEvt);
+            document.dispatchEvent(hpEvt);*/
 
             if (lowPassEnabled) {
                 lpEvt.dataDiff = calculateDiff(lpFreqByteData, lpTimeByteData);
+                //lpEvt.dataDiff = calculateDiff(analysisResults.lo, lpTimeByteData);
                 document.dispatchEvent(lpEvt);
             }
             if (bandPass1Enabled) {
@@ -336,6 +384,7 @@ var SoundObject = function(track){
             }
             if (highPassEnabled) {
                 hpEvt.dataDiff = calculateDiff(hpFreqByteData, hpTimeByteData);
+                //hpEvt.dataDiff = calculateDiff(analysisResults.hi, hpTimeByteData);
                 document.dispatchEvent(hpEvt);
             }
         }
