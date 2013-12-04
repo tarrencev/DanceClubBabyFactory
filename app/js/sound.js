@@ -68,7 +68,8 @@ var SoundObject = function(track){
     }
 
     function handleLoad(event) {
-        // createjs.Sound.play("Song");
+        gameObject.getTitle().progress();
+
         if (event.id != "Rewind") {
             var context = createjs.WebAudioPlugin.context;
 
@@ -87,7 +88,6 @@ var SoundObject = function(track){
             gameObject.getTitle().makeReadyForStart();
         }
         console.log("loaded"+event.src);
-
     }
 
     function initLowPassFilter(context, dynamicsNode) {

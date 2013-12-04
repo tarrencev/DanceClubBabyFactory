@@ -1,5 +1,5 @@
 var TitleObject = function(new_stage){
-    var box, title, instr1, instr2, button, start;
+    var box, title, instr1, instr2, button, start, yay;
 
     //private funcs
     function init() {
@@ -35,6 +35,15 @@ var TitleObject = function(new_stage){
         title.y = CONSTANTS.HEIGHT / 6;
         title.textBaseline = "alphabetic";
         stage.addChild(title);
+
+        yay = new createjs.Text("loading .",
+                                "bold 65px Georgia",
+                                "#88DFF9");
+        yay.alpha = 0.2;
+        yay.x = 3.3 * CONSTANTS.WIDTH / 6;
+        yay.y = CONSTANTS.HEIGHT / 2;
+        yay.textBasline = "alphabetic";
+        stage.addChild(yay);
     }
 
     function drawInstructions() {
@@ -91,10 +100,15 @@ var TitleObject = function(new_stage){
     }
 
     this.makeReadyForStart = function() {
+        yay.text = "yay!";
         start.text = "start";
         start.x = CONSTANTS.WIDTH / 3 + 302;
         start.addEventListener("click", change_stage);
         button.addEventListener("click", change_stage);
+    };
+
+    this.progress = function() {
+        yay.text = yay.text + ".";
     };
 
     init();
