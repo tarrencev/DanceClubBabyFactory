@@ -44,13 +44,13 @@ var AudioPlayerObject = function(){
         if(playing) {
             playing = false;
             playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
+            gameObject.getGoerGen().makeEveryoneLeave();
         } else {
             playing = true;
             playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
         }
         if (stopped) {
             gameObject.resetGame();
-            gameObject.getGoerGen().reset();
         }
         stopped = false;
     }
