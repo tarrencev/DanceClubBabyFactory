@@ -3,6 +3,7 @@ var BabyRepoObject = function() {
     //declare private vars here
     var container;
     var radius = 75;
+    var strokeWidth = 8;
     var babies = [];
     var birthEvt;
 
@@ -19,7 +20,7 @@ var BabyRepoObject = function() {
         container.y = CONSTANTS.HEIGHT/2;
         container.graphics
             .beginStroke('#ee2a7b')
-            .setStrokeStyle(8)
+            .setStrokeStyle(strokeWidth)
             .beginFill('#ec87b8')
             //.beginFill('#ffffff')
             .drawCircle(0, 0, radius);
@@ -30,7 +31,8 @@ var BabyRepoObject = function() {
 
     function drawBaby() {
         var baby = new BabyObject();
-        while (checkForCollisions(baby)) {
+        var tries = 0;
+        while (checkForCollisions(baby) && tries++ < 10) {
             baby.setPosition(getRandomPos(baby));
         }
         babies.push(baby);
@@ -47,9 +49,11 @@ var BabyRepoObject = function() {
     }
 
     function getRandomPos(baby) {
+        var angle = Math.PI*2*Math.random();
+        var distance = Math.random()*(radius-strokeWidth);
         var position = {
-            x: Math.random() * 50 * getRandomSign(),
-            y: Math.random() * 50 * getRandomSign()
+            x: Math.cos(angle)*distance,
+            y: Math.sin(angle)*distance
         };
         return position;
     }
