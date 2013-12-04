@@ -60,7 +60,7 @@ var BackgroundObject = function(){
         if (dataDiff > 1 && rings.getNumChildren() < 20) {
             //console.log(dataDiff);
             newRing = new createjs.Shape();
-            newRing.graphics.beginStroke('rgba(241,90,41,0.1)')
+            newRing.graphics.beginStroke(colors[Math.floor(Math.random() * colors.length)])
                             .setStrokeStyle(2)
                             .drawCircle(0,0, gameObject.getBabyRepo().getRadius());
             var center = {

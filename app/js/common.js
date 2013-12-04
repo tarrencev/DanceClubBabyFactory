@@ -17,6 +17,10 @@ var speedModifier = 1;
 var SLOWDOWNCOST = 25;
 var EXTENZECOST = 25;
 
+var colors = [	"rgba(204, 51, 255, 0.15)", "rgba(0, 153, 255, 0.15)", 
+				"rgba(255, 255, 51, 0.15)", "rgba(0, 255, 102, 0.15)",
+				"rgba(204, 0, 153, 0.15)", "rgba(0, 51, 153, 0.15)"	];
+
 function getRandomSign() {
     if(Math.random() > 0.5)
         return -1;
