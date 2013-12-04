@@ -70,9 +70,9 @@ var ProjectileGeneratorObject = function() {
 
     var count = 0;
     function fireProjectile(dataDiff, type) {
-        if (ticksSinceProjectile > MINTICKSPERPROJECTILE/(volumeModifier/100) && dataDiff > 1) {
+        if (ticksSinceProjectile > MINTICKSPERPROJECTILE/(volumeModifier/100) && dataDiff > 0.25) {
             var projectile = drawProjectile(type);
-            var edgePos = calculateProjectileDirection(rotateDirection*dataDiff);
+            var edgePos = calculateProjectileDirection(rotateDirection*dataDiff*4);
             var offsetPosition = {
                 x: CONSTANTS.WIDTH/2+gameObject.getBabyRepo().getRadius()*Math.cos(projectileAngle), 
                 y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
