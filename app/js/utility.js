@@ -32,7 +32,7 @@ function getRandomEdgePos() {
         };
     }
     return {
-        x: window.innerWidth * 0.8 + 15,
+        x: window.innerWidth + 15,
         y: Math.random() * window.innerHeight
     };
 }

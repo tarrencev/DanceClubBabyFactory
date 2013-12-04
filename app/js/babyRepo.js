@@ -30,21 +30,19 @@ var BabyRepoObject = function() {
 
     function drawBaby() {
         var baby = new BabyObject();
-        while (checkForCollisions(baby)) {
-            baby.setPosition(getRandomPos(baby));
-        }
+        baby.setPosition(getRandomPos(baby));
         babies.push(baby);
         document.dispatchEvent(birthEvt);
         //alert(this.getNumBabies());
     }
 
-    function checkForCollisions(baby_) {
+    /*function checkForCollisions(baby_) {
         for (var i in babies) {
             if(circlesDoCollide(babies[i], baby_))
                 return true;
         }
         return false;
-    }
+    }*/
 
     function getRandomPos(baby) {
         var position = {

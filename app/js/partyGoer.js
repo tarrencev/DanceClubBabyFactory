@@ -4,6 +4,7 @@ var PartyGoerObject = function(type_) {
     this.type = type_;
     this.radius = 8;
     this.beenToParty = false;
+    this.leaving = false;
 
     this.init();
 };
@@ -82,6 +83,18 @@ PartyGoerObject.prototype.checkHasBeenToParty = function() {
 
 PartyGoerObject.prototype.hasBeenToParty = function() {
     this.beenToParty = true;
+};
+
+PartyGoerObject.prototype.checkLeaving = function() {
+    return this.leaving;
+};
+
+PartyGoerObject.prototype.isLeaving = function() {
+    this.leaving = true;
+};
+
+PartyGoerObject.prototype.notLeaving = function() {
+    this.leaving = false;
 };
 
 PartyGoerObject.prototype.removeFromStage = function() {

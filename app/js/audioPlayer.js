@@ -48,6 +48,7 @@ var AudioPlayerObject = function(){
         } else {
             playing = true;
             playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
+            gameObject.getGoerGen().backToParty();
         }
         if (stopped) {
             gameObject.resetGame();
