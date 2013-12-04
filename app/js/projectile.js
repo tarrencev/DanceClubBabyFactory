@@ -17,12 +17,12 @@ ProjectileObject.prototype.drawProjectile = function() {
     this.projectile = new createjs.Shape();
     this.projectile.x = CONSTANTS.WIDTH/2;
     this.projectile.y = CONSTANTS.HEIGHT/2;
-    if (this.type == LO) {
+    if (this.type === LO) {
         this.projectile.graphics
                        .beginStroke('#fff')
                        .beginFill('#FFFF00')
                        .drawPolyStar(0, 0, this.radius, 5, 0.6, 0);
-    } else if (this.type = HUD) {
+    } else if (this.type === HUD) {
         this.projectile.graphics
                        .beginStroke('#fff')
                        .beginFill('#FFFF00')
