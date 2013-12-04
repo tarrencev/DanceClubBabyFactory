@@ -10,7 +10,8 @@ var GameObject = function() {
         copGen,
         projectiles,
         damage,
-        hud; //TEMP REMOVE ME variable
+        hud,
+        title;
         
     var instance = this;
 
@@ -234,6 +235,10 @@ var GameObject = function() {
 
     this.getProjectiles = function() {
         return projectiles;
+    };
+
+    this.getTitle = function() {
+        return title;
     };
     
     this.resetGame = function() {

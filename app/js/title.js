@@ -1,4 +1,6 @@
 var TitleObject = function(new_stage){
+    var box, title, instr1, instr2, button, start;
+
     //private funcs
     function init() {
         $('.HUD').hide();
@@ -62,16 +64,14 @@ var TitleObject = function(new_stage){
                       CONSTANTS.HEIGHT / 7 + 110,
                       100,
                       30);
-        button.addEventListener("click", change_stage);
         stage.addChild(button);
 
-        start = new createjs.Text("start",
+        start = new createjs.Text("loading ...",
                                   "20px Georgia",
                                   "#000");
-        start.x = CONSTANTS.WIDTH / 3 + 302;
+        start.x = CONSTANTS.WIDTH / 3 + 282;
         start.y = CONSTANTS.HEIGHT / 7 + 130;
         start.textBaseline = "alphabetic";
-        start.addEventListener("click", change_stage);
         stage.addChild(start);
     }
 
@@ -89,6 +89,13 @@ var TitleObject = function(new_stage){
       preloaded_songs = {};
       preloaded_songs['Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3'] = new SoundObject('Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3');
     }
+
+    this.makeReadyForStart = function() {
+        start.text = "start";
+        start.x = CONSTANTS.WIDTH / 3 + 302;
+        start.addEventListener("click", change_stage);
+        button.addEventListener("click", change_stage);
+    };
 
     init();
 };

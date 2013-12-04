@@ -84,8 +84,10 @@ var SoundObject = function(track){
 
             // calculate the number of array elements that represent each circle
             freqChunk = bandPass1AnalyserNode.frequencyBinCount;
+            gameObject.getTitle().makeReadyForStart();
         }
         console.log("loaded"+event.src);
+
     }
 
     function initLowPassFilter(context, dynamicsNode) {
