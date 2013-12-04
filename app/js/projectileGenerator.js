@@ -24,7 +24,7 @@ var ProjectileGeneratorObject = function() {
         blockedEvt.initEvent('blocked', true, true);
 
         document.addEventListener("lpPulse", lpPulseHandler, false);
-        document.addEventListener("hpPulse", hpPulseHandler, false);
+        //document.addEventListener("hpPulse", hpPulseHandler, false);
         document.addEventListener("oneKey", firePowerUp, false);
     }
 
@@ -191,6 +191,8 @@ var ProjectileGeneratorObject = function() {
                 blockProjectile(i);
             }
         }
+        
+        ticksSinceProjectile++;
     };
 
     this.getProjectiles = function() {
