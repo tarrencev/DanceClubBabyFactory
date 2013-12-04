@@ -7,7 +7,7 @@ var canvas, stage, preloaded_songs;
 var volumeModifier = 50;
 var speedModifier = 1;
 
-var SLOWDOWNCOST = 50;
+var SLOWDOWNCOST = 25;
 
 function getRandomSign() {
     if(Math.random() > 0.5)
@@ -23,6 +23,10 @@ var spaceKey = document.createEvent('Event');
 spaceKey.initEvent('spaceKey', true, true);
 var oneKey = document.createEvent('Event');
 oneKey.initEvent('oneKey', true, true);
+var twoKey = document.createEvent('Event');
+twoKey.initEvent('twoKey', true, true);
+var threeKey = document.createEvent('Event');
+threeKey.initEvent('threeKey', true, true);
 
 $(document).keydown(function(e) {
 	if (e.keyCode === 38) {
@@ -33,7 +37,10 @@ $(document).keydown(function(e) {
 		e.preventDefault(); // Prevents activating button twice
 		document.dispatchEvent(spaceKey);
 	} else if (e.keyCode === 49) {
-		// console.log('one');
 		document.dispatchEvent(oneKey);
+	} else if (e.keyCode === 50) {
+		document.dispatchEvent(twoKey);
+	} else if (e.keyCode === 51) {
+		document.dispatchEvent(threeKey);
 	}
 });

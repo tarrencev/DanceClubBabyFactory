@@ -10,13 +10,9 @@ var GameObject = function() {
         copGen,
         projectiles,
         damage,
-        highScore = 0,
-        hud,
-        stars = 0; //TEMP REMOVE ME variable
+        hud; //TEMP REMOVE ME variable
         
     var instance = this;
-
-    var slowMoShown = false;
 
     //private funcs
     function init() {
@@ -45,16 +41,10 @@ var GameObject = function() {
         background = new BackgroundObject();
 
         title = new TitleObject(game);
-        document.addEventListener("oneKey", removePowerUp, false);
     }
 
     function title_tick() {
       stage.update();
-    }
-
-    function removePowerUp(event) {
-        slowMoShown = false;
-        hud.removePowerUp('slowmo');
     }
 
     function game() {
@@ -64,9 +54,6 @@ var GameObject = function() {
         createjs.Ticker.removeEventListener('tick', title_tick);
         createjs.Ticker.addEventListener('tick', tick);
         createjs.Ticker.setFPS(30);
-
-        //init hud
-        hud = new HudObject();
 
         //init audio player
         audioPlayer = new AudioPlayerObject();
@@ -89,13 +76,14 @@ var GameObject = function() {
         //init the fuzz
         copGen = new CopGenObject();
 
+        //init hud
+        hud = new HudObject();
+
         damage = 0;
         
         document.addEventListener("mousemove", mouseMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
         document.addEventListener("violation", violationHandler, false);
-        document.addEventListener("blocked", blockedHandler, false);
-        document.addEventListener("birth", birthHandler, false);
     }
 
     //same as perform_logic() in zenilib
@@ -134,10 +122,10 @@ var GameObject = function() {
             }
         }
 
-        if(stars > 25 && !slowMoShown) {
-            slowMoShown = true;
-            hud.addPowerUp('slowmo');
-        }
+        // if(stars > 25 && !slowMoShown) {
+        //     slowMoShown = true;
+        //     hud.addPowerUp('slowmo');
+        // }
     }
 
     function onResize() {
@@ -186,7 +174,6 @@ var GameObject = function() {
             damage = damagePts;
         }
         damage = Math.min(100, damage);
-        document.getElementById("risk").innerHTML = damage;
         background.drawDamage(damage);
     }
 
@@ -202,14 +189,6 @@ var GameObject = function() {
                 audioPlayer.stopPlayback();
             }
         }
-    }
-    
-    function blockedHandler(event) {
-        instance.incrementStars();
-    }
-    
-    function birthHandler(event) {
-        instance.updateScore(babyRepo.getNumBabies());
     }
 
     //public funcs
@@ -257,30 +236,8 @@ var GameObject = function() {
         return projectiles;
     };
     
-    this.updateScore = function(score) {
-        document.getElementById("score").innerHTML = score;
-        highScore = Math.max(highScore, score);
-        document.getElementById("highScore").innerHTML = highScore;
-    };
-
-    this.incrementStars = function() {
-        stars++;
-        document.getElementById("stars").innerHTML = stars;
-    };
-
-    this.getNumStars = function() {
-        return stars;
-    };
-
-    this.setNumStars = function(value) {
-        stars = value;
-        document.getElementById("stars").innerHTML = stars;
-    };
-    
     this.resetGame = function() {
         setDamage(0, true);
-        this.setNumStars(0);
-        this.updateScore(0);
         babyRepo.reset();
         projectiles.reset();
         goerGen.reset();
