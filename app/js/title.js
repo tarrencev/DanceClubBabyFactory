@@ -102,25 +102,6 @@ var TitleObject = function(new_stage){
         stage.addChild(instructionText);
     }
 
-    function drawStartButton() {
-        button = new createjs.Shape();
-        button.graphics
-            .beginFill('#FFBA36')
-            .drawRect(CONSTANTS.WIDTH / 3 + 275,
-                      CONSTANTS.HEIGHT / 7 + 280,
-                      100,
-                      30);
-        stage.addChild(button);
-
-        start = new createjs.Text("loading ...",
-                                  "20px Georgia",
-                                  "#000");
-        start.x = CONSTANTS.WIDTH / 3 + 282;
-        start.y = CONSTANTS.HEIGHT / 7 + 300;
-        start.textBaseline = "alphabetic";
-        stage.addChild(start);
-    }
-
     function change_stage() {
         $('.HUD').show();
         $('.audioControlsPane').show();
@@ -135,8 +116,20 @@ var TitleObject = function(new_stage){
     }
 
     this.makeReadyForStart = function() {
+        var button = new createjs.Shape();
+        button.alpha = 0.01;
+        button.x = CONSTANTS.WIDTH / 2;
+        button.y = CONSTANTS.HEIGHT / 4;
+        button.graphics
+            .beginFill('#FFFFFF')
+            .drawRect(0,
+                      0,
+                      200,
+                      80);
+        stage.addChild(button);
         yay.text = "play!";
-        yay.addEventListener("click", change_stage);
+        button.addEventListener("click", change_stage);
+        // yay.addEventListener("click", change_stage);
     };
 
     this.progress = function() {

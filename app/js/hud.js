@@ -64,7 +64,7 @@ var HudObject = function(){
         starsText.y = 38;
         starsText.textBaseline = "alphabetic";
         stage.addChild(starsText);
-        starsIcon = new ProjectileObject();
+        starsIcon = new ProjectileObject(HUD);
         starsIcon.setPosition({x: CONSTANTS.WIDTH/2 + 30, y: 30});
     }
 
