@@ -3,11 +3,19 @@ var CONSTANTS = {
   HEIGHT: 960
 };
 
+var STAGECENTER = {
+    x: function() { return CONSTANTS.WIDTH/2; },
+    y: function() { return CONSTANTS.HEIGHT/2; }
+};
+
+var HI = 1, LO = -1;
+
 var canvas, stage, preloaded_songs;
 var volumeModifier = 50;
 var speedModifier = 1;
 
 var SLOWDOWNCOST = 25;
+var EXTENZECOST = 50;
 
 function getRandomSign() {
     if(Math.random() > 0.5)

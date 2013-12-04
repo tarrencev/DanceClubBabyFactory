@@ -10,7 +10,8 @@ var GameObject = function() {
         copGen,
         projectiles,
         damage,
-        hud; //TEMP REMOVE ME variable
+        hud,
+        title;
         
     var instance = this;
 
@@ -37,8 +38,6 @@ var GameObject = function() {
             createjs.Ticker.addEventListener('tick', title_tick);
         }
         createjs.Ticker.setFPS(30);
-
-        background = new BackgroundObject();
 
         title = new TitleObject(game);
     }
@@ -88,12 +87,14 @@ var GameObject = function() {
 
     //same as perform_logic() in zenilib
     function tick() {
-        stage.update();
         projectiles.tick();
         copGen.tick();
+        background.tick();
 
         if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
-            copGen.addCop();
+            if (Math.random() < (damage / 200.0)) {
+                copGen.addCop();
+            }
         }
     
         if (audioPlayer.isPlaying()) {
@@ -123,6 +124,8 @@ var GameObject = function() {
         //     slowMoShown = true;
         //     hud.addPowerUp('slowmo');
         // }
+        
+        stage.update();
     }
 
     function onResize() {
@@ -181,7 +184,6 @@ var GameObject = function() {
     function violationHandler(event) {
         if (audioPlayer.isPlaying()) {
             setDamage(5);
-            instance.setNumStars(parseInt(instance.getNumStars()*3/4, 10));
             if (getDamage() >= 100) {
                 audioPlayer.stopPlayback();
             }
@@ -213,6 +215,14 @@ var GameObject = function() {
         return babyRepo;
     };
 
+    this.getCopGen = function() {
+        return copGen;
+    };
+
+    this.getPartyGoerGen = function() {
+        return goerGen;
+    };
+
     this.getGoerGen = function() {
         return goerGen;
     };
@@ -223,6 +233,10 @@ var GameObject = function() {
 
     this.getProjectiles = function() {
         return projectiles;
+    };
+
+    this.getTitle = function() {
+        return title;
     };
     
     this.resetGame = function() {
