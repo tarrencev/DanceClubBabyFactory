@@ -1,48 +1,48 @@
 var PowerUpHudObject = function(){
-    this.titleColor = "#FF00FF";
-    this.font = "Arial";
-    this.top = 100;
+    this.powerUps = new createjs.Container();
 };
 
 PowerUpHudObject.prototype.drawSlowMotion = function() {
-    this.drawPowerUpTitle("1 Slow Motion");
-    this.drawPowerUpCost(SLOWDOWNCOST);
-    this.animateIn();
+    this.slowmoTitle = this.drawPowerUpTitle(0, "1 Slow Motion", "#ff00ff");
+    this.slowmoSubtext = this.drawPowerUpCost(0, SLOWDOWNCOST);
 };
 
-PowerUpHudObject.prototype.drawPowerUpTitle = function(text) {
-    this.title = new createjs.Text(text,
-                              "20px " + this.font,
-                              this.titleColor);
-    this.title.alpha = 0.2;
-    this.title.x = CONSTANTS.WIDTH - 150;
-    this.title.y = this.top+40;
-    this.title.textBaseline = "alphabetic";
+PowerUpHudObject.prototype.drawDrugLord = function() {
+    this.drugLordTitle = this.drawPowerUpTitle(1, "2 Drug Lord", "#33ff00");
+    this.drugLordSubtext = this.drawPowerUpCost(1, 50);
 };
 
-PowerUpHudObject.prototype.drawPowerUpCost = function(cost) {
-    this.subtext = new createjs.Text('x ' + cost,
-                              "16px " + this.font,
+PowerUpHudObject.prototype.drawExtenze = function() {
+    this.extenzeTitle = this.drawPowerUpTitle(2, "3 ExtenZe", "#00ffff");
+    this.extenzeSubtext = this.drawPowerUpCost(2, 50);
+};
+
+PowerUpHudObject.prototype.drawPowerUpTitle = function(index, text, color) {
+    var title = new createjs.Text(text,
+                              "20px Helvetica",
+                              color);
+    title.x = CONSTANTS.WIDTH - 150;
+    title.y = 40 + index * 70;
+    title.textBaseline = "alphabetic";
+    stage.addChild(title);
+
+    return title;
+};
+
+PowerUpHudObject.prototype.drawPowerUpCost = function(index, cost) {
+    var subtext = new createjs.Text('x ' + cost,
+                              "16px Helvetica",
                               "#FFFFFF");
-    this.subtext.alpha = 0.2;
-    this.subtext.x = CONSTANTS.WIDTH - 100;
-    this.subtext.y = this.top+65;
-    this.subtext.textBaseline = "alphabetic";
-    this.star = new ProjectileObject();
-    this.star.setPosition({x: CONSTANTS.WIDTH - 120, y: this.top+60});
-};
+    subtext.x = CONSTANTS.WIDTH - 100;
+    subtext.y = 65 + index * 70;
+    subtext.textBaseline = "alphabetic";
+    var star = new ProjectileObject();
+    star.setPosition({x: CONSTANTS.WIDTH - 120, y: 60 + index * 70});
+    stage.addChild(subtext);
 
-PowerUpHudObject.prototype.animateIn = function() {
-    createjs.Tween.get(this.title).to({alpha:1}, 1000);
-    createjs.Tween.get(this.subtext).to({alpha:1}, 1000);
-    stage.addChild(this.title);
-    stage.addChild(this.subtext);
+    return {subtext: subtext, star: star};
 };
 
 PowerUpHudObject.prototype.destroy = function() {
-    createjs.Tween.get(this.title).to({alpha:0}, 1000);
-    createjs.Tween.get(this.subtext).to({alpha:0}, 1000);
-    stage.removeChild(this.title);
-    stage.removeChild(this.subtext);
-    stage.removeChild(this.star.getShape());
+
 };
