@@ -3,13 +3,16 @@ var DoorObject = function(){
     var door, doorGuide;
     var doorPosition = 0;
     var radius = 250;
-    var doorWidth = Math.PI/4; // in radians
     var doorThickness = 16;
+    var doorWidth = Math.PI/6; // in radians
+    var stars = 0;
 
     //private funcs
     function init() {
         drawDoorGuide();
         drawDoor();
+        document.addEventListener("blocked", function(){stars++;}, false);
+        document.addEventListener("twoKey", extenzeDoor, false);
     }
 
     function drawDoor() {
@@ -38,6 +41,23 @@ var DoorObject = function(){
         doorGuide.cache(CONSTANTS.WIDTH/2 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
 
         stage.addChild(doorGuide);
+    }
+
+    function extenzeDoor() {
+        if(stars >= EXTENZECOST) {
+            door.graphics.clear();
+            door.graphics.beginStroke('#6d6e71')
+                        .setStrokeStyle(doorThickness)
+                        .arc(0, 0, radius, -doorWidth * 3/4, doorWidth * 3/4)
+                        .endStroke();
+        }
+        setInterval(function() {
+            door.graphics.clear();
+            door.graphics.beginStroke('#6d6e71')
+                    .setStrokeStyle(doorThickness)
+                    .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
+                    .endStroke();
+        } , 5000);
     }
 
     //public funcs

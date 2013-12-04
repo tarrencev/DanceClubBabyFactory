@@ -129,6 +129,7 @@ var ProjectileGeneratorObject = function() {
         // var juice = new JuicySplosion(powerUps.getChildAt(index).getPosition(), 50, "#FF00FF");
         // gameObject.incrementStars();
         // removePowerUp(index);
+        console.log('slow motion');
         sloMoActive = true;
         var enterEasing = setInterval(function() {
             speedModifier = speedModifier*0.99 + 0.75*0.01;
@@ -146,11 +147,12 @@ var ProjectileGeneratorObject = function() {
                 if (speedModifier > 0.99) {
                     speedModifier = 1;
                     clearInterval(exitEasing);
+                    sloMoActive = false;
                 }
                 document.LOLaudio.playbackRate.value = speedModifier;
             }, 10);
-        }, 10000);
-        sloMoActive = false;
+            
+        }, 8000);
     }
 
     //public funcs

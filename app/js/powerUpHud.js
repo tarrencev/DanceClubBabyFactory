@@ -7,14 +7,14 @@ PowerUpHudObject.prototype.drawSlowMotion = function() {
     this.slowmoSubtext = this.drawPowerUpCost(0, SLOWDOWNCOST);
 };
 
-PowerUpHudObject.prototype.drawDrugLord = function() {
-    this.drugLordTitle = this.drawPowerUpTitle(1, "2 Drug Lord", "#33ff00");
-    this.drugLordSubtext = this.drawPowerUpCost(1, 50);
-};
+// PowerUpHudObject.prototype.drawDrugLord = function() {
+//     this.drugLordTitle = this.drawPowerUpTitle(2, "2 Drug Lord", "#33ff00");
+//     this.drugLordSubtext = this.drawPowerUpCost(2, 50);
+// };
 
 PowerUpHudObject.prototype.drawExtenze = function() {
-    this.extenzeTitle = this.drawPowerUpTitle(2, "3 ExtenZe", "#00ffff");
-    this.extenzeSubtext = this.drawPowerUpCost(2, 50);
+    this.extenzeTitle = this.drawPowerUpTitle(1, "2 ExtenZe", "#00ffff");
+    this.extenzeSubtext = this.drawPowerUpCost(1, EXTENZECOST);
 };
 
 PowerUpHudObject.prototype.drawPowerUpTitle = function(index, text, color) {
