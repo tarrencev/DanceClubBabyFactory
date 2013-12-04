@@ -237,6 +237,14 @@ var GameObject = function() {
         return babyRepo;
     };
 
+    this.getCopGen = function() {
+        return copGen;
+    };
+
+    this.getPartyGoerGen = function() {
+        return goerGen;
+    };
+
     this.getGoerGen = function() {
         return goerGen;
     };
