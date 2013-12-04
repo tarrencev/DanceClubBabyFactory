@@ -4,6 +4,7 @@ var PartyGoerGenObject = function() {
     var people = [];
     var dealers =[];
     var teens = [];
+    var everyoneNeedtoLeave = false;
 
     //private funcs
     function drawPartyGoer() {
@@ -61,6 +62,7 @@ var PartyGoerGenObject = function() {
         var babyRepoPosition = babyRepo.getPosition();
         var babyRepoRadius = babyRepo.getRadius();
         var doorRadius = gameObject.getDoor().getRadius();
+        var distance;
         var pos;
 
         /*for (var i in people) {
@@ -72,7 +74,7 @@ var PartyGoerGenObject = function() {
         }*/
         
         for (var j in people) {
-            var distance = getDistance(people[j], babyRepo);
+            distance = getDistance(people[j], babyRepo);
             if (distance < doorRadius) {
                 people[j].hasBeenToParty();
             }
@@ -87,6 +89,18 @@ var PartyGoerGenObject = function() {
                 pos = getRandomPosInParty();
                 createjs.Tween.get(people[j].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[j], pos), createjs.Ease.linear);
             }
+        }
+
+        if (everyoneNeedtoLeave) {
+            kickEveryoneOut();
+        }
+    }
+
+    function kickEveryoneOut() {
+        for (var i in people) {
+            createjs.Tween.removeTweens(people[i].getShape());
+            pos = getRandomPosOutside();
+            createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
         }
     }
 
@@ -126,11 +140,11 @@ var PartyGoerGenObject = function() {
             }
         }
         
-        //leave policy TBD
         /*var overflow = getPartySize() - gameObject.getPartyLimit();
         for (var j = 0; j < overflow; j++) {
+            people[i].isLeaving();
             createjs.Tween.removeTweens(people[i].getShape());
-            pos = getRandomPosOutside();
+            pos = getRandomEdgePos();
             createjs.Tween.get(people[j].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
         }*/
     }
@@ -240,14 +254,16 @@ var PartyGoerGenObject = function() {
     };
     
     this.makeEveryoneLeave = function() {
-        for (var i in people) {
-            createjs.Tween.removeTweens(people[i].getShape());
-            pos = getRandomPosOutside();
-            createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
-        }
+        everyoneNeedtoLeave = true;
+        kickEveryoneOut();
+    };
+
+    this.backToParty = function() {
+        everyoneNeedtoLeave = false;
     };
     
     this.reset = function() {
+        
         for (var i in people) {
             people[i].removeFromStage();
         }
