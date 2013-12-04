@@ -86,18 +86,19 @@ var TitleObject = function(new_stage){
         instructionTitle.textBaseline = "alphabetic";
         stage.addChild(instructionTitle);
 
-        instructionText = new createjs.Text("thow the craziest party in town\n" +
-                                   "catch the stars as they shoot to the music\n" +
-                                   "the more you catch, the more partiers will come\n" +
-                                   "but miss them and you might alert the cops\n" +
-                                   "use your stars to purchase powerups\n" +
-                                   "increase the volume to increase the difficulty\n" +
-                                   "the louder the party, the more partiers will come\n" +
-                                   "partiers produce babies, the more babies, the better",
-                                  "20px Helvetica",
-                                  "#FFFFFF");
+        instructionText = new createjs.Text("throw the craziest party in town\n" +
+                             "while running your illegal, for-profit orphange\n\n" +
+                             "catch the stars as they shoot to the beat of the music\n" +
+                             "miss too many of them and the cops will shut you down\n" +
+                             "use your stars to purchase powerups\n\n" +
+                             "increase the volume to increase the difficulty\n" +
+                             "the louder the party, the more partiers will come\n\n" + // need to implement this
+                             "partiers will produce babies for you, which means profit!",
+                            "20px Helvetica",
+                            "#FFFFFF");
         instructionText.x = CONSTANTS.WIDTH / 2 + 40;
         instructionText.y = CONSTANTS.HEIGHT / 2;
+        instructionText.lineHeight = 24;
         instructionText.textBaseline = "alphabetic";
         stage.addChild(instructionText);
     }

@@ -163,6 +163,7 @@ var ProjectileGeneratorObject = function() {
     };
 
     this.reset = function() {
+        stars = 0;
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             stage.removeChild(projectiles.getChildAt(i).getShape());
             projectiles.removeChildAt(i);
