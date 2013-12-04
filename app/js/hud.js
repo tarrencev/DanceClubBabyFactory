@@ -26,7 +26,7 @@ var HudObject = function(){
                                             }, false);
         document.addEventListener("twoKey", function(){
                                                 if(stars >= EXTENZECOST) {
-                                                    renderTextAlert('ExtenZe');
+                                                    renderTextAlert('Extenze');
                                                     decrementStarsBy(EXTENZECOST);
                                                 }
                                             }, false);

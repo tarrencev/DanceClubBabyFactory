@@ -13,7 +13,7 @@ PowerUpHudObject.prototype.drawSlowMotion = function() {
 // };
 
 PowerUpHudObject.prototype.drawExtenze = function() {
-    this.extenzeTitle = this.drawPowerUpTitle(1, "2 ExtenZe", "#00ffff");
+    this.extenzeTitle = this.drawPowerUpTitle(1, "2 Extenze", "#00ffff");
     this.extenzeSubtext = this.drawPowerUpCost(1, EXTENZECOST);
 };
 

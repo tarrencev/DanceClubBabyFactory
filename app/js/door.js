@@ -51,14 +51,17 @@ var DoorObject = function(){
             door.graphics.clear();
             door.graphics.beginStroke('#6d6e71')
                         .setStrokeStyle(doorThickness)
-                        .arc(0, 0, radius, -doorWidth * 3/4, doorWidth * 3/4)
+                        .arc(0, 0, radius, -doorWidth/2 * 3/2, doorWidth/2 * 3/2)
                         .endStroke();
+            doorWidth = Math.PI/6 * 3/2;
             setTimeout(function() {
+                doorWidth = Math.PI/6;
                 door.graphics.clear();
                 door.graphics.beginStroke('#6d6e71')
                         .setStrokeStyle(doorThickness)
                         .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                         .endStroke();
+                
                 extenzeActive = false;
             } , 5000);
         }
