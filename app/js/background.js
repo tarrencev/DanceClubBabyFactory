@@ -57,7 +57,7 @@ var BackgroundObject = function(){
             count = 0;
         }
         count++;
-        if (dataDiff > 4) {
+        if (dataDiff > 1) {
             //console.log(dataDiff);
             newRing = new createjs.Shape();
             newRing.graphics.beginStroke('rgba(241,90,41,0.1)')
