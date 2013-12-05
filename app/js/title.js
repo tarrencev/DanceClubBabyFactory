@@ -1,98 +1,112 @@
 var TitleObject = function(new_stage){
     var box, title, instr1, instr2, button, start, yay;
+    var recordOutline, recordTracks, recordLabel;
 
     //private funcs
     function init() {
         $('.HUD').hide();
-        drawBox();
+        // drawBox();
+        drawRecordOutline();
+        drawRecordTracks();
+        drawRecordLabel();
         drawTitle();
+        drawLoadingText();
         drawInstructions();
-        drawStartButton();
         preload_songs();
     }
 
-    function drawBox() {
-        var position = {
-            x: CONSTANTS.WIDTH/2,
-            y: CONSTANTS.HEIGHT/2
-        };
+    function drawRecordOutline() {
+        recordOutline = new createjs.Shape();
+        recordOutline.graphics.beginStroke('#ffffff')
+            .setStrokeStyle(8)
+            .arc(CONSTANTS.WIDTH/4, CONSTANTS.HEIGHT/2, 250, 0, 2 * Math.PI);
+        recordOutline.cache(CONSTANTS.WIDTH/4 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
 
-        box = new createjs.Shape();
-        box.x = position.x;
-        box.y = position.y;
-        box.graphics
-           .beginFill("#44a")
-           .drawRoundRect(-CONSTANTS.WIDTH / 2 + 50, -CONSTANTS.HEIGHT / 2 + 50, CONSTANTS.WIDTH - 100, CONSTANTS.HEIGHT - 100, 10);
-        stage.addChild(box);
+        stage.addChild(recordOutline);
     }
 
-    function drawTitle() {
-        title = new createjs.Text("the\ninfinite\ndubstep\nbaby\nfactory",
-                                  "bold 85px Georgia",
-                                  "#38DFF9");
-        title.alpha = 0.4;
-        title.x = CONSTANTS.WIDTH / 6;
-        title.y = CONSTANTS.HEIGHT / 6;
-        title.textBaseline = "alphabetic";
-        stage.addChild(title);
+    function drawRecordTracks() {
+        for (var i = 100; i < 248; i += 4) {
+            recordTracks = new createjs.Shape();
+            if(i%18 === 0) {
+                recordTracks.graphics.beginStroke('#111111')
+                    .setStrokeStyle(4)
+                    .arc(CONSTANTS.WIDTH/4, CONSTANTS.HEIGHT/2, i, 0, 2 * Math.PI);
+            } else {
+                recordTracks.graphics.beginStroke('#333333')
+                    .setStrokeStyle(1)
+                    .arc(CONSTANTS.WIDTH/4, CONSTANTS.HEIGHT/2, i, 0, 2 * Math.PI);
+            }
+            recordTracks.cache(CONSTANTS.WIDTH/4 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
 
-        yay = new createjs.Text("loading .",
-                                "bold 65px Georgia",
-                                "#88DFF9");
-        yay.alpha = 0.2;
-        yay.x = 3.3 * CONSTANTS.WIDTH / 6;
-        yay.y = CONSTANTS.HEIGHT / 2;
+            stage.addChild(recordTracks);
+        }
+    }
+
+    function drawRecordLabel() {
+        recordLabel = new createjs.Shape();
+        recordLabel.graphics.beginStroke('#FF33FF')
+            .setStrokeStyle(80)
+            .arc(CONSTANTS.WIDTH/4, CONSTANTS.HEIGHT/2, 30, 0, 2 * Math.PI);
+        recordLabel.cache(CONSTANTS.WIDTH/4 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
+
+        stage.addChild(recordLabel);
+    }
+
+    function drawLoadingText() {
+        yay = new createjs.Text("loading..",
+                                "bold 65px Helvetica",
+                                "#FFFFFF");
+
+        // yay.alpha = 0.2;
+        yay.x = CONSTANTS.WIDTH / 2;
+        yay.y = CONSTANTS.HEIGHT / 4;
         yay.textBasline = "alphabetic";
         stage.addChild(yay);
     }
 
-    function drawInstructions() {
-        instr1 = new createjs.Text("1. move the mouse to control the door\n" +
-                                   "   (block the stars that come out!)",
-                                   "20px Georgia",
-                                   "#38DFF9");
-        instr1.x = CONSTANTS.WIDTH / 3 + 250;
-        instr1.y = CONSTANTS.HEIGHT / 7 + 50;
-        instr1.textBaseline = "alphabetic";
-        stage.addChild(instr1);
-
-        instr2 = new createjs.Text("2. hit 1 to slow down the stars\n" +
-                                   "       2 toextend the paddle\n" +
-                                   "          space to play/pause the music\n" +
-                                   "          up/down to control the volume",
-                                  "20px Georgia",
-                                  "#38DFF9");
-        instr2.x = CONSTANTS.WIDTH / 3 + 250;
-        instr2.y = CONSTANTS.HEIGHT / 7 + 100;
-        instr2.textBaseline = "alphabetic";
-        stage.addChild(instr2);
+    function drawTitle() {
+        title = new createjs.Text("the\ninfinite\ndubstep\nbaby\nfactory",
+                                  "bold 75px Helvetica",
+                                  "#FFFFFF");
+        title.alpha = 1.0;
+        title.textAlign = "center";
+        title.textBaseline = "middle";
+        title.x = CONSTANTS.WIDTH/4;
+        title.y = CONSTANTS.HEIGHT/4;
+        stage.addChild(title);
     }
 
-    function drawStartButton() {
-        button = new createjs.Shape();
-        button.graphics
-            .beginFill('#FFBA36')
-            .drawRect(CONSTANTS.WIDTH / 3 + 275,
-                      CONSTANTS.HEIGHT / 7 + 280,
-                      100,
-                      30);
-        stage.addChild(button);
+    function drawInstructions() {
+        instructionTitle = new createjs.Text("instructions:",
+                                   "bold 25px Helvetica",
+                                   "#FFFFFF");
+        instructionTitle.x = CONSTANTS.WIDTH / 2 + 20;
+        instructionTitle.y = CONSTANTS.HEIGHT / 2 - 30;
+        instructionTitle.textBaseline = "alphabetic";
+        stage.addChild(instructionTitle);
 
-        start = new createjs.Text("loading ...",
-                                  "20px Georgia",
-                                  "#000");
-        start.x = CONSTANTS.WIDTH / 3 + 282;
-        start.y = CONSTANTS.HEIGHT / 7 + 300;
-        start.textBaseline = "alphabetic";
-        stage.addChild(start);
+        instructionText = new createjs.Text("throw the craziest party in town\n" +
+                             "while running your illegal, for-profit orphange\n\n" +
+                             "catch the stars as they shoot to the beat of the music\n" +
+                             "miss too many of them and the cops will shut you down\n" +
+                             "use your stars to purchase powerups\n\n" +
+                             "increase the volume to increase the difficulty\n" +
+                             "the louder the party, the more partiers will come\n\n" + // need to implement this
+                             "partiers will produce babies for you, which means profit!",
+                            "20px Helvetica",
+                            "#FFFFFF");
+        instructionText.x = CONSTANTS.WIDTH / 2 + 40;
+        instructionText.y = CONSTANTS.HEIGHT / 2;
+        instructionText.lineHeight = 24;
+        instructionText.textBaseline = "alphabetic";
+        stage.addChild(instructionText);
     }
 
     function change_stage() {
         $('.HUD').show();
         $('.audioControlsPane').show();
-        //var audio = stage.getChildByName('audio');
         stage.removeAllChildren();
-        //stage.addChild(audio);
         new_stage();
         stage.update();
     }
@@ -103,11 +117,20 @@ var TitleObject = function(new_stage){
     }
 
     this.makeReadyForStart = function() {
-        yay.text = "yay!";
-        start.text = "start";
-        start.x = CONSTANTS.WIDTH / 3 + 302;
-        start.addEventListener("click", change_stage);
+        var button = new createjs.Shape();
+        button.alpha = 0.01;
+        button.x = CONSTANTS.WIDTH / 2;
+        button.y = CONSTANTS.HEIGHT / 4;
+        button.graphics
+            .beginFill('#FFFFFF')
+            .drawRect(0,
+                      0,
+                      200,
+                      80);
+        stage.addChild(button);
+        yay.text = "play!";
         button.addEventListener("click", change_stage);
+        // yay.addEventListener("click", change_stage);
     };
 
     this.progress = function() {

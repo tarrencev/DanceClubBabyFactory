@@ -15,7 +15,11 @@ var volumeModifier = 50;
 var speedModifier = 1;
 
 var SLOWDOWNCOST = 25;
-var EXTENZECOST = 50;
+var EXTENZECOST = 25;
+
+var colors = [	"rgba(204, 51, 255, 0.15)", "rgba(0, 153, 255, 0.15)", 
+				"rgba(255, 255, 51, 0.15)", "rgba(0, 255, 102, 0.15)",
+				"rgba(204, 0, 153, 0.15)", "rgba(0, 51, 153, 0.15)"	];
 
 function getRandomSign() {
     if(Math.random() > 0.5)
@@ -37,9 +41,9 @@ var threeKey = document.createEvent('Event');
 threeKey.initEvent('threeKey', true, true);
 
 $(document).keydown(function(e) {
-	if (e.keyCode === 38) {
+	if (e.keyCode === 38 || e.keyCode === 87) {
 		document.dispatchEvent(upKey);
-	} else if (e.keyCode === 40) {
+	} else if (e.keyCode === 40 || e.keyCode === 81) {
 		document.dispatchEvent(downKey);
 	} else if (e.keyCode === 32) {
 		e.preventDefault(); // Prevents activating button twice

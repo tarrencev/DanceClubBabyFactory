@@ -13,7 +13,7 @@ PowerUpHudObject.prototype.drawSlowMotion = function() {
 // };
 
 PowerUpHudObject.prototype.drawExtenze = function() {
-    this.extenzeTitle = this.drawPowerUpTitle(1, "2 ExtenZe", "#00ffff");
+    this.extenzeTitle = this.drawPowerUpTitle(1, "2 Extenze", "#00ffff");
     this.extenzeSubtext = this.drawPowerUpCost(1, EXTENZECOST);
 };
 
@@ -36,7 +36,7 @@ PowerUpHudObject.prototype.drawPowerUpCost = function(index, cost) {
     subtext.x = CONSTANTS.WIDTH - 100;
     subtext.y = 65 + index * 70;
     subtext.textBaseline = "alphabetic";
-    var star = new ProjectileObject();
+    var star = new ProjectileObject(HUD);
     star.setPosition({x: CONSTANTS.WIDTH - 120, y: 60 + index * 70});
     stage.addChild(subtext);
 

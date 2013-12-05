@@ -126,10 +126,6 @@ var ProjectileGeneratorObject = function() {
     }
 
     function gotPowerUp() {
-        // var juice = new JuicySplosion(powerUps.getChildAt(index).getPosition(), 50, "#FF00FF");
-        // gameObject.incrementStars();
-        // removePowerUp(index);
-        console.log('slow motion');
         sloMoActive = true;
         var enterEasing = setInterval(function() {
             speedModifier = speedModifier*0.99 + 0.75*0.01;
@@ -167,6 +163,7 @@ var ProjectileGeneratorObject = function() {
     };
 
     this.reset = function() {
+        stars = 0;
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             stage.removeChild(projectiles.getChildAt(i).getShape());
             projectiles.removeChildAt(i);
