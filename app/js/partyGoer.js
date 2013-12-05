@@ -1,10 +1,8 @@
 var PartyGoerObject = function(type_) {
     //private vars
-    //declare private vars here
     this.type = type_;
     this.radius = 8;
-    this.beenToParty = false;
-    this.leaving = false;
+    this.wantToParty = false;
 
     this.init();
 };
@@ -34,7 +32,7 @@ PartyGoerObject.prototype.drawGoer = function() {
     stage.addChild(this.goer);
 };
 
-PartyGoerObject.prototype.drawDrugDealer = function() {
+/*PartyGoerObject.prototype.drawDrugDealer = function() {
     this.goer = new createjs.Shape();
     this.goer.graphics
              .beginStroke('#a0a0a0')
@@ -54,7 +52,7 @@ PartyGoerObject.prototype.drawUnderAge = function() {
              .drawCircle(0, 0, this.radius);
 
     stage.addChild(this.goer);
-};
+};*/
 
 //public funs
 PartyGoerObject.prototype.setPosition = function(position) {
@@ -77,15 +75,19 @@ PartyGoerObject.prototype.getShape = function() {
     return this.goer;
 };
 
-PartyGoerObject.prototype.checkHasBeenToParty = function() {
-    return this.beenToParty;
+PartyGoerObject.prototype.checkWantToParty = function() {
+    return this.wantToParty;
 };
 
-PartyGoerObject.prototype.hasBeenToParty = function() {
-    this.beenToParty = true;
+PartyGoerObject.prototype.likeParty = function() {
+    this.wantToParty = true;
 };
 
-PartyGoerObject.prototype.checkLeaving = function() {
+PartyGoerObject.prototype.hateParty = function() {
+    this.wantToParty = false;
+};
+
+/*PartyGoerObject.prototype.checkLeaving = function() {
     return this.leaving;
 };
 
@@ -95,7 +97,7 @@ PartyGoerObject.prototype.isLeaving = function() {
 
 PartyGoerObject.prototype.notLeaving = function() {
     this.leaving = false;
-};
+};*/
 
 PartyGoerObject.prototype.removeFromStage = function() {
     stage.removeChild(this.goer);

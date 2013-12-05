@@ -3,9 +3,9 @@ var GameObject = function() {
     var sound,
         audioPlayer,
         background,
-        door,
         babyRepo,
         goerGen,
+        door,
         partyLimit = 10,
         copGen,
         projectiles,
@@ -102,17 +102,11 @@ var GameObject = function() {
             goerGen.tick();
         
             if (createjs.Ticker.getTicks() % 50 === 0) {
-                if (Math.random() < 0.05 ) {
-                    goerGen.addDrugDealer();
-                } else {
-                    goerGen.addPartyGoer();
-                }
+                goerGen.addPartyGoer();
             }
             if (createjs.Ticker.getTicks() % 50 === 0) {
                 if (goerGen.partySize() > 2) {
                     babyRepo.addBaby();
-                    if (goerGen.drugDealerInPartySize() && goerGen.drugDealerInPartySize() * Math.random() < 1)
-                        babyRepo.addBaby();
                 }
             }
             if (createjs.Ticker.getTicks() % 100 === 0) {
@@ -215,16 +209,12 @@ var GameObject = function() {
         return babyRepo;
     };
 
-    this.getCopGen = function() {
-        return copGen;
-    };
-
-    this.getPartyGoerGen = function() {
-        return goerGen;
-    };
-
     this.getGoerGen = function() {
         return goerGen;
+    };
+
+    this.getCopGen = function() {
+        return copGen;
     };
 
     this.getPartyLimit = function() {

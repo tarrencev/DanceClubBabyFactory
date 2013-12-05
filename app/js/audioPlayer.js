@@ -44,7 +44,7 @@ var AudioPlayerObject = function(){
         if(playing) {
             playing = false;
             playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
-            gameObject.getGoerGen().makeEveryoneLeave();
+            gameObject.getGoerGen().pause();
         } else {
             playing = true;
             playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
