@@ -79,6 +79,7 @@ var ProjectileGeneratorObject = function() {
             };
             projectile.setPosition(offsetPosition);
             createjs.Tween.get(projectile.getShape()).to(edgePos, (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
+            createjs.Tween.get(projectile.getShape(), {loop:true}).to({rotation: 20*Math.PI}, 80 + (250 * dataDiff) * 100/volumeModifier * 1/speedModifier);
             ticksSinceProjectile = 0;
             if (count++%10 === 0) {
                 rotateDirection *= getRandomSign(); // maybe direction every 10 shots

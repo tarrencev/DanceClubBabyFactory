@@ -19,7 +19,7 @@ var BabyRepoObject = function() {
         container.x = CONSTANTS.WIDTH/2;
         container.y = CONSTANTS.HEIGHT/2;
         container.graphics
-            .beginStroke('#ee2a7b')
+            .beginStroke('#df2b90')
             .setStrokeStyle(strokeWidth)
             .beginFill('#ec87b8')
             //.beginFill('#ffffff')

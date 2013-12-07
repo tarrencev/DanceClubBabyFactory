@@ -16,10 +16,15 @@ var speedModifier = 1;
 
 var SLOWDOWNCOST = 25;
 var EXTENZECOST = 25;
+var ECSTACYCOST = 50;
 
-var colors = [	"rgba(204, 51, 255, 0.15)", "rgba(0, 153, 255, 0.15)", 
-				"rgba(255, 255, 51, 0.15)", "rgba(0, 255, 102, 0.15)",
-				"rgba(204, 0, 153, 0.15)", "rgba(0, 51, 153, 0.15)"	];
+var colors = [	"rgba(204, 51, 255, ", "rgba(0, 153, 255, ", 
+				"rgba(255, 255, 51, ", "rgba(0, 255, 102, ",
+				"rgba(204, 0, 153, ", "rgba(0, 51, 153, )"	];
+
+function getRandomColorWithOpacity(opacity) {
+	return colors[Math.floor(Math.random() * colors.length)] + opacity + ")";
+}
 
 function getRandomSign() {
     if(Math.random() > 0.5)
