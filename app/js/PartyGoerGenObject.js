@@ -22,7 +22,7 @@ var PartyGoerGenObject = function() {
             ecstasy = true;
             setTimeout(function() {
                 ecstasy = false;
-            }, 10000)
+            }, 10000);
         }
     }
 
@@ -180,7 +180,7 @@ var PartyGoerGenObject = function() {
             }
         }
         return peeps;
-    };
+    }
 
     function getPartySize() {
         var num = 0;
