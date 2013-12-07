@@ -94,12 +94,12 @@ var HudObject = function(){
                               "32px Helvetica",
                               "#FFFFFF");
         starsText.alpha = 1.0;
-        starsText.x = CONSTANTS.WIDTH/2  + 150;
+        starsText.x = CONSTANTS.WIDTH/2  + 165;
         starsText.y = 41;
         starsText.textBaseline = "alphabetic";
         stage.addChild(starsText);
         starsIcon = new ProjectileObject(HUD);
-        starsIcon.setPosition({x: CONSTANTS.WIDTH/2 + 125, y: 30});
+        starsIcon.setPosition({x: CONSTANTS.WIDTH/2 + 140, y: 30});
     }
 
     function addPowerUps() {

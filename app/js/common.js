@@ -20,8 +20,8 @@ var ECSTACYCOST = 50;
 
 
 var colors = [  "rgba(204, 51, 255, ", "rgba(0, 153, 255, ", 
-        "rgba(255, 255, 51, ", "rgba(0, 255, 102, ",
-        "rgba(204, 0, 153, ", "rgba(0, 51, 153, )"  ];
+        "rgba(255, 255, 51, ", "rgba(0, 255, 51, ",
+        "rgba(255, 0, 239, ", "rgba(255, 0, 0, "  ];
  
 function getRandomColorWithOpacity(opacity) {
 	return colors[Math.floor(Math.random() * colors.length)] + opacity + ")";

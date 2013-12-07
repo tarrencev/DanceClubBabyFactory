@@ -10,7 +10,6 @@ var BackgroundObject = function(){
     function init() {
         drawBaseBackground();
         drawSpectrum();
-        drawFlare();
         var center = {
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2
@@ -34,17 +33,6 @@ var BackgroundObject = function(){
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2
         };
-        
-        // damageMeter = new createjs.Shape();
-        // damageMeter.x = center.x;
-        // damageMeter.y = center.y;
-        // var radius =Math.sqrt(Math.pow(CONSTANTS.WIDTH,2)+Math.pow(CONSTANTS.HEIGHT,2))/2;
-        // damageMeter.maxRadius = radius;
-        // damageMeter.minRadius = 75 /*gameObject.getBabyRepo().getRadius()*/;
-        // damageMeter.graphics
-        //            .beginRadialGradientFill(["rgba(0,0,0,1)","rgba(0,0,0,0)"], [0.95, 1], 0, 0, 0, 0, 0, radius)
-        //            .drawCircle(0, 0, radius, radius);
-        // stage.addChild(damageMeter);
     }
     
     function drawSpectrum() {
@@ -67,8 +55,6 @@ var BackgroundObject = function(){
     }
 
     function drawFlare() {
-        //console.log('flare');
-
         flare = new createjs.Shape();
         var center = {
             x: CONSTANTS.WIDTH/2,
@@ -82,19 +68,23 @@ var BackgroundObject = function(){
         stage.addChild(flare);
     }
 
-    var count = 0;
     function lpPulseHandler(event) {
         var dataDiff = event.dataDiff;
+        if(dataDiff > 4) dataDiff = 4;
+        if(dataDiff > 1) fireRing(dataDiff);
+    }
 
-        if(count === 2) {         
-            setFlareChangeInRadius(dataDiff);
-            count = 0;
-        }
-        count++;
-        if (dataDiff > 1 && rings.getNumChildren() < 15) {
+    function hpPulseHandler(event) {
+        var dataDiff = event.dataDiff;
+        if(dataDiff > 4) dataDiff = 4;
+        if(dataDiff > 1) fireRing(dataDiff);
+    }
+
+    function fireRing(dataDiff) {
+        if (rings.getNumChildren() < 15) {
             newRing = new createjs.Shape();
             newRing.graphics.beginStroke(getRandomColorWithOpacity(0.2 * dataDiff))
-                            .setStrokeStyle(2 * dataDiff)
+                            .setStrokeStyle(4 * dataDiff)
                             .drawCircle(0,0, gameObject.getBabyRepo().getRadius());
             var center = {
                 x: CONSTANTS.WIDTH/2,
@@ -135,8 +125,10 @@ var BackgroundObject = function(){
         spectrum.graphics.moveTo(Math.cos(0)*(data[0]+spectrum.minHeight)*2,
                                  Math.sin(0)*(data[0]+spectrum.minHeight)*2)
                          .setStrokeStyle(1.5)
-                         .beginStroke('rgba(255,255,255,0.3)')
-                         .beginFill('rgba(238,42,123,0.3)');
+                         .beginStroke(getRandomColorWithOpacity("0.3"))
+                         .beginFill(getRandomColorWithOpacity("0.3"));
+                         // .beginStroke('rgba(255,255,255,0.3)')
+                         // .beginFill('rgba(238,42,123,0.3)');
         for (var i=0; i<last; i++) {
             var angle = i*2*Math.PI/last;
             spectrum.graphics.lineTo(Math.cos(angle)*(data[i]+spectrum.minHeight)*2,
@@ -161,12 +153,6 @@ var BackgroundObject = function(){
         }*/
         spectrum.rotation += 0.5;
     };
-    
-    // this.drawDamage = function(damage) {
-    //     var newScale = (damageMeter.minRadius+(100-damage)/100*(damageMeter.maxRadius-damageMeter.minRadius))/damageMeter.maxRadius;
-    //     createjs.Tween.get(damageMeter).to({scaleX: newScale, scaleY: newScale},
-    //                                        500, createjs.Ease.quartOut);
-    // };
     
     this.tick = function() {
         for(var i = rings.getNumChildren()-1; i>-1; i--) {
