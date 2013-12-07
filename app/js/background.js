@@ -132,15 +132,15 @@ var BackgroundObject = function(){
             if (data[last] > 0) break;
         }
         spectrum.graphics.clear();
-        spectrum.graphics.moveTo(Math.cos(0)*(data[0]+spectrum.minHeight),
-                                 Math.sin(0)*(data[0]+spectrum.minHeight))
+        spectrum.graphics.moveTo(Math.cos(0)*(data[0]+spectrum.minHeight)*2,
+                                 Math.sin(0)*(data[0]+spectrum.minHeight)*2)
                          .setStrokeStyle(1.5)
                          .beginStroke('rgba(255,255,255,0.3)')
                          .beginFill('rgba(238,42,123,0.3)');
         for (var i=0; i<last; i++) {
             var angle = i*2*Math.PI/last;
-            spectrum.graphics.lineTo(Math.cos(angle)*(data[i]+spectrum.minHeight),
-                                     Math.sin(angle)*(data[i]+spectrum.minHeight));
+            spectrum.graphics.lineTo(Math.cos(angle)*(data[i]+spectrum.minHeight)*2,
+                                     Math.sin(angle)*(data[i]+spectrum.minHeight)*2);
         }
         spectrum.graphics.endFill()
                          .endStroke();
