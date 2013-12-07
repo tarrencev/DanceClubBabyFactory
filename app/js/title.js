@@ -5,7 +5,6 @@ var TitleObject = function(new_stage){
     //private funcs
     function init() {
         $('.HUD').hide();
-        // drawBox();
         drawRecordOutline();
         drawRecordTracks();
         drawRecordLabel();
@@ -130,7 +129,6 @@ var TitleObject = function(new_stage){
         stage.addChild(button);
         yay.text = "play!";
         button.addEventListener("click", change_stage);
-        // yay.addEventListener("click", change_stage);
     };
 
     this.progress = function() {

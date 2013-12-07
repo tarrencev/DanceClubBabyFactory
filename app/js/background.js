@@ -26,7 +26,7 @@ var BackgroundObject = function(){
         baseBackground = new createjs.Shape();
         
         baseBackground.graphics
-                      .beginFill('rgba(200, 10, 50, 1)')
+                      .beginFill('rgba(0, 0, 0, 1)')
                       .rect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         stage.addChild(baseBackground);
         
@@ -35,16 +35,16 @@ var BackgroundObject = function(){
             y: CONSTANTS.HEIGHT/2
         };
         
-        damageMeter = new createjs.Shape();
-        damageMeter.x = center.x;
-        damageMeter.y = center.y;
-        var radius =Math.sqrt(Math.pow(CONSTANTS.WIDTH,2)+Math.pow(CONSTANTS.HEIGHT,2))/2;
-        damageMeter.maxRadius = radius;
-        damageMeter.minRadius = 75 /*gameObject.getBabyRepo().getRadius()*/;
-        damageMeter.graphics
-                   .beginRadialGradientFill(["rgba(0,0,0,1)","rgba(0,0,0,0)"], [0.95, 1], 0, 0, 0, 0, 0, radius)
-                   .drawCircle(0, 0, radius, radius);
-        stage.addChild(damageMeter);
+        // damageMeter = new createjs.Shape();
+        // damageMeter.x = center.x;
+        // damageMeter.y = center.y;
+        // var radius =Math.sqrt(Math.pow(CONSTANTS.WIDTH,2)+Math.pow(CONSTANTS.HEIGHT,2))/2;
+        // damageMeter.maxRadius = radius;
+        // damageMeter.minRadius = 75 /*gameObject.getBabyRepo().getRadius()*/;
+        // damageMeter.graphics
+        //            .beginRadialGradientFill(["rgba(0,0,0,1)","rgba(0,0,0,0)"], [0.95, 1], 0, 0, 0, 0, 0, radius)
+        //            .drawCircle(0, 0, radius, radius);
+        // stage.addChild(damageMeter);
     }
     
     function drawSpectrum() {
@@ -162,11 +162,11 @@ var BackgroundObject = function(){
         spectrum.rotation += 0.5;
     };
     
-    this.drawDamage = function(damage) {
-        var newScale = (damageMeter.minRadius+(100-damage)/100*(damageMeter.maxRadius-damageMeter.minRadius))/damageMeter.maxRadius;
-        createjs.Tween.get(damageMeter).to({scaleX: newScale, scaleY: newScale},
-                                           500, createjs.Ease.quartOut);
-    };
+    // this.drawDamage = function(damage) {
+    //     var newScale = (damageMeter.minRadius+(100-damage)/100*(damageMeter.maxRadius-damageMeter.minRadius))/damageMeter.maxRadius;
+    //     createjs.Tween.get(damageMeter).to({scaleX: newScale, scaleY: newScale},
+    //                                        500, createjs.Ease.quartOut);
+    // };
     
     this.tick = function() {
         for(var i = rings.getNumChildren()-1; i>-1; i--) {
