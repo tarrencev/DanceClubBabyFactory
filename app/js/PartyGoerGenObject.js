@@ -6,6 +6,7 @@ var PartyGoerGenObject = function() {
     var danceSpeed = 30;
     var everyoneNeedtoLeave = false;
     var ecstasy = false;
+    var partyPeople;
     document.addEventListener("threeKey", ecstasyHandler);
 
     //private funcs
@@ -19,9 +20,11 @@ var PartyGoerGenObject = function() {
 
     function ecstasyHandler() {
         if(!ecstasy && gameObject.getHud().getStars() >= ECSTACYCOST) {
+            partyPeople = getPeopleInParty();
             ecstasy = true;
             setTimeout(function() {
                 ecstasy = false;
+                partyPeople = NULL;
             }, 10000);
         }
     }
@@ -202,8 +205,8 @@ var PartyGoerGenObject = function() {
         collisionBehaviors();
         if(ecstasy) {
             if(count === 10) {
-                for (var i in getPeopleInParty()) {
-                    var position = getPeopleInParty()[i].getPosition();
+                for (var i in partyPeople) {
+                    var position = partyPeople[i].getPosition();
                     var juice = new JuicySplosion(position, 30, getRandomColorWithOpacity(0.6));
                 }
                 count = 0;
