@@ -1,0 +1,93 @@
+var BabyRepoObject = function() {
+    //private vars
+    //declare private vars here
+    var container;
+    var radius = 75;
+    var strokeWidth = 8;
+    var babies = [];
+    var birthEvt;
+
+    //private funcs
+    function init() {
+        drawContainer();
+        birthEvt = document.createEvent('Event');
+        birthEvt.initEvent('birth', true, true);
+    }
+
+    function drawContainer() {
+        container = new createjs.Shape();
+        container.x = CONSTANTS.WIDTH/2;
+        container.y = CONSTANTS.HEIGHT/2;
+        container.graphics
+            .beginStroke('#ee2a7b')
+            .setStrokeStyle(strokeWidth)
+            .beginFill('#ec87b8')
+            //.beginFill('#ffffff')
+            .drawCircle(0, 0, radius);
+
+        // container.cache(CONSTANTS.WIDTH/2 - 80, CONSTANTS.HEIGHT/2 - 80, 160, 160);
+        stage.addChild(container);
+    }
+
+    function drawBaby() {
+        var baby = new BabyObject();
+<<<<<<< HEAD
+        var tries = 0;
+        while (checkForCollisions(baby) && tries++ < 10) {
+            baby.setPosition(getRandomPos(baby));
+        }
+=======
+        baby.setPosition(getRandomPos(baby));
+>>>>>>> 53ab839bd69b699ff14c0a2e8ef995efc40f49d1
+        babies.push(baby);
+        document.dispatchEvent(birthEvt);
+        //alert(this.getNumBabies());
+    }
+
+    /*function checkForCollisions(baby_) {
+        for (var i in babies) {
+            if(circlesDoCollide(babies[i], baby_))
+                return true;
+        }
+        return false;
+    }*/
+
+    function getRandomPos(baby) {
+        var angle = Math.PI*2*Math.random();
+        var distance = Math.random()*(radius-strokeWidth);
+        var position = {
+            x: Math.cos(angle)*distance,
+            y: Math.sin(angle)*distance
+        };
+        return position;
+    }
+
+    //public funcs
+    this.addBaby = function() {
+        drawBaby();
+    };
+
+    this.getPosition = function() {
+        return {
+            x: container.x,
+            y: container.y
+        };
+    };
+
+    this.getRadius = function() {
+        return radius;
+    };
+
+    this.getNumBabies = function() {
+        return babies.length;
+    };
+
+    this.reset = function() {
+        for (var i in babies) {
+            stage.removeChild(babies[i].baby);
+        }
+        babies = [];
+    };
+
+    init();
+};

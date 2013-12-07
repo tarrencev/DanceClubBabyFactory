@@ -86,8 +86,8 @@ var TitleObject = function(new_stage){
         instructionTitle.textBaseline = "alphabetic";
         stage.addChild(instructionTitle);
 
-        instructionText = new createjs.Text("throw the craziest party in town\n" +
-                             "while running your illegal, for-profit orphange\n\n" +
+        instructionText = new createjs.Text("throw the craziest party in town while\n" +
+                             "running your illegal, for-profit orphange\n\n" +
                              "catch the stars as they shoot to the beat of the music\n" +
                              "miss too many of them and the cops will shut you down\n" +
                              "use your stars to purchase powerups\n\n" +

@@ -1,7 +1,7 @@
 var BackgroundObject = function(){
     //private vars
     //declare private vars her
-    var flare, baseBackground;
+    var baseBackground, flare, damageMeter;
     var flareRadius = 250;
     var rings = new createjs.Container();
 
@@ -15,18 +15,27 @@ var BackgroundObject = function(){
 
     function drawBaseBackground() {
         baseBackground = new createjs.Shape();
+        
+        baseBackground.graphics
+                      .beginFill('rgba(200, 10, 50, 1)')
+                      .rect(0, 0, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+        stage.addChild(baseBackground);
+        
         var center = {
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2
         };
-        baseBackground.x = center.x;
-        baseBackground.y = center.y;
         
-        var radius = Math.max(CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
-        baseBackground.graphics
-                      .beginFill('#000')
-                      .drawCircle(0, 0, radius, radius);
-        stage.addChild(baseBackground);
+        damageMeter = new createjs.Shape();
+        damageMeter.x = center.x;
+        damageMeter.y = center.y;
+        var radius =Math.sqrt(Math.pow(CONSTANTS.WIDTH,2)+Math.pow(CONSTANTS.HEIGHT,2))/2;
+        damageMeter.maxRadius = radius;
+        damageMeter.minRadius = 75 /*gameObject.getBabyRepo().getRadius()*/;
+        damageMeter.graphics
+                   .beginRadialGradientFill(["rgba(0,0,0,1)","rgba(0,0,0,0)"], [0.95, 1], 0, 0, 0, 0, 0, radius)
+                   .drawCircle(0, 0, radius, radius);
+        stage.addChild(damageMeter);
     }
 
     function drawFlare() {
@@ -96,11 +105,9 @@ var BackgroundObject = function(){
     };
     
     this.drawDamage = function(damage) {
-        baseBackground.graphics.clear();
-        var radius = Math.max(CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
-        baseBackground.graphics
-                      .beginRadialGradientFill(['rgba(0,0,0,1)', 'rgba(255,0,0,1)'], [0, 1], 0,0,0,0,0,radius*100/(damage+1))
-                      .drawCircle(0, 0, radius*100/(damage+1), radius*100/(damage+1));
+        var newScale = (damageMeter.minRadius+(100-damage)/100*(damageMeter.maxRadius-damageMeter.minRadius))/damageMeter.maxRadius;
+        createjs.Tween.get(damageMeter).to({scaleX: newScale, scaleY: newScale},
+                                           500, createjs.Ease.quartOut);
     };
     
     this.tick = function() {
