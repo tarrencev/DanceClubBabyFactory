@@ -3,7 +3,7 @@ var BabyRepoObject = function() {
     //declare private vars here
     var container;
     var radius = 75;
-    var strokeWidth = 8;
+    var strokeWidth = 4;
     var babies = [];
     var birthEvt;
 

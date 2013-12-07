@@ -36,30 +36,30 @@ var HudObject = function(){
 
     function drawScore() {
         scoreText = new createjs.Text(score.toString(),
-                              "bold 24px Helvetica",
+                              "32px Helvetica",
                               "#FFFFFF");
         scoreText.alpha = 1.0;
         scoreText.x = CONSTANTS.WIDTH/2 - 30;
-        scoreText.y = 38;
+        scoreText.y = 40;
         scoreText.textBaseline = "alphabetic";
         stage.addChild(scoreText);
         scoreIcon = new createjs.Shape();
         scoreIcon.graphics
-             .beginStroke('#fff')
-             .setStrokeStyle(5)
-             .beginFill('#ec87b8')
-             .drawCircle(CONSTANTS.WIDTH/2 - 50, 30, 8);
+             .beginStroke('#d49')
+             .setStrokeStyle(2.5)
+             .beginFill('#fff')
+             .drawCircle(CONSTANTS.WIDTH/2 - 50, 30, 12);
 
         stage.addChild(scoreIcon);
     }
 
     function drawStars() {
         starsText = new createjs.Text(stars.toString(),
-                              "bold 24px Helvetica",
+                              "32px Helvetica",
                               "#FFFFFF");
         starsText.alpha = 1.0;
         starsText.x = CONSTANTS.WIDTH/2 + 50;
-        starsText.y = 38;
+        starsText.y = 40;
         starsText.textBaseline = "alphabetic";
         stage.addChild(starsText);
         starsIcon = new ProjectileObject(HUD);
