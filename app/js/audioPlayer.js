@@ -154,6 +154,10 @@ var AudioPlayerObject = function(){
                                  .addClass('glyphicon-play');
         }
     };
+
+    this.getSound = function() {
+        return sound;
+    };
     
     // this.playPause = function() {
     //     sound.playPause();

@@ -1,11 +1,7 @@
 var SoundObject = function(track){
     //private vars
     //declare private vars her
-    var FFTSIZE = 32;      // number of samples for the analyser node FFT, min 32
-    var RADIUS_FACTOR = 120; // the radius of the circles, factored for which ring we are drawing
-    var COLOR_CHANGE_THRESHOLD = 10;    // amount of change before we change color
-    var circleHue = 300;   // the base color hue used when drawing circles, which can change
-    var HUE_VARIANCE = 120;  // amount hue can vary by
+    var FFTSIZE = 1024;      // number of samples for the analyser node FFT, min 32
 
     var audio,
         playing,
@@ -88,12 +84,14 @@ var SoundObject = function(track){
             initBandPassFilter1(context, dynamicsNode);
             initBandPassFilter2(context, dynamicsNode);
             initHighPassFilter(context, dynamicsNode);
-            /*initAnalyser(context, dynamicsNode);*/
+            initAnalyser(context, dynamicsNode);
             sampleRate = context.sampleRate;
 
             // calculate the number of array elements that represent each circle
             freqChunk = bandPass1AnalyserNode.frequencyBinCount;
             gameObject.getTitle().makeReadyForStart();
+            
+            console.log("highest freq: " + sampleRate/2);
         }
     }
 
@@ -134,8 +132,8 @@ var SoundObject = function(track){
     function initBandPassFilter1(context, dynamicsNode) {
         bandPass1Filter = context.createBiquadFilter();
         bandPass1Filter.type = 2;
-        bandPass1Filter.frequency.value = 345;
-        bandPass1Filter.Q = 165;
+        bandPass1Filter.frequency.value = 270;
+        bandPass1Filter.Q = 230;
         bandPass1Filter.connect(context.destination);
 
         bandPass1AnalyserNode = context.createAnalyser();
@@ -216,10 +214,10 @@ var SoundObject = function(track){
         highPassAnalyserNode.getByteFrequencyData(hpFreqByteData);
         highPassAnalyserNode.getByteTimeDomainData(hpTimeByteData);
         
-        /*AnalyserNode.getByteFrequencyData(FreqByteData);
+        AnalyserNode.getByteFrequencyData(FreqByteData);
         AnalyserNode.getByteTimeDomainData(TimeByteData);
         
-        analysisResults.lo = analysisFilter(LO, FreqByteData, 40);
+        /*analysisResults.lo = analysisFilter(LO, FreqByteData, 40);
         analysisResults.hi = analysisFilter(HI, FreqByteData, 8000);*/
     }
 
@@ -267,6 +265,10 @@ var SoundObject = function(track){
             return freqDomain.subarray(0, index+1);
         }
     }
+    
+    this.getSpectrum = function() {
+        return FreqByteData;
+    };
 
     function calculateDiff(freqByteData, timeByteData) {
         var freqSum = 0;
@@ -389,31 +391,6 @@ var SoundObject = function(track){
             }
         }
     };
-
-    function hue2rgb(p, q, t){
-        if(t < 0) t += 1;
-        if(t > 1) t -= 1;
-        if(t < 1/6) return p + (q - p) * 6 * t;
-        if(t < 1/2) return q;
-        if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-        return p;
-    }
-
-    function hslToRgb(h, s, l){
-        var r, g, b;
-
-        if(s === 0){
-            r = g = b = l; // achromatic
-        } else {
-            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            var p = 2 * l - q;
-            r = hue2rgb(p, q, h + 1/3);
-            g = hue2rgb(p, q, h);
-            b = hue2rgb(p, q, h - 1/3);
-        }
-
-        return [r * 255, g * 255, b * 255];
-    }
 
     init();
 };

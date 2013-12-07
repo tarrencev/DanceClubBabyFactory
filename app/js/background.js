@@ -3,12 +3,21 @@ var BackgroundObject = function(){
     //declare private vars her
     var baseBackground, flare, damageMeter;
     var flareRadius = 250;
+    var spectrum;
     var rings = new createjs.Container();
 
     //private funcs
     function init() {
         drawBaseBackground();
+        drawSpectrum();
         drawFlare();
+        var center = {
+            x: CONSTANTS.WIDTH/2,
+            y: CONSTANTS.HEIGHT/2
+        };
+        stage.addChild(spectrum);
+        spectrum.x = center.x;
+        spectrum.y = center.y;
         stage.addChild(rings);
         document.addEventListener("lpPulse", lpPulseHandler,false);
     }
@@ -36,6 +45,25 @@ var BackgroundObject = function(){
                    .beginRadialGradientFill(["rgba(0,0,0,1)","rgba(0,0,0,0)"], [0.95, 1], 0, 0, 0, 0, 0, radius)
                    .drawCircle(0, 0, radius, radius);
         stage.addChild(damageMeter);
+    }
+    
+    function drawSpectrum() {
+        spectrum = new createjs.Shape();
+        spectrum.minHeight = 75 /*gameObject.getBabyRepo().getRadius()*/;
+        /*
+        var sections = 300;
+        var barWidth = Math.PI*2/sections*75 /*gameObject.getBabyRepo().getRadius()/;
+        var barHeight = 75 /*gameObject.getBabyRepo().getRadius()/;
+        for (var i=0; i<sections; i++) {
+            var bar = new createjs.Shape();
+            bar.graphics.beginFill("rgba(241,90,41,0.3)")
+                        .rect(-barWidth/2, 0,
+                              barWidth, barHeight);
+            bar.rotation = i*360/sections;
+        
+            spectrum.addChild(bar);
+        }
+        */
     }
 
     function drawFlare() {
@@ -83,12 +111,10 @@ var BackgroundObject = function(){
         }
     }
 
-    //public funcs
     function setFlareChangeInRadius(radiusDiff) {
-        flareRadius = radiusDiff;
+        flareRadius = radiusDiff*3;
         //console.log(flareRadius);
-        flare.scaleX = flareRadius;
-        flare.scaleY = flareRadius;
+        flare.scaleX = flare.scaleY = flareRadius;
     }
 
     this.setFlareColor = function(ambientColorFilter) {
@@ -102,6 +128,41 @@ var BackgroundObject = function(){
         ];*/
         flare.cache(-CONSTANTS.WIDTH/2, -CONSTANTS.HEIGHT/2, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         // .getHSL((i/CIRCLES*HUE_VARIANCE+circleHue)%360, 100, 50);
+    };
+    
+    this.updateSpectrum = function() {
+        var data = gameObject.getAudioPlayer().getSound().getSpectrum();
+        for (var last=data.length; last>0; --last) {
+            if (data[last] > 0) break;
+        }
+        spectrum.graphics.clear();
+        spectrum.graphics.moveTo(Math.cos(0)*(data[0]+spectrum.minHeight),
+                                 Math.sin(0)*(data[0]+spectrum.minHeight))
+                         .beginStroke('rgba(255,255,255,0.3)')
+                         .beginFill('rgba(238,42,123,0.3)');
+        for (var i=0; i<last; i++) {
+            var angle = i*2*Math.PI/last;
+            spectrum.graphics.lineTo(Math.cos(angle)*(data[i]+spectrum.minHeight),
+                                     Math.sin(angle)*(data[i]+spectrum.minHeight));
+        }
+        spectrum.graphics.endFill()
+                         .endStroke();
+        /*total = 0;
+        var dataSections = data.length/4*3;
+        var lol=0;
+        for (var i=0; i<spectrum.getNumChildren(); i++) {
+            var sectionTotal = 0;
+            var part = i*dataSections/spectrum.getNumChildren();
+            do {
+              sectionTotal += data[part];
+              part++;
+            } while (part < (i+1)*dataSections/spectrum.getNumChildren());
+            sectionTotal /= dataSections/spectrum.getNumChildren();
+            total += sectionTotal;
+            spectrum.getChildAt(i).scaleY = 1+sectionTotal/255*4;
+            lol++;
+        }*/
+        spectrum.rotation += 0.5;
     };
     
     this.drawDamage = function(damage) {
@@ -119,6 +180,7 @@ var BackgroundObject = function(){
                 rings.removeChildAt(i);
             }
         }
+        this.updateSpectrum();
     };
 
     init();

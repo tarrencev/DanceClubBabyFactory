@@ -87,9 +87,6 @@ var GameObject = function() {
 
     //same as perform_logic() in zenilib
     function tick() {
-        projectiles.tick();
-        copGen.tick();
-        background.tick();
 
         if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
             if (Math.random() < (damage / 200.0)) {
@@ -100,6 +97,9 @@ var GameObject = function() {
         if (audioPlayer.isPlaying()) {
             audioPlayer.tick();
             goerGen.tick();
+            projectiles.tick();
+            copGen.tick();
+            background.tick();
         
             if (createjs.Ticker.getTicks() % 50 === 0) {
                 goerGen.addPartyGoer();
@@ -191,10 +191,6 @@ var GameObject = function() {
 
     this.getBackground = function() {
         return background;
-    };
-
-    this.getSound = function() {
-        return sound;
     };
 
     this.getAudioPlayer = function() {

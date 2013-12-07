@@ -65,7 +65,7 @@ var CopObject = function() {
             (cop.x < x2) &&
             (cop.y > y1) &&
             (cop.y < y2)) {
-          if (gameObject.getPartyGoerGen().drugDealerInPartySize() > 0) {
+          if (gameObject.getGoerGen().drugDealerInPartySize() > 0) {
             console.log("spotted");
             return true;
           }
