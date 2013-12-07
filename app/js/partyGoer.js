@@ -25,7 +25,7 @@ PartyGoerObject.prototype.drawGoer = function() {
     this.goer = new createjs.Shape();
     this.goer.graphics
              .beginStroke('#aaa')
-             .setStrokeStyle(2)
+             .setStrokeStyle(1.5)
              .beginFill('#000')
              .drawCircle(0, 0, this.radius);
 

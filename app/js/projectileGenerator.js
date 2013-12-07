@@ -109,7 +109,7 @@ var ProjectileGeneratorObject = function() {
 
     function calculateProjectileDirection(dataDiff) {
 
-        projectileAngle = projectileAngle + Math.PI/8 * dataDiff/5;
+        projectileAngle = projectileAngle + Math.PI/8 * dataDiff/25*Math.sqrt(ticksSinceProjectile);
 
         var newPosition = {
             x: window.innerWidth/2 + 2 * window.innerHeight * Math.cos(projectileAngle),

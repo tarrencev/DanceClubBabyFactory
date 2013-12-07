@@ -134,6 +134,7 @@ var BackgroundObject = function(){
         spectrum.graphics.clear();
         spectrum.graphics.moveTo(Math.cos(0)*(data[0]+spectrum.minHeight),
                                  Math.sin(0)*(data[0]+spectrum.minHeight))
+                         .setStrokeStyle(1.5)
                          .beginStroke('rgba(255,255,255,0.3)')
                          .beginFill('rgba(238,42,123,0.3)');
         for (var i=0; i<last; i++) {
