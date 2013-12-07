@@ -1,18 +1,32 @@
 var PartyGoerGenObject = function() {
     
     //private vars
-    var people = [];
+    var people = new createjs.Container();
     var wanderSpeed = 30;
     var danceSpeed = 30;
     var everyoneNeedtoLeave = false;
+    var ecstasy = false;
+    var partyPeople;
+    document.addEventListener("threeKey", ecstasyHandler);
 
     //private funcs
     function checkForCollisions(goer_) {
-        for (var i in people) {
-            if(circlesDoCollide(people[i], goer_))
+        for (var i =0; i < people.getNumChildren(); i++) {
+            if(circlesDoCollide(people.getChildAt(i), goer_))
                 return true;
         }
         return false;
+    }
+
+    function ecstasyHandler() {
+        if(!ecstasy && gameObject.getHud().getStars() >= ECSTACYCOST) {
+            partyPeople = getPeopleInParty();
+            ecstasy = true;
+            setTimeout(function() {
+                ecstasy = false;
+                partyPeople = NULL;
+            }, 10000);
+        }
     }
 
     function getDistanceBtwObjectAndPos(obj, pos) {
@@ -27,7 +41,7 @@ var PartyGoerGenObject = function() {
         //while (checkForCollisions(goer)) {
             goer.setPosition(getRandomEdgePos(goer));
         //}
-        people.push(goer);
+        people.addChild(goer);
         var pos = getRandomPosOutside();
         var distance = getDistanceBtwObjectAndPos(goer, pos);
         createjs.Tween.get(goer.getShape()).to(pos, wanderSpeed * distance, createjs.Ease.linear);
@@ -45,9 +59,9 @@ var PartyGoerGenObject = function() {
     }
 
     function kickEveryoneOut() {
-        for (var i in people) {
+        for (var i =0; i < people.getNumChildren(); i++) {
             pos = getRandomPosOutside();
-            createjs.Tween.get(people[i].getShape()).to(pos, wanderSpeed * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
+            createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, wanderSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
         }
     }
 
@@ -98,20 +112,20 @@ var PartyGoerGenObject = function() {
             }
         }*/
         
-        for (var j in people) {
+        for (var j =0; j < people.getNumChildren(); j++) {
 
-            distance = getDistance(people[j], babyRepo);
+            distance = getDistance(people.getChildAt(j), babyRepo);
 
-            if (distance < babyRepoRadius + 1.5 * people[j].getRadius()) {
-                stayAway(people[j]);
+            if (distance < babyRepoRadius + 1.5 * people.getChildAt(j).getRadius()) {
+                stayAway(people.getChildAt(j));
             } else if (distance > 3/4 * doorRadius && distance < doorRadius) {
-                if (people[j].checkWantToParty()) {
-                    createjs.Tween.removeTweens(people[j].getShape());
+                if (people.getChildAt(j).checkWantToParty()) {
+                    createjs.Tween.removeTweens(people.getChildAt(j).getShape());
                     pos = getRandomPosInParty();
-                    createjs.Tween.get(people[j].getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people[j], pos), createjs.Ease.linear);
+                    createjs.Tween.get(people.getChildAt(j).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(j), pos), createjs.Ease.linear);
                 }
-            } else if (distance < 1.2 * doorRadius && !people[j].checkWantToParty()) {
-                stayAway(people[j]);
+            } else if (distance < 1.2 * doorRadius && !people.getChildAt(j).checkWantToParty()) {
+                stayAway(people.getChildAt(j));
             }
         }
 
@@ -128,26 +142,26 @@ var PartyGoerGenObject = function() {
         var doorRadius = gameObject.getDoor().getRadius();
         var pos;
 
-        for (var i in people) {
+        for (var i = 0; i < people.getNumChildren(); i++) {
 
-            var distance = getDistance(people[i], babyRepo);
+            var distance = getDistance(people.getChildAt(i), babyRepo);
             var offset = 2/3 * Math.random() * (doorRadius - babyRepoRadius);
 
-            if (distance < babyRepoRadius + people[i].getRadius() + offset) {
-                createjs.Tween.removeTweens(people[i].getShape());
+            if (distance < babyRepoRadius + people.getChildAt(i).getRadius() + offset) {
+                createjs.Tween.removeTweens(people.getChildAt(i).getShape());
                 pos = getRandomPosInParty();
-                createjs.Tween.get(people[i].getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
+                createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
             } else {
                 
                 if (Math.random() < doorRadius / distance) {
-                    people[i].likeParty();
-                    createjs.Tween.removeTweens(people[i].getShape());
+                    people.getChildAt(i).likeParty();
+                    createjs.Tween.removeTweens(people.getChildAt(i).getShape());
                     pos = getRandomPosInParty();
-                    createjs.Tween.get(people[i].getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
+                    createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
                 } else {
-                    createjs.Tween.removeTweens(people[i].getShape());
+                    createjs.Tween.removeTweens(people.getChildAt(i).getShape());
                     pos = getRandomPosOutside();
-                    createjs.Tween.get(people[i].getShape()).to(pos, wanderSpeed * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
+                    createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, wanderSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
                 }
             }
         }
@@ -161,10 +175,20 @@ var PartyGoerGenObject = function() {
         }*/
     }
 
+    function getPeopleInParty() {
+        var peeps = [];
+        for (var i =0; i < people.getNumChildren(); i++) {
+            if (getDistance(people.getChildAt(i), gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
+                peeps.push(people.getChildAt(i));
+            }
+        }
+        return peeps;
+    }
+
     function getPartySize() {
         var num = 0;
-        for (var i in people) {
-            if (getDistance(people[i], gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
+        for (var i =0; i < people.getNumChildren(); i++) {
+            if (getDistance(people.getChildAt(i), gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
                 num++;
             }
         }
@@ -176,8 +200,19 @@ var PartyGoerGenObject = function() {
         drawPartyGoer();
     };
 
+    var count = 0;
     this.tick = function() {
         collisionBehaviors();
+        if(ecstasy) {
+            if(count === 10) {
+                for (var i in partyPeople) {
+                    var position = partyPeople[i].getPosition();
+                    var juice = new JuicySplosion(position, 30, getRandomColorWithOpacity(0.6));
+                }
+                count = 0;
+            }
+            count++;
+        }
     };
 
     this.wander = function() {
@@ -197,8 +232,8 @@ var PartyGoerGenObject = function() {
     };
 
     this.pause = function() {
-        for (var i in people) {
-            createjs.Tween.removeTweens(people[i].getShape());
+        for (var i =0; i < people.getNumChildren(); i++) {
+            createjs.Tween.removeTweens(people.getChildAt(i).getShape());
         }
     };
 
@@ -217,16 +252,10 @@ var PartyGoerGenObject = function() {
     };
 
     this.clearPeople = function() {
-        people = [];
+        people.removeAllChildren();
     };
 
     this.getPeopleInParty = function() {
-        var peeps = [];
-        for (var i in people) {
-            if (getDistance(people[i], gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
-                peeps.push(people[i]);
-            }
-        }
-        return peeps;
+        getPeopleInParty();
     };
 };

@@ -9,7 +9,7 @@ var GameObject = function() {
         partyLimit = 10,
         copGen,
         projectiles,
-        damage,
+        // damage,
         hud,
         title;
         
@@ -37,7 +37,6 @@ var GameObject = function() {
         if(!createjs.Ticker.hasEventListener('tick')) {
             createjs.Ticker.addEventListener('tick', title_tick);
         }
-        createjs.Ticker.setFPS(30);
 
         title = new TitleObject(game);
     }
@@ -47,6 +46,7 @@ var GameObject = function() {
     }
 
     function game() {
+        createjs.Ticker.setFPS(30);
         //stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
 
@@ -79,21 +79,21 @@ var GameObject = function() {
         hud = new HudObject();
         hud.renderStartTimer();
 
-        damage = 0;
+        // damage = 0;
         
         document.addEventListener("mousemove", mouseMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
-        document.addEventListener("violation", violationHandler, false);
+        // document.addEventListener("violation", violationHandler, false);
     }
 
     //same as perform_logic() in zenilib
     function tick() {
 
-        if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
-            if (Math.random() < (damage / 200.0)) {
-                copGen.addCop();
-            }
-        }
+        // if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
+        //     if (Math.random() < (damage / 200.0)) {
+        //         copGen.addCop();
+        //     }
+        // }
     
         if (audioPlayer.isPlaying()) {
             audioPlayer.tick();
@@ -157,29 +157,6 @@ var GameObject = function() {
         console.log('click');
     }
 
-    function setDamage(damagePts, absolute) {
-        if (absolute === undefined) { // Additive damage
-            damage += damagePts;
-        } else {
-            damage = damagePts;
-        }
-        damage = Math.min(100, damage);
-        background.drawDamage(damage);
-    }
-
-    function getDamage() {
-        return damage;
-    }
-    
-    function violationHandler(event) {
-        if (audioPlayer.isPlaying()) {
-            setDamage(5);
-            if (getDamage() >= 100) {
-                audioPlayer.stopPlayback();
-            }
-        }
-    }
-
     //public funcs
     this.init = function() {
         init();
@@ -217,15 +194,20 @@ var GameObject = function() {
         return projectiles;
     };
 
+    this.getHud = function() {
+        return hud;
+    };
+
     this.getTitle = function() {
         return title;
     };
     
     this.resetGame = function() {
-        setDamage(0, true);
+        // setDamage(0, true);
         babyRepo.reset();
         projectiles.reset();
         goerGen.reset();
+        hud.reset();
     };
 };
 
