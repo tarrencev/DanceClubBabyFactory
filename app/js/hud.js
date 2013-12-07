@@ -1,7 +1,7 @@
 var HudObject = function(){
     var slomoPowerup,
-        drugLordPowerup,
         extenzePowerup,
+        ecstasyPowerup,
         scoreText,
         score = 0,
         scoreIcon,
@@ -12,9 +12,7 @@ var HudObject = function(){
     function init() {
         drawScore();
         drawStars();
-        addPowerUp('slowmo');
-        // addPowerUp('drugLord');
-        addPowerUp('extenze');
+        addPowerUps('slowmo');
 
         document.addEventListener("birth", incrementScore, false);
         document.addEventListener("blocked", incrementStars, false);
@@ -68,17 +66,15 @@ var HudObject = function(){
         starsIcon.setPosition({x: CONSTANTS.WIDTH/2 + 30, y: 30});
     }
 
-    function addPowerUp(powerupName) {
-        if(powerupName === 'slowmo') {
+    function addPowerUps() {
             slomoPowerup = new PowerUpHudObject();
             slomoPowerup.drawSlowMotion();
-        } else if(powerupName === 'drugLord') {
-            drugLordPowerup = new PowerUpHudObject();
-            drugLordPowerup.drawDrugLord();
-        } else if(powerupName === 'extenze') {
+
             extenzePowerup = new PowerUpHudObject();
             extenzePowerup.drawExtenze();
-        }
+
+            ecstasyPowerup = new PowerUpHudObject();
+            ecstasyPowerup.drawEcstasy();
     }
 
     function renderTextAlert(text) {

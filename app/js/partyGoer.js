@@ -1,7 +1,7 @@
 var PartyGoerObject = function(type_) {
     //private vars
     this.type = type_;
-    this.radius = 8;
+    this.radius = 7;
     this.wantToParty = false;
 
     this.init();
@@ -25,7 +25,7 @@ PartyGoerObject.prototype.drawGoer = function() {
     this.goer = new createjs.Shape();
     this.goer.graphics
              .beginStroke('#aaa')
-             .setStrokeStyle(5)
+             .setStrokeStyle(2)
              .beginFill('#000')
              .drawCircle(0, 0, this.radius);
 

@@ -20,7 +20,7 @@ var DoorObject = function(){
         door = new createjs.Shape();
         door.x = CONSTANTS.WIDTH/2;
         door.y = CONSTANTS.HEIGHT/2;
-        door.graphics.beginStroke('#6d6e71')
+        door.graphics.beginStroke('#00CCFF')
                     .setStrokeStyle(doorThickness)
                     .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                     .endStroke();
@@ -35,8 +35,8 @@ var DoorObject = function(){
             start = i * 0.8;
             end = i * 0.8 + Math.PI/10;
 
-            doorGuide.graphics.beginStroke('#f7941e')
-                .setStrokeStyle(6)
+            doorGuide.graphics.beginStroke('#ffffff')
+                .setStrokeStyle(3)
                 .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, start, end);
         }
         doorGuide.cache(CONSTANTS.WIDTH/2 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
@@ -49,7 +49,7 @@ var DoorObject = function(){
             console.log('extenze called');
             extenzeActive = true;
             door.graphics.clear();
-            door.graphics.beginStroke('#6d6e71')
+            door.graphics.beginStroke('#6e2bff')
                         .setStrokeStyle(doorThickness)
                         .arc(0, 0, radius, -doorWidth/2 * 3/2, doorWidth/2 * 3/2)
                         .endStroke();
@@ -57,7 +57,7 @@ var DoorObject = function(){
             setTimeout(function() {
                 doorWidth = Math.PI/6;
                 door.graphics.clear();
-                door.graphics.beginStroke('#6d6e71')
+                door.graphics.beginStroke('#00CCFF')
                         .setStrokeStyle(doorThickness)
                         .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                         .endStroke();

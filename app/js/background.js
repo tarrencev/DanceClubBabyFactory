@@ -86,19 +86,15 @@ var BackgroundObject = function(){
     function lpPulseHandler(event) {
         var dataDiff = event.dataDiff;
 
-        if(count === 2) {
-            // if(-1 < dataDiff && dataDiff < 1) {
-                // console.log(dataDiff);            
-                setFlareChangeInRadius(dataDiff);
-            // }
+        if(count === 2) {         
+            setFlareChangeInRadius(dataDiff);
             count = 0;
         }
         count++;
-        if (dataDiff > 1 && rings.getNumChildren() < 20) {
-            //console.log(dataDiff);
+        if (dataDiff > 1 && rings.getNumChildren() < 15) {
             newRing = new createjs.Shape();
-            newRing.graphics.beginStroke(colors[Math.floor(Math.random() * colors.length)])
-                            .setStrokeStyle(2)
+            newRing.graphics.beginStroke(getRandomColorWithOpacity(0.2 * dataDiff))
+                            .setStrokeStyle(2 * dataDiff)
                             .drawCircle(0,0, gameObject.getBabyRepo().getRadius());
             var center = {
                 x: CONSTANTS.WIDTH/2,

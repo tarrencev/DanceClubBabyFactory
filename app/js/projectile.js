@@ -3,7 +3,7 @@ function ProjectileObject(type) {
     // But this is for the sake of efficiency (and because of scope)
     //this.projectile; // DO NOT MODIFY THIS VARIABLE DIRECTLY!
     // radius not used
-    this.radius = 10;
+    this.radius = 14;
     this.type = type;
 
     this.init();
@@ -19,13 +19,11 @@ ProjectileObject.prototype.drawProjectile = function() {
     this.projectile.y = CONSTANTS.HEIGHT/2;
     if (this.type === LO) {
         this.projectile.graphics
-                       .beginStroke('#fff')
-                       .beginFill('#FFFF00')
+                       .beginFill('#fff')
                        .drawPolyStar(0, 0, this.radius, 5, 0.6, 0);
     } else if (this.type === HUD) {
         this.projectile.graphics
-                       .beginStroke('#fff')
-                       .beginFill('#FFFF00')
+                       .beginFill('#fff')
                        .drawPolyStar(0, 0, this.radius, 5, 0.6, 0);
     }else {
         this.projectile.graphics

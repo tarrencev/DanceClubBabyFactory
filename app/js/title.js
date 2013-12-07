@@ -45,7 +45,7 @@ var TitleObject = function(new_stage){
 
     function drawRecordLabel() {
         recordLabel = new createjs.Shape();
-        recordLabel.graphics.beginStroke('#FF33FF')
+        recordLabel.graphics.beginStroke('#6e2bff')
             .setStrokeStyle(80)
             .arc(CONSTANTS.WIDTH/4, CONSTANTS.HEIGHT/2, 30, 0, 2 * Math.PI);
         recordLabel.cache(CONSTANTS.WIDTH/4 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
@@ -68,7 +68,7 @@ var TitleObject = function(new_stage){
     function drawTitle() {
         title = new createjs.Text("the\ninfinite\ndubstep\nbaby\nfactory",
                                   "bold 75px Helvetica",
-                                  "#FFFFFF");
+                                  "#00CCFF");
         title.alpha = 1.0;
         title.textAlign = "center";
         title.textBaseline = "middle";
