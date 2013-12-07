@@ -66,17 +66,18 @@ var GameObject = function() {
         //init baby repo
         babyRepo = new BabyRepoObject();
 
-        //init door
-        door = new DoorObject();
-
         //init party goers
         goerGen = new PartyGoerGenObject();
 
         //init the fuzz
         copGen = new CopGenObject();
 
+        //init door
+        door = new DoorObject();
+
         //init hud
         hud = new HudObject();
+        hud.renderStartTimer();
 
         damage = 0;
         
@@ -113,11 +114,6 @@ var GameObject = function() {
                 goerGen.wander();
             }
         }
-
-        // if(stars > 25 && !slowMoShown) {
-        //     slowMoShown = true;
-        //     hud.addPowerUp('slowmo');
-        // }
         
         stage.update();
     }
