@@ -237,7 +237,7 @@ var PartyGoerGenObject = function() {
         }
     };
 
-    this.backToParty = function() {
+    this.resume = function() {
         everyoneNeedtoLeave = false;
         moveAll();
     };

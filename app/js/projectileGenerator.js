@@ -80,8 +80,12 @@ var ProjectileGeneratorObject = function() {
             projectile.setPosition(offsetPosition);
             if(dataDiff > 3) dataDiff = 3;
             if(dataDiff < -3) dataDiff = -3;
-            createjs.Tween.get(projectile.getShape()).to(edgePos, (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
-            createjs.Tween.get(projectile.getShape(), {loop:true}).to({rotation: 20*Math.PI}, 80 + (250 * dataDiff) * 100/volumeModifier * 1/speedModifier);
+
+            projectile.dest = edgePos;
+            projectile.time = (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier;
+            projectile.rotTime = 80 + (250 * dataDiff) * 100/volumeModifier * 1/speedModifier;
+            projectile.resume();
+
             ticksSinceProjectile = 0;
             if (count++%10 === 0) {
                 rotateDirection *= getRandomSign(); // maybe direction every 10 shots
@@ -164,6 +168,7 @@ var ProjectileGeneratorObject = function() {
     };
 
     this.tick = function() {
+        console.log(projectiles.getNumChildren());
         // Checks for when to remove projectiles
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             // outside stage
@@ -185,6 +190,20 @@ var ProjectileGeneratorObject = function() {
 
     this.getProjectiles = function() {
         return projectiles;
+    };
+
+    this.pause = function() {
+        var tween;
+        for (var i = 0; i < projectiles.getNumChildren(); i++) {
+            projectiles.getChildAt(i).pause();
+        }
+    };
+
+    this.resume = function() {
+        var tween;
+        for (var i = 0; i < projectiles.getNumChildren(); i++) {
+            projectiles.getChildAt(i).resume();
+        }
     };
 
     init();

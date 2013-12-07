@@ -5,6 +5,9 @@ function ProjectileObject(type) {
     // radius not used
     this.radius = 14;
     this.type = type;
+    this.dest = 0;
+    this.time = 0;
+    this.rotTime = 0;
 
     this.init();
 }
@@ -60,4 +63,13 @@ ProjectileObject.prototype.getRadius = function() {
 
 ProjectileObject.prototype.getShape = function() {
     return this.projectile;
+};
+
+ProjectileObject.prototype.pause = function() {
+    createjs.Tween.removeTweens(this.projectile);
+};
+
+ProjectileObject.prototype.resume = function() {
+    createjs.Tween.get(this.projectile).to(this.dest, this.time, createjs.Ease.linear);
+    createjs.Tween.get(this.projectile, {loop: true}).to({rotation: 20*Math.PI}, this.rotTime);
 };

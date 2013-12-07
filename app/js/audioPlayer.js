@@ -45,10 +45,12 @@ var AudioPlayerObject = function(){
             playing = false;
             playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
             gameObject.getGoerGen().pause();
+            gameObject.getProjectiles().pause();
         } else {
             playing = true;
             playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
-            gameObject.getGoerGen().backToParty();
+            gameObject.getGoerGen().resume();
+            gameObject.getProjectiles().resume();
         }
         if (stopped) {
             gameObject.resetGame();
