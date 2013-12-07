@@ -125,10 +125,8 @@ var BackgroundObject = function(){
         spectrum.graphics.moveTo(Math.cos(0)*(data[0]+spectrum.minHeight)*2,
                                  Math.sin(0)*(data[0]+spectrum.minHeight)*2)
                          .setStrokeStyle(1.5)
-                         .beginStroke(getRandomColorWithOpacity("0.3"))
-                         .beginFill(getRandomColorWithOpacity("0.3"));
-                         // .beginStroke('rgba(255,255,255,0.3)')
-                         // .beginFill('rgba(238,42,123,0.3)');
+                         .beginStroke(getRandomColorWithOpacity(0.3))
+                         .beginFill(getRandomColorWithOpacity(0.3));
         for (var i=0; i<last; i++) {
             var angle = i*2*Math.PI/last;
             spectrum.graphics.lineTo(Math.cos(angle)*(data[i]+spectrum.minHeight)*2,

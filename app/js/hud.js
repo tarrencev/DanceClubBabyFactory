@@ -34,9 +34,11 @@ var HudObject = function(){
                                                 }
                                             }, false);
         document.addEventListener("threeKey", function(){
-                                        if(stars >= SLOWDOWNCOST)
-                                            decrementStarsBy(50);
-                                    } , false);
+                                                if(stars >= ECSTACYCOST) {
+                                                    renderTextAlert('Ecstacy');
+                                                    decrementStarsBy(ECSTACYCOST);
+                                                }
+                                            } , false);
     }
     
     function violationHandler(event) {
@@ -151,6 +153,10 @@ var HudObject = function(){
         createjs.Tween.get(alert).to({scaleX: 20, scaleY: 20, alpha:0}, 900).call(stage.removeChild(alert), [], this);
         stage.addChild(alert);
     }
+
+    this.getStars = function() {
+        return stars;
+    };
 
     this.renderStartTimer = function(){
         var second = 3;

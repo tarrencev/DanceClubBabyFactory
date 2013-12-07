@@ -194,6 +194,10 @@ var GameObject = function() {
         return projectiles;
     };
 
+    this.getHud = function() {
+        return hud;
+    };
+
     this.getTitle = function() {
         return title;
     };
