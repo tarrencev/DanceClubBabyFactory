@@ -158,6 +158,10 @@ var AudioPlayerObject = function(){
     this.getSound = function() {
         return sound;
     };
+
+    this.play = function() {
+        playButtonHandler();
+    };
     
     // this.playPause = function() {
     //     sound.playPause();

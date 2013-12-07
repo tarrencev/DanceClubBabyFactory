@@ -9,12 +9,7 @@ var PartyGoerObject = function(type_) {
 
 //private funcs
 PartyGoerObject.prototype.init = function() {
-    if (this.type === "DrugDealer")
-        this.drawDrugDealer();
-    /*else if (this.type === "Underage")
-        this.drawUnderAge();*/
-    else
-        this.drawGoer();
+    this.drawGoer();
 
     var pos = getRandomEdgePos(this.goer);
     this.goer.x = pos.x;
@@ -31,28 +26,6 @@ PartyGoerObject.prototype.drawGoer = function() {
 
     stage.addChild(this.goer);
 };
-
-/*PartyGoerObject.prototype.drawDrugDealer = function() {
-    this.goer = new createjs.Shape();
-    this.goer.graphics
-             .beginStroke('#a0a0a0')
-             .setStrokeStyle(5)
-             .beginFill('#ff0000')
-             .drawCircle(0, 0, this.radius);
-
-    stage.addChild(this.goer);
-};
-
-PartyGoerObject.prototype.drawUnderAge = function() {
-    this.goer = new createjs.Shape();
-    this.goer.graphics
-             .beginStroke('#a0a0a0')
-             .setStrokeStyle(5)
-             .beginFill('#ffff00')
-             .drawCircle(0, 0, this.radius);
-
-    stage.addChild(this.goer);
-};*/
 
 //public funs
 PartyGoerObject.prototype.setPosition = function(position) {

@@ -77,19 +77,6 @@ var HudObject = function(){
             ecstasyPowerup.drawEcstasy();
     }
 
-    function renderTextAlert(text) {
-        var alert = new createjs.Text(text,
-                              "bold 24px Helvetica",
-                              "#FFFFFF");
-        alert.alpha = 0.8;
-        alert.textAlign = "center";
-        alert.textBaseline = "middle";
-        alert.x = CONSTANTS.WIDTH/2;
-        alert.y = CONSTANTS.HEIGHT/2;
-        createjs.Tween.get(alert).to({scaleX: 20, scaleY: 20, alpha:0}, 900).call(this.destroy, [], this);
-        stage.addChild(alert);
-    }
-
     function decrementScoreBy(value) {
         score = value;
         scoreText.text = score.toString();
@@ -116,9 +103,36 @@ var HudObject = function(){
             powerup.destroy();
     };
 
-    // this.drawPowerUpIcon = function() {
+    function renderTextAlert(text) {
+        var alert = new createjs.Text(text,
+                              "bold 24px Helvetica",
+                              "#FFFFFF");
+        alert.alpha = 0.8;
+        alert.textAlign = "center";
+        alert.textBaseline = "middle";
+        alert.x = CONSTANTS.WIDTH/2;
+        alert.y = CONSTANTS.HEIGHT/2;
+        createjs.Tween.get(alert).to({scaleX: 20, scaleY: 20, alpha:0}, 900).call(this.destroy, [], this);
+        stage.addChild(alert);
+    }
 
-    // };
+    this.renderStartTimer = function(){
+        var second = 3;
+        renderTextAlert(second.toString());
+        var enterEasing = setInterval(function() {
+            second--;
+            if (second === 0) {
+                clearInterval(enterEasing);
+                renderTextAlert("Go!");
+                gameObject.getAudioPlayer().play();
+            } else renderTextAlert(second.toString());
+            
+        }, 1000);
+    };
+
+    this.renderTextAlert = function(text) {
+        renderTextAlert(text);
+    };
 
     init();
 };

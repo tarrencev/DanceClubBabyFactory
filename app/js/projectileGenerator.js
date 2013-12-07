@@ -120,7 +120,7 @@ var ProjectileGeneratorObject = function() {
     }
     
     function blockProjectile(index) {
-        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 25, "#ABF000");
+        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 25, getRandomColorWithOpacity(1.0));
         document.dispatchEvent(blockedEvt);
         stars++;
         removeProjectile(index);
