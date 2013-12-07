@@ -19,12 +19,22 @@ var EXTENZECOST = 25;
 var ECSTACYCOST = 25;
 
 
-var colors = [  "rgba(204, 51, 255, ", "rgba(0, 153, 255, ", 
+/*var colors = [  "rgba(204, 51, 255, ", "rgba(0, 153, 255, ", 
         "rgba(255, 255, 51, ", "rgba(0, 255, 51, ",
-        "rgba(255, 0, 239, ", "rgba(255, 0, 0, " ];
- 
+        "rgba(255, 0, 239, ", "rgba(255, 0, 0, " ];*/
+
+var colors = [ [204, 51, 255], [0, 153, 255], [255, 255, 51], [0, 255, 51], [255, 0, 239], [255, 0, 0] ];
+
 function getRandomColorWithOpacity(opacity) {
-	return colors[Math.floor(Math.random() * colors.length)] + opacity.toString() + ")";
+    var index = Math.floor(Math.random() * colors.length);
+    return "rgba(" + colors[index][0] + ", " + 
+                     colors[index][1] + ", " + 
+                     colors[index][2] + ", " + 
+                     opacity.toString() + ")";
+}
+
+function getRandomColorObject() {
+    return colors[Math.floor(Math.random() * colors.length)];
 }
 
 function getRandomSign() {

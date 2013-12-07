@@ -1,12 +1,20 @@
 var DoorObject = function(){
     //private vars
-    var door, doorGuide;
+    var door = new createjs.Shape();
+    var doorGuide;
     var doorPosition = 0;
     var radius = 250;
     var doorThickness = 16;
     var doorWidth = Math.PI/6; // in radians
-    var stars = 0;
+    var defaultDoorColor = '#00CCFF';
+    var extenzeDoorColor = '#6e2bff';
+    var stars = 2000;
     var extenzeActive = false;
+    var extenzeAnimationInterval;
+    
+    document.addEventListener("onEcstasyStart", ecstasyStartHandler);
+    document.addEventListener("onEcstasyEnd", ecstasyEndHandler);
+    var ecstasyTimer;
 
     //private funcs
     function init() {
@@ -17,13 +25,13 @@ var DoorObject = function(){
     }
 
     function drawDoor() {
-        door = new createjs.Shape();
         door.x = CONSTANTS.WIDTH/2;
         door.y = CONSTANTS.HEIGHT/2;
-        door.graphics.beginStroke('#00CCFF')
-                    .setStrokeStyle(doorThickness)
-                    .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
-                    .endStroke();
+        door.graphics.beginStroke(defaultDoorColor)
+                     .setStrokeStyle(doorThickness)
+                     .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
+                     .endStroke();
+        door.cache(-(radius+doorThickness), -(radius+doorThickness), (radius+doorThickness)*2, (radius+doorThickness)*2);
         stage.addChild(door);
     }
 
@@ -48,24 +56,63 @@ var DoorObject = function(){
         if(stars >= EXTENZECOST && !extenzeActive) {
             console.log('extenze called');
             extenzeActive = true;
-            door.graphics.clear();
-            door.graphics.beginStroke('#6e2bff')
-                        .setStrokeStyle(doorThickness)
-                        .arc(0, 0, radius, -doorWidth/2 * 3/2, doorWidth/2 * 3/2)
-                        .endStroke();
-            doorWidth = Math.PI/6 * 3/2;
-            setTimeout(function() {
-                doorWidth = Math.PI/6;
+            JuicySplosion(door, doorWidth, defaultDoorColor);
+            var originalWidth = doorWidth;
+            var goalWidth = doorWidth * 3/2;
+            extenzeAnimationInterval = setInterval(function() {
                 door.graphics.clear();
+                doorWidth = doorWidth*0.8 + goalWidth*0.2;
+                if (goalWidth-0.01 < doorWidth) {
+                    doorWidth = goalWidth;
+                    clearInterval(extenzeAnimationInterval);
+                }
+                door.graphics.beginStroke(extenzeDoorColor)
+                             .setStrokeStyle(doorThickness)
+                             .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
+                             .endStroke();
+                door.updateCache();
+            }, 10);
+            setTimeout(function() {
+              var originalWidth = doorWidth;
+              var goalWidth = doorWidth / 3*2;
+              extenzeAnimationInterval = setInterval(function() {
+                  door.graphics.clear();
+                  doorWidth = doorWidth*0.8 + goalWidth*0.2;
+                  if (goalWidth+0.01 > doorWidth) {
+                      doorWidth = goalWidth;
+                      clearInterval(extenzeAnimationInterval);
+                  }
+                  door.graphics.beginStroke(defaultDoorColor)
+                               .setStrokeStyle(doorThickness)
+                               .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
+                               .endStroke();
+                  door.updateCache();
+                }, 10);
+                /*door.graphics.clear();
                 door.graphics.beginStroke('#00CCFF')
                         .setStrokeStyle(doorThickness)
                         .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                         .endStroke();
-                
+                door.updateCache();*/
                 extenzeActive = false;
             } , 5000);
         }
         
+    }
+    
+    function ecstasyStartHandler() {
+        var color = getRandomColorObject();
+        door.filters = [
+            new createjs.ColorFilter(0,0,0,1, color[0],color[1],color[2],0)
+        ];
+        door.updateCache();
+        ecstasyTimer = setTimeout(ecstasyStartHandler, 100);
+    }
+    
+    function ecstasyEndHandler() {
+        door.filters = [];
+        door.updateCache();
+        clearTimeout(ecstasyTimer);
     }
 
     //public funcs

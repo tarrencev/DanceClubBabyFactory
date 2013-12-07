@@ -8,6 +8,11 @@ var PartyGoerGenObject = function() {
     var ecstasy = false;
     var partyPeople;
     document.addEventListener("threeKey", ecstasyHandler);
+    
+    var onEcstasyStartEvt = document.createEvent('Event');
+    onEcstasyStartEvt.initEvent('onEcstasyStart', true, true);
+    var onEcstasyEndEvt = document.createEvent('Event');
+    onEcstasyEndEvt.initEvent('onEcstasyEnd', true, true);
 
     //private funcs
     function checkForCollisions(goer_) {
@@ -22,9 +27,11 @@ var PartyGoerGenObject = function() {
         if(!ecstasy && gameObject.getHud().getStars() >= ECSTACYCOST) {
             partyPeople = getPeopleInParty();
             ecstasy = true;
+            document.dispatchEvent(onEcstasyStartEvt);
             setTimeout(function() {
                 ecstasy = false;
-                partyPeople = NULL;
+                partyPeople = [];
+                document.dispatchEvent(onEcstasyEndEvt);
             }, 10000);
         }
     }
