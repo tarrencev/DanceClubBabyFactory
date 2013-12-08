@@ -58,7 +58,6 @@ var DoorObject = function(){
     function extenzeDoor() {
         if(stars >= EXTENZECOST && !extenzeActive) {
             extenzeActive = true;
-            JuicySplosion(door, doorWidth, defaultDoorColor);
             originalWidth = doorWidth;
             goalWidth = doorWidth * 3/2;
             extending = true;

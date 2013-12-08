@@ -128,7 +128,7 @@ var ProjectileGeneratorObject = function() {
 
     function calculateProjectileDirection(dataDiff) {
 
-        projectileAngle = projectileAngle + Math.PI/8 * dataDiff/25*Math.sqrt(ticksSinceProjectile);
+        projectileAngle = projectileAngle + Math.PI/8 * Math.sqrt(Math.abs(dataDiff)) * dataDiff/Math.abs(dataDiff) * Math.sqrt(ticksSinceProjectile) / 10;
 
         var newPosition = {
             x: window.innerWidth/2 + 2 * window.innerHeight * Math.cos(projectileAngle),
@@ -177,8 +177,7 @@ var ProjectileGeneratorObject = function() {
             powerUps.removeChildAt(i);
         }
     };
-
-    var count = 0;
+    
     var cocaineCount = 0;
     var mushroomsCount = 0;
     var marijuanaCount = 0;

@@ -28,20 +28,22 @@ var HudObject = function(){
     function violationHandler(event) {
         if (gameObject.getAudioPlayer().isPlaying()) {
             heat += 5.9;
-            updateHeat();
             var siren = gameObject.getAudioPlayer().getSound().getSiren();
-            if (heat < 114.1) {
+            if (heat < 118) {
                 createjs.Tween.get(siren, {override: true})
                               .to({volume: 1}, 500).call(function() {
-                                  createjs.Tween.get(siren).to({volume: 0.2*heat/118}, 3000);
+                                  createjs.Tween.get(siren)
+                                                .to({volume: 0.2*heat/118}, 1500);
                 });
             } else {
+                heat = 118;
                 gameObject.getAudioPlayer().stopPlayback();
                 createjs.Tween.get(siren, {override: true})
                               .to({volume: 1}, 1000).call(function() {
                                   createjs.Tween.get(siren).to({volume: 0}, 3000);
                 });
             }
+            updateHeat();
         }
     }
 
