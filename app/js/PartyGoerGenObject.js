@@ -3,7 +3,7 @@ var PartyGoerGenObject = function() {
     //private vars
     var people = new createjs.Container();
     var wanderSpeed = 30;
-    var danceSpeed = 30;
+    var danceSpeed = 20;
     var everyoneNeedtoLeave = false;
     var ecstasy = false;
     var partyPeople;
@@ -124,14 +124,19 @@ var PartyGoerGenObject = function() {
             distance = getDistance(people.getChildAt(j), babyRepo);
 
             if (distance < babyRepoRadius + 1.5 * people.getChildAt(j).getRadius()) {
+
                 stayAway(people.getChildAt(j));
+
             } else if (distance > 3/4 * doorRadius && distance < doorRadius) {
-                if (people.getChildAt(j).checkWantToParty()) {
+
+                if (people.getChildAt(j).getPartyStatus()) {
                     createjs.Tween.removeTweens(people.getChildAt(j).getShape());
                     pos = getRandomPosInParty();
                     createjs.Tween.get(people.getChildAt(j).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(j), pos), createjs.Ease.linear);
                 }
-            } else if (distance < doorRadius + 30 && !people.getChildAt(j).checkWantToParty()) {
+
+            } else if (distance < doorRadius + 30 && people.getChildAt(j).getPartyStatus() === 1) {
+
                 stayAway(people.getChildAt(j));
             }
         }
@@ -169,22 +174,33 @@ var PartyGoerGenObject = function() {
         for (; i < upperbound; i++) {
 
             var distance = getDistance(people.getChildAt(i), babyRepo);
-            var offset = 2/3 * Math.random() * (doorRadius - babyRepoRadius);
+            //var offset = 2/3 * Math.random() * (doorRadius - babyRepoRadius);
 
-            if (distance < babyRepoRadius + people.getChildAt(i).getRadius() + offset) {
-                createjs.Tween.removeTweens(people.getChildAt(i).getShape());
-                pos = getRandomPosInParty();
-                createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
-            } else {
-                
+            if (!people.getChildAt(j).getPartyStatus()) {
+
                 if (Math.random() < doorRadius / distance) {
-                    people.getChildAt(i).likeParty();
-                    createjs.Tween.removeTweens(people.getChildAt(i).getShape());
-                    pos = getRandomPosInParty();
-                    createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
+                    people.getChildAt(i).updatePartyStatus();
                 } else {
                     createjs.Tween.removeTweens(people.getChildAt(i).getShape());
                     pos = getRandomPosOutside();
+                    createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
+                }
+
+            } else if (people.getChildAt(j).getPartyStatus() === 1){
+
+                createjs.Tween.removeTweens(people.getChildAt(i).getShape());
+                pos = getRandomPosInParty();
+                createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
+
+                if (Math.random() < 0.05) {
+                        people.getChildAt(i).updatePartyStatus();
+                }
+
+            } else {
+
+                if (distance < doorRadius) {
+                    createjs.Tween.removeTweens(people.getChildAt(i).getShape());
+                    pos = getRandomEdgePos();
                     createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, wanderSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
                 }
             }
@@ -272,7 +288,7 @@ var PartyGoerGenObject = function() {
         for (var i in people) {
             people[i].removeFromStage();
         }
-        people = [];
+        people.removeAllChildren();
     };
 
     this.clearPeople = function() {
