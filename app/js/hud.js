@@ -12,8 +12,7 @@ var HudObject = function(){
         starsIcon,
         heat = 0,
         heatText,
-        heatMeter,
-        siren = createjs.Sound.createInstance("Siren");
+        heatMeter;
 
     function init() {
         drawScore();
@@ -60,11 +59,18 @@ var HudObject = function(){
         if (gameObject.getAudioPlayer().isPlaying()) {
             heat += 5.9;
             updateHeat();
-            siren.setVolume(heat/118);
-            if (heat >= 118) {
-                gameObject.getAudioPlayer().stopPlayback();
+            var siren = gameObject.getAudioPlayer().getSound().getSiren();
+            if (heat < 114.1) {
+                createjs.Tween.get(siren, {override: true})
+                              .to({volume: 1}, 500).call(function() {
+                                  createjs.Tween.get(siren).to({volume: 0.2*heat/118}, 3000);
+                });
             } else {
-                if (siren.playState !== createjs.Sound.PLAY_SUCCEEDED) siren.play();
+                gameObject.getAudioPlayer().stopPlayback();
+                createjs.Tween.get(siren, {override: true})
+                              .to({volume: 1}, 1000).call(function() {
+                                  createjs.Tween.get(siren).to({volume: 0}, 3000);
+                });
             }
         }
     }
@@ -80,7 +86,8 @@ var HudObject = function(){
         stage.addChild(heatText);
 
         var heatOutline = new createjs.Shape();
-        heatOutline.graphics.setStrokeStyle(2).beginStroke("#fff").drawRect(CONSTANTS.WIDTH/2 - 95, 17, 120, 25);
+        heatOutline.graphics.setStrokeStyle(2).beginStroke("#fff")
+                            .drawRect(CONSTANTS.WIDTH/2 - 95, 17, 120, 25);
         stage.addChild(heatOutline);
 
         heatMeter = new createjs.Shape();
@@ -205,11 +212,12 @@ var HudObject = function(){
             heat -= 0.05 * speedModifier;
             updateHeat();
         }
-    }
+    };
 
     this.reset = function() {
+        console.log("Hud RESET");
         heat = 0;
-        createjs.Tween.get(heatMeter).to({scaleX: 0, scaleY: 1}, 500, createjs.Ease.linear);
+        updateHeat();
         stars = 0;
         starsText.text = "0";
         score = 0;

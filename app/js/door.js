@@ -163,7 +163,7 @@ var DoorObject = function(){
             extending = true;
             goalWidth = originalWidth;
         }
-    }
+    };
 
     init();
 };

@@ -201,10 +201,12 @@ var GameObject = function() {
     
     this.resetGame = function() {
         // setDamage(0, true);
+        console.log("game reset");
         babyRepo.reset();
         projectiles.reset();
         goerGen.reset();
         hud.reset();
+        console.log("game end");
     };
 };
 
