@@ -10,7 +10,8 @@ var HudObject = function(){
         starsIcon,
         heat = 0,
         heatText,
-        heatMeter;
+        heatMeter,
+        siren = createjs.Sound.createInstance("Siren");
 
     function init() {
         drawScore();
@@ -45,8 +46,11 @@ var HudObject = function(){
         if (gameObject.getAudioPlayer().isPlaying()) {
             heat += 5.9;
             createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
+            siren.setVolume(heat/118);
             if (heat >= 118) {
                 gameObject.getAudioPlayer().stopPlayback();
+            } else {
+                if (siren.playState !== createjs.Sound.PLAY_SUCCEEDED) siren.play();
             }
         }
     }

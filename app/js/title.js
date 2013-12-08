@@ -86,7 +86,7 @@ var TitleObject = function(new_stage){
         stage.addChild(instructionTitle);
 
         instructionText = new createjs.Text("throw the craziest party in town while\n" +
-                             "running your illegal, for-profit orphange\n\n" +
+                             "running your illegal, for-profit orphanage\n\n" +
                              "catch the stars as they shoot to the beat of the music\n" +
                              "miss too many of them and the cops will shut you down\n" +
                              "use your stars to purchase powerups\n\n" +

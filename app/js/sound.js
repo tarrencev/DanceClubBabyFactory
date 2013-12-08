@@ -61,6 +61,10 @@ var SoundObject = function(track){
                 {
                     src: "music/rewind_sound.mp3",
                     id: "Rewind"
+                },
+                {
+                    src: "music/siren_sound.mp3",
+                    id: "Siren"
                 }
         ];
          
@@ -72,7 +76,7 @@ var SoundObject = function(track){
     function handleLoad(event) {
         gameObject.getTitle().progress();
 
-        if (event.id != "Rewind") {
+        if (event.id === "Song") {
             var context = createjs.WebAudioPlugin.context;
 
             // attach visualizer node to our existing dynamicsCompressorNode, which was connected to context.destination
