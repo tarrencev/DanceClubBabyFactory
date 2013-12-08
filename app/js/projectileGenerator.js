@@ -93,32 +93,15 @@ var ProjectileGeneratorObject = function() {
         }
     }
 
+    var easeIn = false;
+    var easeOut = false;
     function activateMarijuana() {
         if(stars >= SLOWDOWNCOST && !marijuanaActive) {
             stars = stars - SLOWDOWNCOST;
+            easeIn = true;
+            easeOut = true;
             marijuanaActive = true;
-            var enterEasing = setInterval(function() {
-                speedModifier = speedModifier*0.99 + 0.75*0.01;
-                if (speedModifier < 0.76) {
-                    speedModifier = 0.75;
-                    clearInterval(enterEasing);
-                }
-                document.LOLaudio.playbackRate.value = speedModifier;
-            }, 10);
-            clearTimeout(marijuanaTimer);
-            marijuanaTimer = setTimeout(function() {
-                speedModifier = 0.76;
-                var exitEasing = setInterval(function() {
-                    speedModifier = (speedModifier-0.5*0.01)/0.99;
-                    if (speedModifier > 0.99) {
-                        speedModifier = 1;
-                        clearInterval(exitEasing);
-                        marijuanaActive = false;
-                    }
-                    document.LOLaudio.playbackRate.value = speedModifier;
-                }, 10);
-                
-            }, 8000);
+            this.marijuanaCount = 0;
         }
     }
 
@@ -126,9 +109,7 @@ var ProjectileGeneratorObject = function() {
         if(stars >= MUSHROOMSCOST && !mushroomsActive) {
             stars = stars - MUSHROOMSCOST;
             mushroomsActive = true;
-            setTimeout(function() {
-                mushroomsActive = false;
-            }, 8000);
+            this.mushroomsCount = 0;
         }
     }
 
@@ -194,6 +175,8 @@ var ProjectileGeneratorObject = function() {
 
     this.count = 0;
     this.cocaineCount = 0;
+    this.mushroomsCount = 0;
+    this.marijuanaCount = 0;
     this.tick = function() {
         // Checks for when to remove projectiles
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
@@ -224,6 +207,36 @@ var ProjectileGeneratorObject = function() {
             cocaineActive = false;
             this.cocaineCount = 0;
         }
+
+        if(mushroomsActive && this.mushroomsCount%60 === 0) {
+            mushroomsActive = false;
+            this.mushroomsCount = 0;
+        }
+
+        if(marijuanaActive) {
+            console.log('mj active');
+            if (this.marijuanaCount%5 === 0 && easeIn) {
+                console.log('easing in');
+                speedModifier = speedModifier * 0.99 + 0.75 * 0.001;
+                if (speedModifier < 0.76) {
+                    console.log('eased in');
+                    speedModifier = 0.75;
+                    easeIn = false;
+                }
+                document.LOLaudio.playbackRate.value = speedModifier;
+            } else if (this.marijuanaCount > 280 && this.marijuanaCount%5 === 0 && easeOut) {
+                speedModifier = (speedModifier-0.5*0.001)/0.99;
+                console.log('easing out');
+                if (speedModifier > 0.99) {
+                    speedModifier = 1;
+                    marijuanaActive = false;
+                    easeOut = false;
+                    this.marijuanaCount = 0;
+                }
+                document.LOLaudio.playbackRate.value = speedModifier;
+            }
+        }
+        this.marijuanaCount++;
         this.cocaineCount++;
         this.count++;
         ticksSinceProjectile++;
