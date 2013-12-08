@@ -2,7 +2,7 @@ var PartyGoerObject = function(type_) {
     //private vars
     this.type = type_;
     this.radius = 7;
-    this.partyStatus = 0;
+    this.wantToParty = false;
 
     this.init();
 };
@@ -48,19 +48,19 @@ PartyGoerObject.prototype.getShape = function() {
     return this.goer;
 };
 
-PartyGoerObject.prototype.getPartyStatus = function() {
-    return this.partyStatus;
+PartyGoerObject.prototype.checkWantToParty = function() {
+    return this.wantToParty;
 };
 
-PartyGoerObject.prototype.updatePartyStatus = function() {
-    this.partyStatus++;
+PartyGoerObject.prototype.likeParty = function() {
+    this.wantToParty = true;
 };
 
-/*PartyGoerObject.prototype.hateParty = function() {
+PartyGoerObject.prototype.hateParty = function() {
     this.wantToParty = false;
 };
 
-PartyGoerObject.prototype.checkLeaving = function() {
+/*PartyGoerObject.prototype.checkLeaving = function() {
     return this.leaving;
 };
 
