@@ -1,4 +1,4 @@
-MINTICKSPERPROJECTILE = 5;
+MINTICKSPERPROJECTILE = 3;
 
 var ProjectileGeneratorObject = function() {
     //private vars
@@ -75,15 +75,15 @@ var ProjectileGeneratorObject = function() {
     var count = 0;
     function fireProjectile(dataDiff, type) {
         if (ticksSinceProjectile > MINTICKSPERPROJECTILE/(volumeModifier/100) && dataDiff > 0.25) {
+            if(dataDiff > 4) dataDiff = 4;
+            if(dataDiff < -4) dataDiff = -4;
             var projectile = drawProjectile(type);
-            var edgePos = calculateProjectileDirection(rotateDirection*dataDiff*4);
+            var edgePos = calculateProjectileDirection(rotateDirection*dataDiff*5);
             var offsetPosition = {
                 x: CONSTANTS.WIDTH/2+gameObject.getBabyRepo().getRadius()*Math.cos(projectileAngle), 
                 y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
             };
             projectile.setPosition(offsetPosition);
-            if(dataDiff > 3) dataDiff = 3;
-            if(dataDiff < -3) dataDiff = -3;
             createjs.Tween.get(projectile.getShape()).to(edgePos, (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
             createjs.Tween.get(projectile.getShape(), {loop:true}).to({rotation: 20*Math.PI}, 80 + (250 * dataDiff) * 100/volumeModifier * 1/speedModifier);
             ticksSinceProjectile = 0;
