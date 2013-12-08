@@ -99,9 +99,10 @@ var ProjectileGeneratorObject = function() {
         if(stars >= SLOWDOWNCOST && !marijuanaActive) {
             stars = stars - SLOWDOWNCOST;
             easeIn = true;
-            easeOut = true;
             marijuanaActive = true;
-            this.marijuanaCount = 0;
+            marijuanaCount = 0;
+            gameObject.getHud().renderTextAlert("Marijuana");
+            gameObject.getHud().decrementStarsBy(SLOWDOWNCOST);
         }
     }
 
@@ -109,7 +110,9 @@ var ProjectileGeneratorObject = function() {
         if(stars >= MUSHROOMSCOST && !mushroomsActive) {
             stars = stars - MUSHROOMSCOST;
             mushroomsActive = true;
-            this.mushroomsCount = 0;
+            mushroomsCount = 0;
+            gameObject.getHud().renderTextAlert("Mushrooms");
+            gameObject.getHud().decrementStarsBy(MUSHROOMSCOST);
         }
     }
 
@@ -117,7 +120,9 @@ var ProjectileGeneratorObject = function() {
         if(stars >= COCAINECOST && !cocaineActive) {
             stars = stars - COCAINECOST;
             cocaineActive = true;
-            this.cocaineCount = 0;
+            cocaineCount = 0;
+            gameObject.getHud().renderTextAlert("Cocaine");
+            gameObject.getHud().decrementStarsBy(COCAINECOST);
         }
     }
 
@@ -143,7 +148,7 @@ var ProjectileGeneratorObject = function() {
     function mushroomsEffect(index) {
 
         var projectile = projectiles.getChildAt(index);
-        var radius = gameObject.getDoor().getRadius() ;
+        var radius = gameObject.getDoor().getRadius();
         var angle = gameObject.getDoor().getAngle() * Math.PI/180;
 
         var distanceFromCenter = Math.sqrt(Math.pow(projectile.getPositionFromCenter().x, 2)+ Math.pow(projectile.getPositionFromCenter().y, 2));
@@ -151,7 +156,7 @@ var ProjectileGeneratorObject = function() {
             var x = CONSTANTS.WIDTH/2 + radius * Math.cos(angle);
             var y = CONSTANTS.HEIGHT/2 + radius * Math.sin(angle);
             createjs.Tween.removeTweens(projectile.getShape());
-            createjs.Tween.get(projectile.getShape()).to({x:x, y:y}, (10000 * 1/speedModifier * 1/volumeModifier), createjs.Ease.linear);
+            createjs.Tween.get(projectile.getShape()).to({x:x, y:y}, (30000 * 1/speedModifier * 1/volumeModifier), createjs.Ease.linear);
         }
     }
 
@@ -173,18 +178,14 @@ var ProjectileGeneratorObject = function() {
         }
     };
 
-    this.count = 0;
-    this.cocaineCount = 0;
-    this.mushroomsCount = 0;
-    this.marijuanaCount = 0;
+    var count = 0;
+    var cocaineCount = 0;
+    var mushroomsCount = 0;
+    var marijuanaCount = 0;
     this.tick = function() {
         // Checks for when to remove projectiles
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             var projPosition = projectiles.getChildAt(i).getPositionFromCenter();
-
-            if(mushroomsActive) {
-                mushroomsEffect(i);
-            }
 
             // outside stage
             var projectile = projectiles.getChildAt(i).getShape();
@@ -194,6 +195,9 @@ var ProjectileGeneratorObject = function() {
             }
             
             // blocked by door
+            if(mushroomsActive) {
+                mushroomsEffect(i);
+            }
             
             if (gameObject.getDoor().detectCollision(projPosition.x, projPosition.y)) {
                 blockProjectile(i);
@@ -203,47 +207,50 @@ var ProjectileGeneratorObject = function() {
                 blockProjectile(i);
             }
         }
-        if(cocaineActive && this.cocaineCount%30 === 0) {
+        if(cocaineActive && cocaineCount > 10) {
             cocaineActive = false;
-            this.cocaineCount = 0;
+            cocaineCount = 0;
         }
 
-        if(mushroomsActive && this.mushroomsCount%60 === 0) {
+        if(mushroomsActive && mushroomsCount > 120) {
             mushroomsActive = false;
-            this.mushroomsCount = 0;
+            mushroomsCount = 0;
         }
 
         if(marijuanaActive) {
-            console.log('mj active');
-            if (this.marijuanaCount%5 === 0 && easeIn) {
-                console.log('easing in');
+            if (marijuanaCount%5 === 0 && easeIn) {
                 speedModifier = speedModifier * 0.99 + 0.75 * 0.001;
                 if (speedModifier < 0.76) {
-                    console.log('eased in');
                     speedModifier = 0.75;
                     easeIn = false;
+                    easeOut = true;
+                    marijuanaCount = 0;
                 }
                 document.LOLaudio.playbackRate.value = speedModifier;
-            } else if (this.marijuanaCount > 280 && this.marijuanaCount%5 === 0 && easeOut) {
+            } else if (marijuanaCount > 60 && marijuanaCount%5 === 0 && easeOut) {
                 speedModifier = (speedModifier-0.5*0.001)/0.99;
-                console.log('easing out');
-                if (speedModifier > 0.99) {
+                if (speedModifier > 0.98) {
                     speedModifier = 1;
                     marijuanaActive = false;
                     easeOut = false;
-                    this.marijuanaCount = 0;
+                    marijuanaCount = 0;
                 }
                 document.LOLaudio.playbackRate.value = speedModifier;
             }
         }
-        this.marijuanaCount++;
-        this.cocaineCount++;
-        this.count++;
+        marijuanaCount++;
+        cocaineCount++;
+        mushroomsCount++;
+        count++;
         ticksSinceProjectile++;
     };
 
     this.getProjectiles = function() {
         return projectiles;
+    };
+
+    this.getMarijuanaStatus = function() {
+        return marijuanaActive;
     };
 
     init();

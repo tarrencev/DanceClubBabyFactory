@@ -14,7 +14,7 @@ var canvas, stage, preloaded_songs;
 var volumeModifier = 50;
 var speedModifier = 1;
 
-var SLOWDOWNCOST = 0;
+var SLOWDOWNCOST = 25;
 var EXTENZECOST = 25;
 var ECSTACYCOST = 25;
 var MUSHROOMSCOST = 25;
