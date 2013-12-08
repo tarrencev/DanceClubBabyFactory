@@ -104,12 +104,12 @@ var GameObject = function() {
             if (createjs.Ticker.getTicks() % 50 === 0) {
                 goerGen.addPartyGoer();
             }
-            if (createjs.Ticker.getTicks() % 50 === 0) {
+            if (createjs.Ticker.getTicks() % 60 === 0) {
                 if (goerGen.partySize() > 2) {
                     babyRepo.addBaby();
                 }
             }
-            if (createjs.Ticker.getTicks() % 100 === 0) {
+            if (createjs.Ticker.getTicks() % 30 === 0) {
                 goerGen.wander();
             }
         }

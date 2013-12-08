@@ -131,7 +131,7 @@ var PartyGoerGenObject = function() {
                     pos = getRandomPosInParty();
                     createjs.Tween.get(people.getChildAt(j).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(j), pos), createjs.Ease.linear);
                 }
-            } else if (distance < 1.2 * doorRadius && !people.getChildAt(j).checkWantToParty()) {
+            } else if (distance < doorRadius + 30 && !people.getChildAt(j).checkWantToParty()) {
                 stayAway(people.getChildAt(j));
             }
         }
@@ -141,15 +141,32 @@ var PartyGoerGenObject = function() {
         }*/
     }
 
-    function moveAll() {
+    function moveAll(everyone) {
 
         var babyRepo = gameObject.getBabyRepo();
         var babyRepoPosition = babyRepo.getPosition();
         var babyRepoRadius = babyRepo.getRadius();
         var doorRadius = gameObject.getDoor().getRadius();
         var pos;
+        var i, upperbound;
 
-        for (var i = 0; i < people.getNumChildren(); i++) {
+        if (everyone) {
+            i = 0;
+            upperbound = people.getNumChildren();
+        } else {
+            if (Math.random() < 1/3) {
+                i = 0;
+                upperbound = people.getNumChildren() / 3;
+            } else if (Math.random() < 0.5) {
+                i = people.getNumChildren() / 3;
+                upperbound = 2/3 *people.getNumChildren();
+            } else {
+                i = 2/3 * people.getNumChildren();
+                upperbound = people.getNumChildren();
+            }
+        }
+
+        for (; i < upperbound; i++) {
 
             var distance = getDistance(people.getChildAt(i), babyRepo);
             var offset = 2/3 * Math.random() * (doorRadius - babyRepoRadius);
@@ -223,7 +240,7 @@ var PartyGoerGenObject = function() {
     };
 
     this.wander = function() {
-        moveAll();
+        moveAll(false);
     };
 
     this.getGoer = function() {
@@ -231,7 +248,7 @@ var PartyGoerGenObject = function() {
     };
 
     this.size = function() {
-        return people.length;
+        return people.getNumChildren();
     };
 
     this.partySize = function() {
@@ -246,16 +263,16 @@ var PartyGoerGenObject = function() {
 
     this.backToParty = function() {
         everyoneNeedtoLeave = false;
-        moveAll();
+        moveAll(true);
     };
     
     this.reset = function() {
         //everyoneNeedtoLeave = true;
         //kickEveryoneOut();
-        /*for (var i in people) {
+        for (var i in people) {
             people[i].removeFromStage();
-        }*/
-        //people = [];
+        }
+        people = [];
     };
 
     this.clearPeople = function() {
