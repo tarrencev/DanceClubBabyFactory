@@ -126,8 +126,10 @@ var GameObject = function() {
                 goerGen.addPartyGoer();
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
-                if (goerGen.partySize() > 2) {
+                var tmp = goerGen.partySize() * Math.random() / 2;
+                while (tmp > 0) {
                     babyRepo.addBaby();
+                    tmp--;
                 }
             }
             if (createjs.Ticker.getTicks() % 30 === 0) {
