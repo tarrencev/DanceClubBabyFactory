@@ -46,3 +46,11 @@ PowerUpObject.prototype.getRadius = function() {
 PowerUpObject.prototype.getShape = function() {
     return this.projectile;
 };
+
+PowerUpObject.prototype.pause = function() {
+    
+};
+
+PowerUpObject.prototype.resume = function() {
+    
+};

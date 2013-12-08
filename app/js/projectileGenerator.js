@@ -13,8 +13,12 @@ var ProjectileGeneratorObject = function() {
     var blockedEvt;
     var stars = 0;
     var sloMoActive = false;
+    var slowTimeLeft = 0;
+    var slowTimeStart;
+    var easeTimeStart;
     
     var slowPowerTimer;
+    var enterEasing;
 
     //private funcs
     function init() {
@@ -120,28 +124,38 @@ var ProjectileGeneratorObject = function() {
 
     function gotPowerUp() {
         sloMoActive = true;
-        var enterEasing = setInterval(function() {
-            speedModifier = speedModifier*0.99 + 0.75*0.01;
-            if (speedModifier < 0.76) {
-                speedModifier = 0.75;
-                clearInterval(enterEasing);
+
+        var d = new Date();
+        easeTimeStart = d.getTime();
+        enterEasing = setTimeout(easeIn, 10);
+        clearTimeout(slowPowerTimer);
+
+        d = new Date();
+        slowTimeStart = d.getTime();
+        slowPowerTimer = setTimeout(slowPowerUp, 8000);
+    }
+
+    function easeIn() {
+        speedModifier = speedModifier*0.99 + 0.75*0.01;
+        if (speedModifier < 0.76) {
+            speedModifier = 0.75;
+            clearInterval(enterEasing);
+        }
+        document.LOLaudio.playbackRate.value = speedModifier;
+        setTimeout(easeIn, 10);
+    }
+
+    function slowPowerUp() {
+        speedModifier = 0.76;
+        var exitEasing = setInterval(function() {
+            speedModifier = (speedModifier-0.5*0.01)/0.99;
+            if (speedModifier > 0.99) {
+                speedModifier = 1;
+                clearInterval(exitEasing);
+                sloMoActive = false;
             }
             document.LOLaudio.playbackRate.value = speedModifier;
         }, 10);
-        clearTimeout(slowPowerTimer);
-        slowPowerTimer = setTimeout(function() {
-            speedModifier = 0.76;
-            var exitEasing = setInterval(function() {
-                speedModifier = (speedModifier-0.5*0.01)/0.99;
-                if (speedModifier > 0.99) {
-                    speedModifier = 1;
-                    clearInterval(exitEasing);
-                    sloMoActive = false;
-                }
-                document.LOLaudio.playbackRate.value = speedModifier;
-            }, 10);
-            
-        }, 8000);
     }
 
     //public funcs
@@ -193,9 +207,20 @@ var ProjectileGeneratorObject = function() {
     };
 
     this.pause = function() {
+        // stop stars
         var tween;
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             projectiles.getChildAt(i).pause();
+        }
+
+        if (sloMoActive) {
+            // stop slomo
+            var d = new Date();
+            easeTimeLeft = 10 - (d.getTime() - easeTimeStart);
+            clearTimeout(enterEasing);
+
+            slowTimeLeft = 8000 - (d.getTime() - slowTimeStart);
+            clearTimeout(slowPowerTimer);
         }
     };
 
@@ -203,6 +228,14 @@ var ProjectileGeneratorObject = function() {
         var tween;
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             projectiles.getChildAt(i).resume();
+        }
+
+        if (sloMoActive) {
+          if (stillEasing) {
+            enterEasing = setTimeout(easeIn, easeTimeLeft);
+          } else {
+            slowPowerTimer = setTimeout(slowPowerUp, slowTimeLeft);
+          }
         }
     };
 
