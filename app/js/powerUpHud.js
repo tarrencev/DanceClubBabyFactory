@@ -17,6 +17,11 @@ PowerUpHudObject.prototype.drawEcstasy = function() {
     this.extenzeSubtext = this.drawPowerUpCost(2, ECSTACYCOST);
 };
 
+PowerUpHudObject.prototype.drawMushrooms = function() {
+    this.extenzeTitle = this.drawPowerUpTitle(3, "4 Mushrooms", "#0066FF");
+    this.extenzeSubtext = this.drawPowerUpCost(3, MUSHROOMSCOST);
+};
+
 PowerUpHudObject.prototype.drawPowerUpTitle = function(index, text, color) {
     var title = new createjs.Text(text,
                               "bold 22px Helvetica",
