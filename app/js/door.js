@@ -6,11 +6,14 @@ var DoorObject = function(){
     var radius = 250;
     var doorThickness = 16;
     var doorWidth = Math.PI/6; // in radians
+    var originalWidth;
+    var goalWidth;
     var defaultDoorColor = '#00CCFF';
     var extenzeDoorColor = '#6e2bff';
     var stars = 2000;
     var extenzeActive = false;
-    var extenzeAnimationInterval;
+    var extending = false;
+    var extenzeCount = 0;
     
     document.addEventListener("onEcstasyStart", ecstasyStartHandler);
     document.addEventListener("onEcstasyEnd", ecstasyEndHandler);
@@ -53,42 +56,12 @@ var DoorObject = function(){
     }
 
     function extenzeDoor() {
-        if(stars >= EXTENZECOST && !extenzeActive) {
+        if(stars >= 0 && !extenzeActive) {
             extenzeActive = true;
             JuicySplosion(door, doorWidth, defaultDoorColor);
-            var originalWidth = doorWidth;
-            var goalWidth = doorWidth * 3/2;
-            extenzeAnimationInterval = setInterval(function() {
-                door.graphics.clear();
-                doorWidth = doorWidth*0.8 + goalWidth*0.2;
-                if (goalWidth-0.01 < doorWidth) {
-                    doorWidth = goalWidth;
-                    clearInterval(extenzeAnimationInterval);
-                }
-                door.graphics.beginStroke(extenzeDoorColor)
-                             .setStrokeStyle(doorThickness)
-                             .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
-                             .endStroke();
-                door.updateCache();
-            }, 10);
-            setTimeout(function() {
-              var originalWidth = doorWidth;
-              var goalWidth = doorWidth / 3*2;
-              extenzeAnimationInterval = setInterval(function() {
-                  door.graphics.clear();
-                  doorWidth = doorWidth*0.8 + goalWidth*0.2;
-                  if (goalWidth+0.01 > doorWidth) {
-                      doorWidth = goalWidth;
-                      clearInterval(extenzeAnimationInterval);
-                  }
-                  door.graphics.beginStroke(defaultDoorColor)
-                               .setStrokeStyle(doorThickness)
-                               .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
-                               .endStroke();
-                  door.updateCache();
-                }, 10);
-                extenzeActive = false;
-            } , 5000);
+            originalWidth = doorWidth;
+            goalWidth = doorWidth * 3/2;
+            extending = true;
         }
         
     }
@@ -163,6 +136,34 @@ var DoorObject = function(){
         }
         return false;
     };
+    
+    this.tick = function() {
+        if (extending) {
+            door.graphics.clear();
+            doorWidth = doorWidth*0.8 + goalWidth*0.2;
+            if (Math.abs(goalWidth-doorWidth) < 0.01) {
+                doorWidth = goalWidth;
+                extending = false;
+                if (!extenzeActive) extenzeCount = 0;
+            }
+            var doorColor;
+            if (extenzeActive) doorColor = extenzeDoorColor;
+            else doorColor = defaultDoorColor;
+            door.graphics.beginStroke(doorColor)
+                         .setStrokeStyle(doorThickness)
+                         .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
+                         .endStroke();
+            door.updateCache();
+        }
+        if (extenzeActive) {
+            extenzeCount++;
+        }
+        if (extenzeCount > 300) {
+            extenzeActive = false;
+            extending = true;
+            goalWidth = originalWidth;
+        }
+    }
 
     init();
 };

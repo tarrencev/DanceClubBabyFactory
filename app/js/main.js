@@ -96,10 +96,12 @@ var GameObject = function() {
     
         if (audioPlayer.isPlaying()) {
             audioPlayer.tick();
+            door.tick();
             goerGen.tick();
             projectiles.tick();
             copGen.tick();
             background.tick();
+            hud.tick();
         
             if (createjs.Ticker.getTicks() % 50 === 0) {
                 goerGen.addPartyGoer();

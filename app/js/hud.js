@@ -59,7 +59,7 @@ var HudObject = function(){
     function violationHandler(event) {
         if (gameObject.getAudioPlayer().isPlaying()) {
             heat += 5.9;
-            createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
+            updateHeat();
             siren.setVolume(heat/118);
             if (heat >= 118) {
                 gameObject.getAudioPlayer().stopPlayback();
@@ -88,6 +88,10 @@ var HudObject = function(){
         heatMeter.y = 18;
         heatMeter.graphics.beginFill("#FF0A0A").drawRect(0, 0, 1, 23);
         stage.addChild(heatMeter);
+    }
+    
+    function updateHeat() {
+        createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
     }
 
     function drawScore() {
@@ -195,6 +199,13 @@ var HudObject = function(){
             
         }, 1000);
     };
+    
+    this.tick = function() {
+        if (heat > 0) {
+            heat -= 0.05 * speedModifier;
+            updateHeat();
+        }
+    }
 
     this.reset = function() {
         heat = 0;
