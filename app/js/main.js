@@ -79,14 +79,33 @@ var GameObject = function() {
         hud.renderStartTimer();
 
         // damage = 0;
+        renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
         
         document.addEventListener("mousemove", mouseMoveHandler);
         stage.addEventListener("click", mouseClickHandler);
         // document.addEventListener("violation", violationHandler, false);
     }
 
+    var fps = null;
+    function renderFPS(fps_str) {
+        if(!fps) {
+            fps = new createjs.Text(fps_str,
+                                  "32px Helvetica",
+                                  "#FFFFFF");
+            fps.alpha = 1.0;
+            fps.x = 30;
+            fps.y = 50;
+            fps.textBaseline = "alphabetic";
+            stage.addChild(fps);
+        } else {
+            fps.text = fps_str;
+        }
+    }
+
     //same as perform_logic() in zenilib
     function tick() {
+
+        renderFPS(Math.round(createjs.Ticker.getMeasuredFPS()).toString());
 
         // if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
         //     if (Math.random() < (damage / 200.0)) {

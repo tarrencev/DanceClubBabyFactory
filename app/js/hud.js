@@ -23,36 +23,6 @@ var HudObject = function(){
         document.addEventListener("birth", incrementScore, false);
         document.addEventListener("blocked", incrementStars, false);
         document.addEventListener("violation", violationHandler, false);
-        document.addEventListener("oneKey", function(){
-                                                if(stars >= SLOWDOWNCOST) {
-                                                    renderTextAlert('Marijuana');
-                                                    decrementStarsBy(SLOWDOWNCOST);
-                                                }
-                                            }, false);
-        document.addEventListener("twoKey", function(){
-                                                if(stars >= EXTENZECOST) {
-                                                    renderTextAlert('Extenze');
-                                                    decrementStarsBy(EXTENZECOST);
-                                                }
-                                            }, false);
-        document.addEventListener("threeKey", function(){
-                                                if(stars >= ECSTACYCOST) {
-                                                    renderTextAlert('Ecstacy');
-                                                    decrementStarsBy(ECSTACYCOST);
-                                                }
-                                            } , false);
-        document.addEventListener("fourKey", function(){
-                                                if(stars >= MUSHROOMSCOST) {
-                                                    renderTextAlert('Mushrooms');
-                                                    decrementStarsBy(MUSHROOMSCOST);
-                                                }
-                                            } , false);
-        document.addEventListener("fiveKey", function(){
-                                                if(stars >= COCAINECOST) {
-                                                    renderTextAlert('Cocaine');
-                                                    decrementStarsBy(COCAINECOST);
-                                                }
-                                            } , false);
     }
     
     function violationHandler(event) {
@@ -150,11 +120,6 @@ var HudObject = function(){
             cocainePowerup.drawCocaine();
     }
 
-    function decrementScoreBy(value) {
-        score = value;
-        scoreText.text = score.toString();
-    }
-
     function incrementScore() {
         score++;
         scoreText.text = score.toString();
@@ -171,11 +136,6 @@ var HudObject = function(){
     }
 
     //public funs
-    this.removePowerUp = function(powerupName) {
-        if(powerupName === 'slowmo')
-            powerup.destroy();
-    };
-
     function renderTextAlert(text) {
         var alert = new createjs.Text(text,
                               "bold 24px Helvetica",
@@ -226,6 +186,12 @@ var HudObject = function(){
 
     this.renderTextAlert = function(text) {
         renderTextAlert(text);
+    };
+
+    this.decrementStarsBy = function(value) {
+        console.log(value);
+        stars -= value;
+        starsText.text = stars.toString();
     };
 
     init();
