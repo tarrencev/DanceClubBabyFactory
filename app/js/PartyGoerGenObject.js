@@ -173,7 +173,7 @@ var PartyGoerGenObject = function() {
             }
         }
         
-        /*var overflow = getPartySize() - gameObject.getPartyLimit();
+        /*var overflow = getPartySize();
         for (var j = 0; j < overflow; j++) {
             people[i].isLeaving();
             createjs.Tween.removeTweens(people[i].getShape());

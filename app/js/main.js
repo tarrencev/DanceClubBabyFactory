@@ -6,7 +6,6 @@ var GameObject = function() {
         babyRepo,
         goerGen,
         door,
-        partyLimit = 10,
         copGen,
         projectiles,
         // damage,
@@ -184,10 +183,6 @@ var GameObject = function() {
 
     this.getCopGen = function() {
         return copGen;
-    };
-
-    this.getPartyLimit = function() {
-        return partyLimit;
     };
 
     this.getProjectiles = function() {
