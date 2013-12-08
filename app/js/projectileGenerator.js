@@ -53,7 +53,7 @@ var ProjectileGeneratorObject = function() {
     }
 
     function noiseViolation(index) {
-        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 500, "rgba(255,0,0,0.2)");
+        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 500, "rgba(255,0,0,0.4)");
         removeProjectile(index);
         document.dispatchEvent(violationEvt);
     }
@@ -134,7 +134,7 @@ var ProjectileGeneratorObject = function() {
     }
     
     function blockProjectile(index) {
-        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 25, getRandomColorWithOpacity(1.0));
+        var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 50, getRandomColorWithOpacity(1.0));
         document.dispatchEvent(blockedEvt);
         stars++;
         removeProjectile(index);
@@ -182,10 +182,6 @@ var ProjectileGeneratorObject = function() {
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             var projPosition = projectiles.getChildAt(i).getPositionFromCenter();
 
-            if(cocaineActive) {
-                blockProjectile(i);
-            }
-
             if(mushroomsActive) {
                 mushroomsEffect(i);
             }
@@ -200,6 +196,10 @@ var ProjectileGeneratorObject = function() {
             // blocked by door
             
             if (gameObject.getDoor().detectCollision(projPosition.x, projPosition.y)) {
+                blockProjectile(i);
+            }
+
+            if(cocaineActive) {
                 blockProjectile(i);
             }
         }
