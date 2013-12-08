@@ -12,9 +12,10 @@ var ProjectileGeneratorObject = function() {
     var violationEvt;
     var blockedEvt;
     var stars = 0;
-    var sloMoActive = false;
+    var marijuanaActive = false;
+    var mushroomsActive = false;
     
-    var slowPowerTimer;
+    var marijuanaTimer;
 
     //private funcs
     function init() {
@@ -25,7 +26,8 @@ var ProjectileGeneratorObject = function() {
 
         document.addEventListener("lpPulse", lpPulseHandler, false);
         //document.addEventListener("hpPulse", hpPulseHandler, false);
-        document.addEventListener("oneKey", firePowerUp, false);
+        document.addEventListener("oneKey", activateMarijuana, false);
+        document.addEventListener("fourKey", activateMushrooms, false);
     }
 
     function lpPulseHandler(event) {
@@ -89,9 +91,42 @@ var ProjectileGeneratorObject = function() {
         }
     }
 
-    function firePowerUp() {
-        if(stars >= SLOWDOWNCOST && !sloMoActive) {
-            gotPowerUp();
+    function activateMarijuana() {
+        if(stars >= SLOWDOWNCOST && !marijuanaActive) {
+            stars = stars - SLOWDOWNCOST;
+            marijuanaActive = true;
+            var enterEasing = setInterval(function() {
+                speedModifier = speedModifier*0.99 + 0.75*0.01;
+                if (speedModifier < 0.76) {
+                    speedModifier = 0.75;
+                    clearInterval(enterEasing);
+                }
+                document.LOLaudio.playbackRate.value = speedModifier;
+            }, 10);
+            clearTimeout(marijuanaTimer);
+            marijuanaTimer = setTimeout(function() {
+                speedModifier = 0.76;
+                var exitEasing = setInterval(function() {
+                    speedModifier = (speedModifier-0.5*0.01)/0.99;
+                    if (speedModifier > 0.99) {
+                        speedModifier = 1;
+                        clearInterval(exitEasing);
+                        marijuanaActive = false;
+                    }
+                    document.LOLaudio.playbackRate.value = speedModifier;
+                }, 10);
+                
+            }, 8000);
+        }
+    }
+
+    function activateMushrooms() {
+        if(stars >= MUSHROOMSCOST && !mushroomsActive) {
+            stars = stars - MUSHROOMSCOST;
+            mushroomsActive = true;
+            setTimeout(function() {
+                mushroomsActive = false;
+            }, 8000);
         }
     }
 
@@ -114,41 +149,25 @@ var ProjectileGeneratorObject = function() {
         removeProjectile(index);
     }
 
-    function gotPowerUp() {
-        sloMoActive = true;
-        var enterEasing = setInterval(function() {
-            speedModifier = speedModifier*0.99 + 0.75*0.01;
-            if (speedModifier < 0.76) {
-                speedModifier = 0.75;
-                clearInterval(enterEasing);
-            }
-            document.LOLaudio.playbackRate.value = speedModifier;
-        }, 10);
-        clearTimeout(slowPowerTimer);
-        slowPowerTimer = setTimeout(function() {
-            speedModifier = 0.76;
-            var exitEasing = setInterval(function() {
-                speedModifier = (speedModifier-0.5*0.01)/0.99;
-                if (speedModifier > 0.99) {
-                    speedModifier = 1;
-                    clearInterval(exitEasing);
-                    sloMoActive = false;
-                }
-                document.LOLaudio.playbackRate.value = speedModifier;
-            }, 10);
-            
-        }, 8000);
+    function mushroomsEffect(index) {
+
+        var projectile = projectiles.getChildAt(index);
+        var radius = gameObject.getDoor().getRadius() ;
+        var angle = gameObject.getDoor().getAngle() * Math.PI/180;
+
+        var distanceFromCenter = Math.sqrt(Math.pow(projectile.getPositionFromCenter().x, 2)+ Math.pow(projectile.getPositionFromCenter().y, 2));
+        if(distanceFromCenter <= radius) {
+            var x = CONSTANTS.WIDTH/2 + radius * Math.cos(angle);
+            var y = CONSTANTS.HEIGHT/2 + radius * Math.sin(angle);
+            createjs.Tween.removeTweens(projectile.getShape());
+            createjs.Tween.get(projectile.getShape()).to({x:x, y:y}, (10000 * 1/speedModifier * 1/volumeModifier), createjs.Ease.linear);
+        }
     }
 
     //public funcs
     // NOT USED?
     this.addProjectile = function() {
         drawProjectile();
-    };
-    
-    // NOT USED?
-    this.spawnAndFire = function(dataDiff) {
-        fireProjectile(dataDiff);
     };
 
     this.reset = function() {
@@ -163,9 +182,16 @@ var ProjectileGeneratorObject = function() {
         }
     };
 
+    this.count = 0;
     this.tick = function() {
         // Checks for when to remove projectiles
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
+            var projPosition = projectiles.getChildAt(i).getPositionFromCenter();
+
+            if(mushroomsActive) {
+                mushroomsEffect(i);
+            }
+
             // outside stage
             var projectile = projectiles.getChildAt(i).getShape();
             if (projectile.x < 0 || projectile.y < 0 || projectile.x > CONSTANTS.WIDTH || projectile.y > CONSTANTS.HEIGHT) {
@@ -174,12 +200,12 @@ var ProjectileGeneratorObject = function() {
             }
             
             // blocked by door
-            var projPosition = projectiles.getChildAt(i).getPositionFromCenter();
+            
             if (gameObject.getDoor().detectCollision(projPosition.x, projPosition.y)) {
                 blockProjectile(i);
             }
         }
-        
+        this.count++;
         ticksSinceProjectile++;
     };
 

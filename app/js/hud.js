@@ -2,6 +2,7 @@ var HudObject = function(){
     var slomoPowerup,
         extenzePowerup,
         ecstasyPowerup,
+        mushroomsPowerup,
         scoreText,
         score = 0,
         scoreIcon,
@@ -16,7 +17,7 @@ var HudObject = function(){
         drawScore();
         drawStars();
         drawHeat();
-        addPowerUps('slowmo');
+        addPowerUps();
 
         document.addEventListener("birth", incrementScore, false);
         document.addEventListener("blocked", incrementStars, false);
@@ -37,6 +38,12 @@ var HudObject = function(){
                                                 if(stars >= ECSTACYCOST) {
                                                     renderTextAlert('Ecstacy');
                                                     decrementStarsBy(ECSTACYCOST);
+                                                }
+                                            } , false);
+        document.addEventListener("fourKey", function(){
+                                                if(stars >= MUSHROOMSCOST) {
+                                                    renderTextAlert('Mushrooms');
+                                                    decrementStarsBy(MUSHROOMSCOST);
                                                 }
                                             } , false);
     }
@@ -113,6 +120,9 @@ var HudObject = function(){
 
             ecstasyPowerup = new PowerUpHudObject();
             ecstasyPowerup.drawEcstasy();
+
+            mushroomsPowerup = new PowerUpHudObject();
+            mushroomsPowerup.drawMushrooms();
     }
 
     function decrementScoreBy(value) {
