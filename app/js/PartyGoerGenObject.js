@@ -27,6 +27,8 @@ var PartyGoerGenObject = function() {
         if(!ecstasy && gameObject.getHud().getStars() >= ECSTACYCOST) {
             partyPeople = getPeopleInParty();
             ecstasy = true;
+            gameObject.getHud().renderTextAlert("Ecstasy");
+            gameObject.getHud().decrementStarsBy(ECSTACYCOST);
             document.dispatchEvent(onEcstasyStartEvt);
             setTimeout(function() {
                 ecstasy = false;
@@ -228,7 +230,7 @@ var PartyGoerGenObject = function() {
     this.tick = function() {
         collisionBehaviors();
         if(ecstasy) {
-            if(count === 10) {
+            if(count === 15) {
                 for (var i in partyPeople) {
                     var position = partyPeople[i].getPosition();
                     var juice = new JuicySplosion(position, 30, getRandomColorWithOpacity(0.6));
@@ -269,13 +271,13 @@ var PartyGoerGenObject = function() {
     this.reset = function() {
         //everyoneNeedtoLeave = true;
         //kickEveryoneOut();
-        for (var i in people) {
-            people[i].removeFromStage();
-        }
-        people.removeAllChildren();
+        this.clearPeople();
     };
 
     this.clearPeople = function() {
+        for (var i =0; i < people.getNumChildren(); i++) {
+            people.getChildAt(i).removeFromStage();
+        }
         people.removeAllChildren();
     };
 

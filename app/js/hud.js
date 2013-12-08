@@ -12,8 +12,7 @@ var HudObject = function(){
         starsIcon,
         heat = 0,
         heatText,
-        heatMeter,
-        siren = createjs.Sound.createInstance("Siren");
+        heatMeter;
 
     function init() {
         drawScore();
@@ -24,48 +23,27 @@ var HudObject = function(){
         document.addEventListener("birth", incrementScore, false);
         document.addEventListener("blocked", incrementStars, false);
         document.addEventListener("violation", violationHandler, false);
-        document.addEventListener("oneKey", function(){
-                                                if(stars >= SLOWDOWNCOST) {
-                                                    renderTextAlert('Marijuana');
-                                                    decrementStarsBy(SLOWDOWNCOST);
-                                                }
-                                            }, false);
-        document.addEventListener("twoKey", function(){
-                                                if(stars >= EXTENZECOST) {
-                                                    renderTextAlert('Extenze');
-                                                    decrementStarsBy(EXTENZECOST);
-                                                }
-                                            }, false);
-        document.addEventListener("threeKey", function(){
-                                                if(stars >= ECSTACYCOST) {
-                                                    renderTextAlert('Ecstacy');
-                                                    decrementStarsBy(ECSTACYCOST);
-                                                }
-                                            } , false);
-        document.addEventListener("fourKey", function(){
-                                                if(stars >= MUSHROOMSCOST) {
-                                                    renderTextAlert('Mushrooms');
-                                                    decrementStarsBy(MUSHROOMSCOST);
-                                                }
-                                            } , false);
-        document.addEventListener("fiveKey", function(){
-                                                if(stars >= COCAINECOST) {
-                                                    renderTextAlert('Cocaine');
-                                                    decrementStarsBy(COCAINECOST);
-                                                }
-                                            } , false);
     }
     
     function violationHandler(event) {
         if (gameObject.getAudioPlayer().isPlaying()) {
             heat += 5.9;
-            createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
-            siren.setVolume(heat/118);
-            if (heat >= 118) {
-                gameObject.getAudioPlayer().stopPlayback();
+            var siren = gameObject.getAudioPlayer().getSound().getSiren();
+            if (heat < 118) {
+                createjs.Tween.get(siren, {override: true})
+                              .to({volume: 1}, 500).call(function() {
+                                  createjs.Tween.get(siren)
+                                                .to({volume: 0.2*heat/118}, 1500);
+                });
             } else {
-                if (siren.playState !== createjs.Sound.PLAY_SUCCEEDED) siren.play();
+                heat = 118;
+                gameObject.getAudioPlayer().stopPlayback();
+                createjs.Tween.get(siren, {override: true})
+                              .to({volume: 1}, 1000).call(function() {
+                                  createjs.Tween.get(siren).to({volume: 0}, 3000);
+                });
             }
+            updateHeat();
         }
     }
 
@@ -80,7 +58,8 @@ var HudObject = function(){
         stage.addChild(heatText);
 
         var heatOutline = new createjs.Shape();
-        heatOutline.graphics.setStrokeStyle(2).beginStroke("#fff").drawRect(CONSTANTS.WIDTH/2 - 95, 17, 120, 25);
+        heatOutline.graphics.setStrokeStyle(2).beginStroke("#fff")
+                            .drawRect(CONSTANTS.WIDTH/2 - 95, 17, 120, 25);
         stage.addChild(heatOutline);
 
         heatMeter = new createjs.Shape();
@@ -88,6 +67,10 @@ var HudObject = function(){
         heatMeter.y = 18;
         heatMeter.graphics.beginFill("#FF0A0A").drawRect(0, 0, 1, 23);
         stage.addChild(heatMeter);
+    }
+    
+    function updateHeat() {
+        createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
     }
 
     function drawScore() {
@@ -139,11 +122,6 @@ var HudObject = function(){
             cocainePowerup.drawCocaine();
     }
 
-    function decrementScoreBy(value) {
-        score = value;
-        scoreText.text = score.toString();
-    }
-
     function incrementScore() {
         score++;
         scoreText.text = score.toString();
@@ -160,11 +138,6 @@ var HudObject = function(){
     }
 
     //public funs
-    this.removePowerUp = function(powerupName) {
-        if(powerupName === 'slowmo')
-            powerup.destroy();
-    };
-
     function renderTextAlert(text) {
         var alert = new createjs.Text(text,
                               "bold 24px Helvetica",
@@ -195,10 +168,18 @@ var HudObject = function(){
             
         }, 1000);
     };
+    
+    this.tick = function() {
+        if (heat > 0) {
+            heat -= 0.05 * speedModifier;
+            updateHeat();
+        }
+    };
 
     this.reset = function() {
+        console.log("Hud RESET");
         heat = 0;
-        createjs.Tween.get(heatMeter).to({scaleX: 0, scaleY: 1}, 500, createjs.Ease.linear);
+        updateHeat();
         stars = 0;
         starsText.text = "0";
         score = 0;
@@ -207,6 +188,12 @@ var HudObject = function(){
 
     this.renderTextAlert = function(text) {
         renderTextAlert(text);
+    };
+
+    this.decrementStarsBy = function(value) {
+        console.log(value);
+        stars -= value;
+        starsText.text = stars.toString();
     };
 
     init();

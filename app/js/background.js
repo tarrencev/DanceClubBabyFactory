@@ -10,6 +10,7 @@ var BackgroundObject = function(){
     function init() {
         drawBaseBackground();
         drawSpectrum();
+        drawFlare();
         var center = {
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2
@@ -63,13 +64,15 @@ var BackgroundObject = function(){
         flare.x = center.x;
         flare.y = center.y;
         flare.graphics
-            .beginRadialGradientFill(["rgba(241,90,41,0.5)","rgba(241,90,41,0)"], [0, 1], 0, 0, 0, 0, 0, 250)
+            .beginRadialGradientFill(["rgba(255,255,255,0.2)","rgba(255,255,255,0)"], [0, 1], 0, 0, 0, 0, 0, 250)
             .drawCircle(0, 0, flareRadius);
+        flare.scaleX = flare.scaleY = 0;
         stage.addChild(flare);
     }
 
     function lpPulseHandler(event) {
         var dataDiff = event.dataDiff;
+        setFlareChangeInRadius(dataDiff);
         if(dataDiff > 4) dataDiff = 4;
         if(dataDiff > 1) fireRing(dataDiff);
     }

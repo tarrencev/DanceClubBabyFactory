@@ -43,14 +43,16 @@ var AudioPlayerObject = function(){
         sound.playPause();
         if(playing) {
             playing = false;
-            playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
+            playButton.children().removeClass('glyphicon-pause')
+                                 .addClass('glyphicon-play');
             gameObject.getGoerGen().pause();
         } else {
             playing = true;
-            playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
+            playButton.children().removeClass('glyphicon-play')
+                                 .addClass('glyphicon-pause');
             gameObject.getGoerGen().backToParty();
         }
-        if (stopped) {
+        if (playing && stopped) {
             gameObject.resetGame();
         }
         stopped = false;
@@ -136,23 +138,21 @@ var AudioPlayerObject = function(){
     };
     
     this.stopPlayback = function() {
-        if (!stopped) {
-            var enterEasing = setInterval(function() {
-                speedModifier = speedModifier*0.95;
-                if (speedModifier < 0.1) {
-                    speedModifier = 1;
-                    document.LOLaudio.playbackRate.value = speedModifier;
-                    clearInterval(enterEasing);
-                    sound.stop();
-                    createjs.Sound.play("Rewind");
-                }
+        var enterEasing = setInterval(function() {
+            speedModifier = speedModifier*0.95;
+            if (speedModifier < 0.1) {
+                speedModifier = 1;
                 document.LOLaudio.playbackRate.value = speedModifier;
-            }, 10);
-            playing = false;
-            stopped = true;
-            playButton.children().removeClass('glyphicon-pause')
-                                 .addClass('glyphicon-play');
-        }
+                clearInterval(enterEasing);
+                sound.stop();
+                createjs.Sound.play("Rewind");
+            }
+            document.LOLaudio.playbackRate.value = speedModifier;
+        }, 10);
+        playing = false;
+        stopped = true;
+        playButton.children().removeClass('glyphicon-pause')
+                             .addClass('glyphicon-play');
     };
 
     this.getSound = function() {
