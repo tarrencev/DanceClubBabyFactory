@@ -22,6 +22,12 @@ PowerUpHudObject.prototype.drawMushrooms = function() {
     this.extenzeSubtext = this.drawPowerUpCost(3, MUSHROOMSCOST);
 };
 
+PowerUpHudObject.prototype.drawCocaine = function() {
+    this.cocaineTitle = this.drawPowerUpTitle(4, "5 Cocaine", "#FFFFFF");
+    this.cocaineSubtext = this.drawPowerUpCost(4, COCAINECOST);
+};
+
+
 PowerUpHudObject.prototype.drawPowerUpTitle = function(index, text, color) {
     var title = new createjs.Text(text,
                               "bold 22px Helvetica",

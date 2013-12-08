@@ -3,6 +3,7 @@ var HudObject = function(){
         extenzePowerup,
         ecstasyPowerup,
         mushroomsPowerup,
+        cocainePowerup,
         scoreText,
         score = 0,
         scoreIcon,
@@ -25,7 +26,7 @@ var HudObject = function(){
         document.addEventListener("violation", violationHandler, false);
         document.addEventListener("oneKey", function(){
                                                 if(stars >= SLOWDOWNCOST) {
-                                                    renderTextAlert('Slow Motion');
+                                                    renderTextAlert('Marijuana');
                                                     decrementStarsBy(SLOWDOWNCOST);
                                                 }
                                             }, false);
@@ -45,6 +46,12 @@ var HudObject = function(){
                                                 if(stars >= MUSHROOMSCOST) {
                                                     renderTextAlert('Mushrooms');
                                                     decrementStarsBy(MUSHROOMSCOST);
+                                                }
+                                            } , false);
+        document.addEventListener("fiveKey", function(){
+                                                if(stars >= COCAINECOST) {
+                                                    renderTextAlert('Cocaine');
+                                                    decrementStarsBy(COCAINECOST);
                                                 }
                                             } , false);
     }
@@ -127,6 +134,9 @@ var HudObject = function(){
 
             mushroomsPowerup = new PowerUpHudObject();
             mushroomsPowerup.drawMushrooms();
+
+            cocainePowerup = new PowerUpHudObject();
+            cocainePowerup.drawCocaine();
     }
 
     function decrementScoreBy(value) {

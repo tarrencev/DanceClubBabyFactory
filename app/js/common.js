@@ -18,6 +18,7 @@ var SLOWDOWNCOST = 25;
 var EXTENZECOST = 25;
 var ECSTACYCOST = 25;
 var MUSHROOMSCOST = 25;
+var COCAINECOST = 25;
 
 
 /*var colors = [  "rgba(204, 51, 255, ", "rgba(0, 153, 255, ", 
@@ -58,6 +59,8 @@ var threeKey = document.createEvent('Event');
 threeKey.initEvent('threeKey', true, true);
 var fourKey = document.createEvent('Event');
 fourKey.initEvent('fourKey', true, true);
+var fiveKey = document.createEvent('Event');
+fiveKey.initEvent('fiveKey', true, true);
 
 $(document).keydown(function(e) {
 	if (e.keyCode === 38 || e.keyCode === 87) {
@@ -75,5 +78,7 @@ $(document).keydown(function(e) {
 		document.dispatchEvent(threeKey);
 	} else if (e.keyCode === 52) {
 		document.dispatchEvent(fourKey);
+	} else if (e.keyCode === 53) {
+		document.dispatchEvent(fiveKey);
 	}
 });

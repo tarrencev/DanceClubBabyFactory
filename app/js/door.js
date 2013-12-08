@@ -54,7 +54,6 @@ var DoorObject = function(){
 
     function extenzeDoor() {
         if(stars >= EXTENZECOST && !extenzeActive) {
-            console.log('extenze called');
             extenzeActive = true;
             JuicySplosion(door, doorWidth, defaultDoorColor);
             var originalWidth = doorWidth;
@@ -88,12 +87,6 @@ var DoorObject = function(){
                                .endStroke();
                   door.updateCache();
                 }, 10);
-                /*door.graphics.clear();
-                door.graphics.beginStroke('#00CCFF')
-                        .setStrokeStyle(doorThickness)
-                        .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
-                        .endStroke();
-                door.updateCache();*/
                 extenzeActive = false;
             } , 5000);
         }

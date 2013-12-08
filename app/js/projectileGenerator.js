@@ -14,6 +14,7 @@ var ProjectileGeneratorObject = function() {
     var stars = 0;
     var marijuanaActive = false;
     var mushroomsActive = false;
+    var cocaineActive = false;
     
     var marijuanaTimer;
 
@@ -28,6 +29,7 @@ var ProjectileGeneratorObject = function() {
         //document.addEventListener("hpPulse", hpPulseHandler, false);
         document.addEventListener("oneKey", activateMarijuana, false);
         document.addEventListener("fourKey", activateMushrooms, false);
+        document.addEventListener("fiveKey", activateCocaine, false);
     }
 
     function lpPulseHandler(event) {
@@ -130,6 +132,14 @@ var ProjectileGeneratorObject = function() {
         }
     }
 
+    function activateCocaine() {
+        if(stars >= COCAINECOST && !cocaineActive) {
+            stars = stars - COCAINECOST;
+            cocaineActive = true;
+            this.cocaineCount = 0;
+        }
+    }
+
     function calculateProjectileDirection(dataDiff) {
 
         projectileAngle = projectileAngle + Math.PI/8 * dataDiff/25*Math.sqrt(ticksSinceProjectile);
@@ -183,10 +193,15 @@ var ProjectileGeneratorObject = function() {
     };
 
     this.count = 0;
+    this.cocaineCount = 0;
     this.tick = function() {
         // Checks for when to remove projectiles
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             var projPosition = projectiles.getChildAt(i).getPositionFromCenter();
+
+            if(cocaineActive) {
+                blockProjectile(i);
+            }
 
             if(mushroomsActive) {
                 mushroomsEffect(i);
@@ -205,6 +220,11 @@ var ProjectileGeneratorObject = function() {
                 blockProjectile(i);
             }
         }
+        if(cocaineActive && this.cocaineCount%30 === 0) {
+            cocaineActive = false;
+            this.cocaineCount = 0;
+        }
+        this.cocaineCount++;
         this.count++;
         ticksSinceProjectile++;
     };
