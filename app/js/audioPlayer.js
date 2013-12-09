@@ -53,6 +53,7 @@ var AudioPlayerObject = function(){
             gameObject.getGoerGen().backToParty();
         }
         if (playing && stopped) {
+            $('#winState').hide();
             gameObject.resetGame();
             document.getElementById("instructions").style.display = "none";
         }

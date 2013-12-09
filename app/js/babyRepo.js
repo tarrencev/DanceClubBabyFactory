@@ -22,10 +22,8 @@ var BabyRepoObject = function() {
             .beginStroke('#df2b90')
             .setStrokeStyle(strokeWidth)
             .beginFill('#ec87b8')
-            //.beginFill('#ffffff')
             .drawCircle(0, 0, radius);
 
-        // container.cache(CONSTANTS.WIDTH/2 - 80, CONSTANTS.HEIGHT/2 - 80, 160, 160);
         stage.addChild(container);
     }
 
@@ -37,7 +35,6 @@ var BabyRepoObject = function() {
         }
         babies.push(baby);
         document.dispatchEvent(birthEvt);
-        //alert(this.getNumBabies());
     }
 
     function checkForCollisions(baby_) {

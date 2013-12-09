@@ -47,12 +47,49 @@ var HudObject = function(){
                               .to({volume: 1}, 1000).call(function() {
                                   createjs.Tween.get(siren).to({volume: 0}, 3000);
                 });
+                displayScoreScreen();
                 document.dispatchEvent(LoseEvt);
             }
             updateHeat();
         }
     }
 
+    function displayScoreScreen() {
+        $('#winState').show();
+        var scoreValue = $('#playerScoreValue');
+        var starsValue = $('#starsScoreValue');
+        var babiesValue = $('#babiesScoreValue');
+        
+        var babiesCounter = 0;
+        var scoreCounter = 0;
+        var babiesInterval = setInterval(function() {
+            scoreCounter = scoreCounter + babiesCounter * 100;
+            scoreValue.text(commaSeparateNumber(scoreCounter));
+            babiesValue.text(babiesCounter.toString());
+            if(babiesCounter === score) {
+                var starsCounter = 0;
+                var starsInterval = setInterval(function() {
+                    scoreCounter = scoreCounter + babiesCounter * 10;
+                    scoreValue.text(commaSeparateNumber(scoreCounter));
+                    starsValue.text(starsCounter.toString());
+                    console.log(starsCounter);
+                    if(starsCounter === stars) {
+                        clearInterval(starsInterval);
+                    }
+                    starsCounter++;
+                }, 1000/stars);
+                clearInterval(babiesInterval);
+            }
+            babiesCounter++;
+        }, 30);
+    }
+
+    function commaSeparateNumber(val){
+        while (/(\d+)(\d{3})/.test(val.toString())){
+            val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+        }
+        return val;
+    }
     function drawHeat() {
         heatText = new createjs.Text("Heat",
                               "27px Helvetica",

@@ -119,7 +119,7 @@ var GameObject = function() {
             if (createjs.Ticker.getTicks() % 50 === 0) {
                 PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
                 goerGen.addPartyGoer();
-                console.log(PROGRESSMODIFIER);
+                //console.log(PROGRESSMODIFIER);
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
                 var babiesToAdd = (goerGen.partySize() - prevPartySize) * 1/BABYSPAWNRATEMODIFIER * (goerGen.partySize() + 10)/10;
