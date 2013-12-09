@@ -163,16 +163,5 @@ var AudioPlayerObject = function(){
         playButtonHandler();
     };
     
-    // this.playPause = function() {
-    //     sound.playPause();
-    //     if(playing) {
-    //         playing = false;
-    //         playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
-    //     } else {
-    //         playing = true;
-    //         playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
-    //     }
-    // };
-
     init();
 };

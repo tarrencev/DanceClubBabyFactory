@@ -103,15 +103,10 @@ var GameObject = function() {
     }
 
     //same as perform_logic() in zenilib
+    var prevPartySize = 0;
     function tick() {
 
         renderFPS(Math.round(createjs.Ticker.getMeasuredFPS()).toString());
-
-        // if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
-        //     if (Math.random() < (damage / 200.0)) {
-        //         copGen.addCop();
-        //     }
-        // }
     
         if (audioPlayer.isPlaying()) {
             audioPlayer.tick();
@@ -123,11 +118,16 @@ var GameObject = function() {
             hud.tick();
         
             if (createjs.Ticker.getTicks() % 50 === 0) {
+                PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
                 goerGen.addPartyGoer();
+                console.log(PROGRESSMODIFIER);
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
-                if (goerGen.partySize() > 2) {
+                var babiesToAdd = (goerGen.partySize() - prevPartySize) * 1/BABYSPAWNRATEMODIFIER * (goerGen.partySize() + 10)/10;
+                prevPartySize = goerGen.partySize();
+                while (babiesToAdd > 0) {
                     babyRepo.addBaby();
+                    babiesToAdd--;
                 }
             }
             if (createjs.Ticker.getTicks() % 30 === 0) {

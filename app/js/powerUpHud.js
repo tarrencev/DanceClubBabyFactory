@@ -17,14 +17,14 @@ PowerUpHudObject.prototype.drawEcstasy = function() {
     this.extenzeSubtext = this.drawPowerUpCost(2, ECSTACYCOST);
 };
 
-PowerUpHudObject.prototype.drawMushrooms = function() {
-    this.extenzeTitle = this.drawPowerUpTitle(3, "4 Mushrooms", "#0066FF");
-    this.extenzeSubtext = this.drawPowerUpCost(3, MUSHROOMSCOST);
-};
+// PowerUpHudObject.prototype.drawMushrooms = function() {
+//     this.extenzeTitle = this.drawPowerUpTitle(3, "4 Mushrooms", "#0066FF");
+//     this.extenzeSubtext = this.drawPowerUpCost(3, MUSHROOMSCOST);
+// };
 
 PowerUpHudObject.prototype.drawCocaine = function() {
-    this.cocaineTitle = this.drawPowerUpTitle(4, "5 Cocaine", "#FFFFFF");
-    this.cocaineSubtext = this.drawPowerUpCost(4, COCAINECOST);
+    this.cocaineTitle = this.drawPowerUpTitle(3, "4 Cocaine", "#FFFFFF");
+    this.cocaineSubtext = this.drawPowerUpCost(3, COCAINECOST);
 };
 
 

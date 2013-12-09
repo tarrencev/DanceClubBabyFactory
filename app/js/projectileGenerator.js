@@ -1,5 +1,3 @@
-MINTICKSPERPROJECTILE = 5;
-
 var ProjectileGeneratorObject = function() {
     //private vars
     //declare private vars here
@@ -28,8 +26,8 @@ var ProjectileGeneratorObject = function() {
         document.addEventListener("lpPulse", lpPulseHandler, false);
         //document.addEventListener("hpPulse", hpPulseHandler, false);
         document.addEventListener("oneKey", activateMarijuana, false);
-        document.addEventListener("fourKey", activateMushrooms, false);
-        document.addEventListener("fiveKey", activateCocaine, false);
+        // document.addEventListener("fourKey", activateMushrooms, false);
+        document.addEventListener("fourKey", activateCocaine, false);
     }
 
     function lpPulseHandler(event) {
@@ -75,16 +73,16 @@ var ProjectileGeneratorObject = function() {
     var count = 0;
     function fireProjectile(dataDiff, type) {
         if (ticksSinceProjectile > MINTICKSPERPROJECTILE/(volumeModifier/100) && dataDiff > 0.25) {
+            if(dataDiff > 4) dataDiff = 4;
+            if(dataDiff < -4) dataDiff = -4;
             var projectile = drawProjectile(type);
-            var edgePos = calculateProjectileDirection(rotateDirection*dataDiff*4);
+            var edgePos = calculateProjectileDirection(rotateDirection*dataDiff*5);
             var offsetPosition = {
                 x: CONSTANTS.WIDTH/2+gameObject.getBabyRepo().getRadius()*Math.cos(projectileAngle), 
                 y: CONSTANTS.HEIGHT/2+gameObject.getBabyRepo().getRadius()*Math.sin(projectileAngle)
             };
             projectile.setPosition(offsetPosition);
-            if(dataDiff > 3) dataDiff = 3;
-            if(dataDiff < -3) dataDiff = -3;
-            createjs.Tween.get(projectile.getShape()).to(edgePos, (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier, createjs.Ease.linear);
+            createjs.Tween.get(projectile.getShape()).to(edgePos, (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier * 1/PROGRESSMODIFIER, createjs.Ease.linear);
             createjs.Tween.get(projectile.getShape(), {loop:true}).to({rotation: 20*Math.PI}, 80 + (250 * dataDiff) * 100/volumeModifier * 1/speedModifier);
             ticksSinceProjectile = 0;
             if (count++%10 === 0) {
@@ -96,8 +94,8 @@ var ProjectileGeneratorObject = function() {
     var easeIn = false;
     var easeOut = false;
     function activateMarijuana() {
-        if(stars >= SLOWDOWNCOST && !marijuanaActive) {
-            stars = stars - SLOWDOWNCOST;
+        if(gameObject.getHud().getStars() >= SLOWDOWNCOST && !marijuanaActive) {
+            console.log("Marijuana activated");
             easeIn = true;
             marijuanaActive = true;
             marijuanaCount = 0;
@@ -106,19 +104,18 @@ var ProjectileGeneratorObject = function() {
         }
     }
 
-    function activateMushrooms() {
-        if(stars >= MUSHROOMSCOST && !mushroomsActive) {
-            stars = stars - MUSHROOMSCOST;
-            mushroomsActive = true;
-            mushroomsCount = 0;
-            gameObject.getHud().renderTextAlert("Mushrooms");
-            gameObject.getHud().decrementStarsBy(MUSHROOMSCOST);
-        }
-    }
+    // function activateMushrooms() {
+    //     if(stars >= MUSHROOMSCOST && !mushroomsActive) {
+    //         stars = stars - MUSHROOMSCOST;
+    //         mushroomsActive = true;
+    //         mushroomsCount = 0;
+    //         gameObject.getHud().renderTextAlert("Mushrooms");
+    //         gameObject.getHud().decrementStarsBy(MUSHROOMSCOST);
+    //     }
+    // }
 
     function activateCocaine() {
-        if(stars >= COCAINECOST && !cocaineActive) {
-            stars = stars - COCAINECOST;
+        if(gameObject.getHud().getStars() >= COCAINECOST && !cocaineActive) {
             cocaineActive = true;
             cocaineCount = 0;
             gameObject.getHud().renderTextAlert("Cocaine");
@@ -141,7 +138,6 @@ var ProjectileGeneratorObject = function() {
     function blockProjectile(index) {
         var juice = new JuicySplosion(projectiles.getChildAt(index).getPosition(), 50, getRandomColorWithOpacity(1.0));
         document.dispatchEvent(blockedEvt);
-        stars++;
         removeProjectile(index);
     }
 
@@ -211,24 +207,28 @@ var ProjectileGeneratorObject = function() {
             cocaineCount = 0;
         }
 
-        if(mushroomsActive && mushroomsCount > 120) {
-            mushroomsActive = false;
-            mushroomsCount = 0;
-        }
+        // if(mushroomsActive && mushroomsCount > 120) {
+        //     mushroomsActive = false;
+        //     mushroomsCount = 0;
+        // }
 
         if(marijuanaActive) {
-            if (marijuanaCount%5 === 0 && easeIn) {
+            if (marijuanaCount%3 === 0 && easeIn) {
+                console.log('easing in ' + speedModifier.toString());
                 speedModifier = speedModifier * 0.99 + 0.75 * 0.001;
                 if (speedModifier < 0.76) {
+                    console.log('eased in');
                     speedModifier = 0.75;
                     easeIn = false;
                     easeOut = true;
                     marijuanaCount = 0;
                 }
                 document.LOLaudio.playbackRate.value = speedModifier;
-            } else if (marijuanaCount > 60 && marijuanaCount%5 === 0 && easeOut) {
+            } else if (marijuanaCount > 70 && marijuanaCount%5 === 0 && easeOut) {
+                console.log('easing out' + speedModifier.toString());
                 speedModifier = (speedModifier-0.5*0.001)/0.99;
                 if (speedModifier > 0.98) {
+                    console.log('eased out');
                     speedModifier = 1;
                     marijuanaActive = false;
                     easeOut = false;
