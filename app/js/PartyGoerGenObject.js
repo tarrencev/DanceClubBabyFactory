@@ -3,11 +3,12 @@ var PartyGoerGenObject = function() {
     //private vars
     var people = new createjs.Container();
     var wanderSpeed = 30;
-    var danceSpeed = 30;
+    var danceSpeed = 50;
     var everyoneNeedtoLeave = false;
     var ecstasy = false;
     var partyPeople;
     document.addEventListener("threeKey", ecstasyHandler);
+    document.addEventListener("lose", kickEveryoneOut);
     
     var onEcstasyStartEvt = document.createEvent('Event');
     onEcstasyStartEvt.initEvent('onEcstasyStart', true, true);
@@ -68,8 +69,11 @@ var PartyGoerGenObject = function() {
     }
 
     function kickEveryoneOut() {
-        for (var i =0; i < people.getNumChildren(); i++) {
-            pos = getRandomPosOutside();
+        console.log("kickEveryoneOut");
+        var total = people.getNumChildren();
+        for (var i = 0; i < total; i++) {
+            createjs.Tween.removeTweens(people.getChildAt(i).getShape());
+            pos = getRandomEdgePos();
             createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, wanderSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
         }
     }
@@ -137,10 +141,6 @@ var PartyGoerGenObject = function() {
                 stayAway(people.getChildAt(j));
             }
         }
-
-        /*if (everyoneNeedtoLeave) {
-            kickEveryoneOut();
-        }*/
     }
 
     function moveAll(everyone) {
@@ -264,13 +264,10 @@ var PartyGoerGenObject = function() {
     };
 
     this.backToParty = function() {
-        everyoneNeedtoLeave = false;
         moveAll(true);
     };
     
     this.reset = function() {
-        //everyoneNeedtoLeave = true;
-        //kickEveryoneOut();
         this.clearPeople();
     };
 
