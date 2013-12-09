@@ -112,7 +112,7 @@ var TitleObject = function(new_stage){
 
     function preload_songs() {
       preloaded_songs = {};
-      preloaded_songs['Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3'] = new SoundObject('Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3');
+      preloaded_songs['Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3'] = new SoundObject('MRAZ.mp3');
     }
 
     this.makeReadyForStart = function() {
