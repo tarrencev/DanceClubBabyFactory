@@ -184,7 +184,6 @@ var ProjectileGeneratorObject = function() {
     var mushroomsCount = 0;
     var marijuanaCount = 0;
     this.tick = function() {
-        console.log(projectiles.getNumChildren());
         // Checks for when to remove projectiles
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             var projPosition = projectiles.getChildAt(i).getPositionFromCenter();
@@ -198,6 +197,7 @@ var ProjectileGeneratorObject = function() {
             
             // blocked by door
             if(mushroomsActive) {
+                console.log('shrooms ' + mushroomsCount);
                 mushroomsEffect(i);
             }
             
@@ -206,6 +206,7 @@ var ProjectileGeneratorObject = function() {
             }
 
             if(cocaineActive) {
+                console.log('cocaine ' + cocaineCount);
                 blockProjectile(i);
             }
         }
@@ -220,6 +221,7 @@ var ProjectileGeneratorObject = function() {
         // }
 
         if(marijuanaActive) {
+            console.log(gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value);
             if (marijuanaCount%3 === 0 && easeIn) {
                 speedModifier = speedModifier * 0.99 + 0.75 * 0.001;
                 if (speedModifier < 0.76) {
@@ -240,7 +242,6 @@ var ProjectileGeneratorObject = function() {
                     marijuanaCount = 0;
                 }
                 gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;
-                console.log(gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value);
             }
         }
         marijuanaCount++;
@@ -266,7 +267,7 @@ var ProjectileGeneratorObject = function() {
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             projectiles.getChildAt(i).resume();
         }
-    }
+    };
 
     this.getMarijuanaStatus = function() {
         return marijuanaActive;
