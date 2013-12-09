@@ -103,7 +103,6 @@ var GameObject = function() {
             door.tick();
             goerGen.tick();
             projectiles.tick();
-            copGen.tick();
             background.tick();
             hud.tick();
         
