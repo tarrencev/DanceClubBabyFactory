@@ -10,21 +10,11 @@ var ProjectileGeneratorObject = function() {
     var violationEvt;
     var blockedEvt;
     var stars = 0;
-<<<<<<< HEAD
-    var sloMoActive = false;
-    var slowTimeLeft = 0;
-    var slowTimeStart;
-    var easeTimeStart;
-    
-    var slowPowerTimer;
-    var enterEasing;
-=======
     var marijuanaActive = false;
     var mushroomsActive = false;
     var cocaineActive = false;
     
     var marijuanaTimer;
->>>>>>> 102e5585adf09c9977b72acca0421bb89625863f
 
     //private funcs
     function init() {
@@ -157,43 +147,6 @@ var ProjectileGeneratorObject = function() {
         removeProjectile(index);
     }
 
-<<<<<<< HEAD
-    function gotPowerUp() {
-        sloMoActive = true;
-
-        var d = new Date();
-        easeTimeStart = d.getTime();
-        enterEasing = setTimeout(easeIn, 10);
-        clearTimeout(slowPowerTimer);
-
-        d = new Date();
-        slowTimeStart = d.getTime();
-        slowPowerTimer = setTimeout(slowPowerUp, 8000);
-    }
-
-    function easeIn() {
-        speedModifier = speedModifier*0.99 + 0.75*0.01;
-        if (speedModifier < 0.76) {
-            speedModifier = 0.75;
-            clearInterval(enterEasing);
-        }
-        document.LOLaudio.playbackRate.value = speedModifier;
-        setTimeout(easeIn, 10);
-    }
-
-    function slowPowerUp() {
-        speedModifier = 0.76;
-        var exitEasing = setInterval(function() {
-            speedModifier = (speedModifier-0.5*0.01)/0.99;
-            if (speedModifier > 0.99) {
-                speedModifier = 1;
-                clearInterval(exitEasing);
-                sloMoActive = false;
-            }
-            document.LOLaudio.playbackRate.value = speedModifier;
-        }, 10);
-    }
-
     function mushroomsEffect(index) {
 
         var projectile = projectiles.getChildAt(index);
@@ -306,30 +259,12 @@ var ProjectileGeneratorObject = function() {
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             projectiles.getChildAt(i).pause();
         }
-
-        if (sloMoActive) {
-            // stop slomo
-            var d = new Date();
-            easeTimeLeft = 10 - (d.getTime() - easeTimeStart);
-            clearTimeout(enterEasing);
-
-            slowTimeLeft = 8000 - (d.getTime() - slowTimeStart);
-            clearTimeout(slowPowerTimer);
-        }
     };
 
     this.resume = function() {
         var tween;
         for (var i = 0; i < projectiles.getNumChildren(); i++) {
             projectiles.getChildAt(i).resume();
-        }
-
-        if (sloMoActive) {
-          if (stillEasing) {
-            enterEasing = setTimeout(easeIn, easeTimeLeft);
-          } else {
-            slowPowerTimer = setTimeout(slowPowerUp, slowTimeLeft);
-          }
         }
     }
 

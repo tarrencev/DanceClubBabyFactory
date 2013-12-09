@@ -49,15 +49,10 @@ var AudioPlayerObject = function(){
             gameObject.getProjectiles().pause();
         } else {
             playing = true;
-<<<<<<< HEAD
-            playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
-            gameObject.getGoerGen().resume();
-            gameObject.getProjectiles().resume();
-=======
             playButton.children().removeClass('glyphicon-play')
                                  .addClass('glyphicon-pause');
-            gameObject.getGoerGen().backToParty();
->>>>>>> 102e5585adf09c9977b72acca0421bb89625863f
+            gameObject.getGoerGen().resume();
+            gameObject.getProjectiles().resume();
         }
         if (playing && stopped) {
             $('#winState').hide();

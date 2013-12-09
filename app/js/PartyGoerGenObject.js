@@ -263,14 +263,8 @@ var PartyGoerGenObject = function() {
         }
     };
 
-<<<<<<< HEAD
     this.resume = function() {
-        everyoneNeedtoLeave = false;
-        moveAll();
-=======
-    this.backToParty = function() {
         moveAll(true);
->>>>>>> 102e5585adf09c9977b72acca0421bb89625863f
     };
     
     this.reset = function() {
