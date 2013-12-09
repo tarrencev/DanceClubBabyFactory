@@ -32,11 +32,6 @@ var PartyGoerGenObject = function() {
             gameObject.getHud().renderTextAlert("Ecstasy");
             gameObject.getHud().decrementStarsBy(ECSTACYCOST);
             document.dispatchEvent(onEcstasyStartEvt);
-            setTimeout(function() {
-                ecstasy = false;
-                partyPeople = [];
-                document.dispatchEvent(onEcstasyEndEvt);
-            }, 10000);
         }
     }
 
@@ -230,6 +225,13 @@ var PartyGoerGenObject = function() {
     var count = 0;
     this.tick = function() {
         collisionBehaviors();
+
+        if (ex_count > 200) {
+            ecstasy = false;
+            partyPeople = [];
+            document.dispatchEvent(onEcstasyEndEvt);
+        }
+
         if(ecstasy) {
             console.log(ex_count);
             if(count === 15) {
