@@ -241,7 +241,6 @@ var ProjectileGeneratorObject = function() {
         cocaineCount++;
         mushroomsCount++;
         count++;
-        console.log(count);
         ticksSinceProjectile++;
     };
 
