@@ -2,7 +2,7 @@ var PartyGoerGenObject = function() {
     
     //private vars
     var people = new createjs.Container();
-    var wanderSpeed = 30;
+    var wanderSpeed = 15;
     var danceSpeed = 50;
     var everyoneNeedtoLeave = false;
     var ecstasy = false;
