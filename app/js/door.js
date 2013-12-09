@@ -92,13 +92,13 @@ var DoorObject = function(){
             ];
             // door.updateCache();
         }, 100);
-    }
+    };
     
     this.ecstasyEnd = function() {
         door.filters = [];
         // door.updateCache();
         clearTimeout(ecstasyInterval);
-    }
+    };
     
     this.getAngle = function() {
         return door.rotation;
