@@ -24,7 +24,6 @@ var BabyRepoObject = function() {
             .beginFill('#ec87b8')
             .drawCircle(0, 0, radius);
 
-        // container.cache(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, radius*2, radius*2);
         stage.addChild(container);
     }
 

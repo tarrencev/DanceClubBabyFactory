@@ -24,7 +24,7 @@ var ProjectileGeneratorObject = function() {
         blockedEvt.initEvent('blocked', true, true);
 
         document.addEventListener("lpPulse", lpPulseHandler, false);
-        //document.addEventListener("hpPulse", hpPulseHandler, false);
+        document.addEventListener("hpPulse", hpPulseHandler, false);
         document.addEventListener("oneKey", activateMarijuana, false);
         // document.addEventListener("fourKey", activateMushrooms, false);
         document.addEventListener("fourKey", activateCocaine, false);
@@ -38,7 +38,6 @@ var ProjectileGeneratorObject = function() {
     function hpPulseHandler(event) {
         var dataDiff = event.dataDiff;
         fireProjectile(dataDiff, HI);
-        //console.log(dataDiff);
     }
     function removeProjectile(index) {
         stage.removeChild(projectiles.getChildAt(index).getShape());
@@ -70,7 +69,7 @@ var ProjectileGeneratorObject = function() {
         return powerUp;
     }
 
-    var count = 0;
+    var projectileCounter = 0;
     function fireProjectile(dataDiff, type) {
         if (ticksSinceProjectile > MINTICKSPERPROJECTILE/(volumeModifier/100) && dataDiff > 0.25) {
             if(dataDiff > 4) dataDiff = 4;
@@ -85,7 +84,7 @@ var ProjectileGeneratorObject = function() {
             createjs.Tween.get(projectile.getShape()).to(edgePos, (4500 + (500 * dataDiff)) * 100/volumeModifier * 1/speedModifier * 1/PROGRESSMODIFIER, createjs.Ease.linear);
             createjs.Tween.get(projectile.getShape(), {loop:true}).to({rotation: 20*Math.PI}, 80 + (250 * dataDiff) * 100/volumeModifier * 1/speedModifier);
             ticksSinceProjectile = 0;
-            if (count++%10 === 0) {
+            if (projectileCounter++%10 === 0) {
                 rotateDirection *= getRandomSign(); // maybe direction every 10 shots
             }
         }
@@ -240,7 +239,6 @@ var ProjectileGeneratorObject = function() {
         marijuanaCount++;
         cocaineCount++;
         mushroomsCount++;
-        count++;
         ticksSinceProjectile++;
     };
 

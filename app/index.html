@@ -29,17 +29,6 @@
 </head>
 <body>
     <div id="HUD" class="HUD">
-<!--         <div class="statsContainer">
-            <span id="scoreText">
-                Score: <span class="stat" id="score">0</span> babies<br/>
-            </span>
-            <span id="riskText">
-                Risk: <span class="stat" id="risk">0</span>%
-            </span>
-            <span id="starsText">
-                Stars: <span class="stat" id="stars">0</span>
-            </span>
-        </div> -->
         <div class="audioPlayer">
             <div class="albumInfoPane">
                 <div class="albumCoverContainer">
@@ -108,6 +97,25 @@
                     <div class="onoffswitch-switch"></div>
                 </label>
             </div>
+        </div>
+    </div>
+    <div id="winState">
+        <div class="scoresContainer">
+            <span class="gameOverTitle">Game Over</span>
+            <div class="scoreNameContainer">
+                <span class="playerScore">You scored:</span>
+                <span class="subScore">Babies:</span>
+                <span class="subScore">Stars:</span>
+            </div>
+            <div class="scoreValueContainer">
+                <span id="playerScoreValue">0</span>
+                <span id="babiesScoreValue">0</span>
+                <span id="starsScoreValue">0</span>
+            </div>
+        </div>
+        <div class="winMenuContainer">
+            <span>Press space to retry</span>
+            <!-- <span>Replay</span> -->
         </div>
     </div>
 <script src="js/main.js"></script>
