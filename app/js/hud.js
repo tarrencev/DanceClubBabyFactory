@@ -13,12 +13,16 @@ var HudObject = function(){
         heat = 0,
         heatText,
         heatMeter;
+    var LoseEvt;
 
     function init() {
         drawScore();
         drawStars();
         drawHeat();
         addPowerUps();
+        
+        LoseEvt = document.createEvent('Event');
+        LoseEvt.initEvent('lose', true, true);
 
         document.addEventListener("birth", incrementScore, false);
         document.addEventListener("blocked", incrementStars, false);
@@ -42,6 +46,7 @@ var HudObject = function(){
                               .to({volume: 1}, 1000).call(function() {
                                   createjs.Tween.get(siren).to({volume: 0}, 3000);
                 });
+                document.dispatchEvent(LoseEvt);
             }
             updateHeat();
         }
