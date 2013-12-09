@@ -8,7 +8,6 @@ var GameObject = function() {
         door,
         copGen,
         projectiles,
-        // damage,
         hud,
         title;
         
@@ -18,9 +17,9 @@ var GameObject = function() {
     function init() {
         canvas = document.createElement('canvas');
 
-        canvas.width = window.innerWidth;// * 0.8;
+        canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        CONSTANTS.WIDTH = window.innerWidth;// * 0.8;
+        CONSTANTS.WIDTH = window.innerWidth;
         CONSTANTS.HEIGHT = window.innerHeight;
 
         canvas.setAttribute('id', 'c');
@@ -46,7 +45,6 @@ var GameObject = function() {
 
     function game() {
         createjs.Ticker.setFPS(30);
-        //stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
 
         createjs.Ticker.removeEventListener('tick', title_tick);
@@ -68,22 +66,15 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
-        //init the fuzz
-        copGen = new CopGenObject();
-
         //init door
         door = new DoorObject();
 
         //init hud
         hud = new HudObject();
-        //hud.renderStartTimer();
 
-        // damage = 0;
         renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
         
         document.addEventListener("mousemove", mouseMoveHandler);
-        //stage.addEventListener("click", mouseClickHandler);
-        // document.addEventListener("violation", violationHandler, false);
     }
 
     var fps = null;
@@ -102,7 +93,6 @@ var GameObject = function() {
         }
     }
 
-    //same as perform_logic() in zenilib
     var prevPartySize = 0;
     function tick() {
 
@@ -120,7 +110,6 @@ var GameObject = function() {
             if (createjs.Ticker.getTicks() % 50 === 0) {
                 PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
                 goerGen.addPartyGoer();
-                //console.log(PROGRESSMODIFIER);
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
                 var babiesToAdd = (goerGen.partySize() - prevPartySize) * 1/BABYSPAWNRATEMODIFIER * (goerGen.partySize() + 10)/10;
@@ -140,7 +129,7 @@ var GameObject = function() {
 
     function onResize() {
         // browser viewport size
-        var w = window.innerWidth;// * 0.8;
+        var w = window.innerWidth;
         var h = window.innerHeight;
 
         // stage dimensions
@@ -219,7 +208,6 @@ var GameObject = function() {
     };
     
     this.resetGame = function() {
-        // setDamage(0, true);
         console.log("game reset");
         babyRepo.reset();
         projectiles.reset();

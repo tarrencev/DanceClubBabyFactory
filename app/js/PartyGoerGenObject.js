@@ -174,14 +174,6 @@ var PartyGoerGenObject = function() {
                 }
             }
         }
-        
-        /*var overflow = getPartySize();
-        for (var j = 0; j < overflow; j++) {
-            people[i].isLeaving();
-            createjs.Tween.removeTweens(people[i].getShape());
-            pos = getRandomEdgePos();
-            createjs.Tween.get(people[j].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
-        }*/
     }
 
     function getPeopleInParty() {

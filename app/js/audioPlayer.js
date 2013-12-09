@@ -17,7 +17,6 @@ var AudioPlayerObject = function(){
 
     //private funcs
     function init() {
-        //sound = new SoundObject(track.src);
         sound = preloaded_songs[track.src];
         setSongInfo(track);
         playButton = $('#playButton');
@@ -39,7 +38,6 @@ var AudioPlayerObject = function(){
     }
 
     function playButtonHandler(event) {
-        console.log('play button clicked');
         sound.playPause();
         if(playing) {
             playing = false;
