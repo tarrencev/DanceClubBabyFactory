@@ -7,14 +7,8 @@ var PartyGoerGenObject = function() {
     var everyoneNeedtoLeave = false;
     var ecstasy = false;
     var partyPeople;
-    var ex_count;
     document.addEventListener("threeKey", ecstasyHandler);
     document.addEventListener("lose", kickEveryoneOut);
-    
-    var onEcstasyStartEvt = document.createEvent('Event');
-    onEcstasyStartEvt.initEvent('onEcstasyStart', true, true);
-    var onEcstasyEndEvt = document.createEvent('Event');
-    onEcstasyEndEvt.initEvent('onEcstasyEnd', true, true);
 
     //private funcs
     function checkForCollisions(goer_) {
@@ -29,9 +23,10 @@ var PartyGoerGenObject = function() {
         if(!ecstasy && gameObject.getHud().getStars() >= ECSTACYCOST) {
             partyPeople = getPeopleInParty();
             ecstasy = true;
+            ecstasyCount = 0;
             gameObject.getHud().renderTextAlert("Ecstasy");
             gameObject.getHud().decrementStarsBy(ECSTACYCOST);
-            document.dispatchEvent(onEcstasyStartEvt);
+            gameObject.getDoor().ecstasyStart();
         }
     }
 
@@ -112,14 +107,6 @@ var PartyGoerGenObject = function() {
         var doorRadius = gameObject.getDoor().getRadius();
         var distance;
         var pos;
-
-        /*for (var i in people) {
-            if (checkForCollisions(people[i])) {
-                createjs.Tween.removeTweens(people[i].getShape());
-                pos = getANearByPosition(people[i].getPosition());
-                createjs.Tween.get(people[i].getShape()).to(pos, 30 * getDistanceBtwObjectAndPos(people[i], pos), createjs.Ease.linear);
-            }
-        }*/
         
         for (var j =0; j < people.getNumChildren(); j++) {
 
@@ -222,30 +209,26 @@ var PartyGoerGenObject = function() {
         drawPartyGoer();
     };
 
-    var count = 0;
+    var ecstasyCount = 0;
     this.tick = function() {
-        collisionBehaviors();
 
-        if (ex_count > 200) {
-            ecstasy = false;
-            partyPeople = [];
-            document.dispatchEvent(onEcstasyEndEvt);
+        if(ecstasyCount % 5 === 0) {
+            collisionBehaviors();
         }
 
         if(ecstasy) {
-            console.log(ex_count);
-            if(count === 15) {
+            if(ecstasyCount % 15 === 0) {
                 for (var i in partyPeople) {
                     var position = partyPeople[i].getPosition();
                     var juice = new JuicySplosion(position, 30, getRandomColorWithOpacity(0.6));
                 }
-                count = 0;
             }
-            count++;
-            ex_count++;
-        } else {
-          ex_count = 0;
+            if(ecstasyCount > 210) {
+                ecstasy = false;
+                gameObject.getDoor().ecstasyStart();
+            }
         }
+        ecstasyCount++;
     };
 
     this.wander = function() {

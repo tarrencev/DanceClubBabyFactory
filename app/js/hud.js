@@ -77,11 +77,11 @@ var HudObject = function(){
                         clearInterval(starsInterval);
                     }
                     starsCounter++;
-                }, 1000/stars);
+                }, 100/stars);
                 clearInterval(babiesInterval);
             }
             babiesCounter++;
-        }, 30);
+        }, 200/babiesCounter);
     }
 
     function commaSeparateNumber(val){

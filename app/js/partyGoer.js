@@ -60,18 +60,6 @@ PartyGoerObject.prototype.hateParty = function() {
     this.wantToParty = false;
 };
 
-/*PartyGoerObject.prototype.checkLeaving = function() {
-    return this.leaving;
-};
-
-PartyGoerObject.prototype.isLeaving = function() {
-    this.leaving = true;
-};
-
-PartyGoerObject.prototype.notLeaving = function() {
-    this.leaving = false;
-};*/
-
 PartyGoerObject.prototype.removeFromStage = function() {
     stage.removeChild(this.goer);
 };

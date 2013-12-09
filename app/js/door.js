@@ -14,8 +14,6 @@ var DoorObject = function(){
     var extending = false;
     var extenzeCount = 0;
     
-    document.addEventListener("onEcstasyStart", ecstasyStartHandler);
-    document.addEventListener("onEcstasyEnd", ecstasyEndHandler);
     var ecstasyTimer;
 
     //private funcs
@@ -32,7 +30,7 @@ var DoorObject = function(){
                      .setStrokeStyle(doorThickness)
                      .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                      .endStroke();
-        door.cache(-(radius+doorThickness), -(radius+doorThickness), (radius+doorThickness)*2, (radius+doorThickness)*2);
+        // door.cache(-(radius+doorThickness), -(radius+doorThickness), (radius+doorThickness)*2, (radius+doorThickness)*2);
         stage.addChild(door);
     }
 
@@ -48,7 +46,7 @@ var DoorObject = function(){
                 .setStrokeStyle(3)
                 .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, start, end);
         }
-        doorGuide.cache(CONSTANTS.WIDTH/2 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
+        // doorGuide.cache(CONSTANTS.WIDTH/2 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
 
         stage.addChild(doorGuide);
     }
@@ -62,21 +60,6 @@ var DoorObject = function(){
             gameObject.getHud().renderTextAlert("Extenze");
             gameObject.getHud().decrementStarsBy(EXTENZECOST);
         }   
-    }
-    
-    function ecstasyStartHandler() {
-        var color = getRandomColorObject();
-        door.filters = [
-            new createjs.ColorFilter(0,0,0,1, color[0],color[1],color[2],0)
-        ];
-        door.updateCache();
-        ecstasyTimer = setTimeout(ecstasyStartHandler, 100);
-    }
-    
-    function ecstasyEndHandler() {
-        door.filters = [];
-        door.updateCache();
-        clearTimeout(ecstasyTimer);
     }
 
     //public funcs
@@ -99,6 +82,23 @@ var DoorObject = function(){
             this.doorHitArc.max = this.doorHitArc.max-360;
         }
     };
+
+    this.ecstasyStart = function() {
+        var color;
+        var ecstasyInterval = setInterval(function(){
+            color = getRandomColorObject();
+            door.filters = [
+                new createjs.ColorFilter(0,0,0,1, color[0],color[1],color[2],0)
+            ];
+            // door.updateCache();
+        }, 100);
+    }
+    
+    this.ecstasyEnd = function() {
+        door.filters = [];
+        // door.updateCache();
+        clearTimeout(ecstasyInterval);
+    }
     
     this.getAngle = function() {
         return door.rotation;
@@ -151,7 +151,7 @@ var DoorObject = function(){
                          .setStrokeStyle(doorThickness)
                          .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                          .endStroke();
-            door.updateCache();
+            // door.updateCache();
         }
         if (extenzeActive) {
             extenzeCount++;
