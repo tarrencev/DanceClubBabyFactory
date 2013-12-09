@@ -7,6 +7,7 @@ var PartyGoerGenObject = function() {
     var everyoneNeedtoLeave = false;
     var ecstasy = false;
     var partyPeople;
+    var ex_count;
     document.addEventListener("threeKey", ecstasyHandler);
     document.addEventListener("lose", kickEveryoneOut);
     
@@ -230,6 +231,7 @@ var PartyGoerGenObject = function() {
     this.tick = function() {
         collisionBehaviors();
         if(ecstasy) {
+            console.log(ex_count);
             if(count === 15) {
                 for (var i in partyPeople) {
                     var position = partyPeople[i].getPosition();
@@ -238,6 +240,9 @@ var PartyGoerGenObject = function() {
                 count = 0;
             }
             count++;
+            ex_count++;
+        } else {
+          ex_count = 0;
         }
     };
 

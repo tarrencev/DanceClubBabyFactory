@@ -131,6 +131,12 @@ var TitleObject = function(new_stage){
         stage.addChild(button);
         yay.text = "play!";
         stage.setChildIndex(yay, stage.getNumChildren()-1);
+        yay.addEventListener("click", function() {
+            change_stage();
+            gameObject.getHud().renderStartTimer();
+            document.getElementById("instructions").style.display = "none";
+        });
+
         button.addEventListener("click", function() {
             change_stage();
             gameObject.getHud().renderStartTimer();
