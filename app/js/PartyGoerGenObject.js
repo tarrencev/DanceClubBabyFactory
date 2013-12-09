@@ -158,18 +158,18 @@ var PartyGoerGenObject = function() {
         } else {
             if (Math.random() < 1/3) {
                 i = 0;
-                upperbound = people.getNumChildren() / 3;
+                upperbound = Math.floor(people.getNumChildren() / 3);
             } else if (Math.random() < 0.5) {
-                i = people.getNumChildren() / 3;
-                upperbound = 2/3 *people.getNumChildren();
+                i = Math.floor(people.getNumChildren() / 3);
+                upperbound = Math.floor(2/3 *people.getNumChildren());
             } else {
-                i = 2/3 * people.getNumChildren();
+                i = Math.floor(2/3 * people.getNumChildren());
                 upperbound = people.getNumChildren();
             }
         }
 
         for (; i < upperbound; i++) {
-
+            
             var distance = getDistance(people.getChildAt(i), babyRepo);
             var offset = 2/3 * Math.random() * (doorRadius - babyRepoRadius);
 
