@@ -26,7 +26,6 @@ var ProjectileGeneratorObject = function() {
         document.addEventListener("lpPulse", lpPulseHandler, false);
         document.addEventListener("hpPulse", hpPulseHandler, false);
         document.addEventListener("oneKey", activateMarijuana, false);
-        // document.addEventListener("fourKey", activateMushrooms, false);
         document.addEventListener("fourKey", activateCocaine, false);
     }
 
@@ -124,7 +123,7 @@ var ProjectileGeneratorObject = function() {
 
     function calculateProjectileDirection(dataDiff) {
 
-        projectileAngle = projectileAngle + Math.PI/8 * Math.sqrt(Math.abs(dataDiff)) * dataDiff/Math.abs(dataDiff) * Math.sqrt(ticksSinceProjectile) * Math.sqrt(projectileCounter)/400;
+        projectileAngle = projectileAngle + Math.PI/8 * Math.sqrt(Math.abs(dataDiff)) * dataDiff/Math.abs(dataDiff) * Math.sqrt(ticksSinceProjectile) / 10;
 
         var newPosition = {
             x: window.innerWidth/2 + 2 * window.innerHeight * Math.cos(projectileAngle),
