@@ -23,6 +23,96 @@ canvas {
     margin: 0 auto;
     display: block;
 }
+#winState {
+  display: none;
+  position: absolute;
+  left: 0;
+  right:0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.scoresContainer {
+  display:block;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.gameOverTitle {
+  display: block;
+  font-size: 85px;
+  font-weight: bolder;
+  padding-bottom: 20px;
+}
+
+.winMenuContainer {
+  font-size: 40px;
+  font-style: bold;
+  width: 100%;
+  text-align: center;
+}
+
+.winMenuContainer span {
+  display: inline-block;
+  font-size: 50px;
+  font-weight: bolder;
+  width: 300px;
+  text-align: center;
+}
+
+.playerScore {
+  display: block;
+  font-size: 40px;
+  line-height: 85px;
+  font-weight: bold;
+}
+
+.subScore {
+  display: block;
+  font-size: 30px;
+  line-height: 75px;
+  font-weight: bold;
+}
+
+.scoreNameContainer {
+  text-align: right;
+  display: block;
+  float: left;
+  width: 50%;
+}
+
+.scoreValueContainer {
+  text-align: left;
+  display: block;
+  float: left;
+  width: 50%;
+}
+
+#playerScoreValue {
+  display: block;
+  line-height: 85px;
+  font-size: 85px;
+  font-weight: bolder;
+  margin: 0 15px;
+}
+
+#babiesScoreValue {
+  display: block;
+  line-height: 75px;
+  font-size: 75px;
+  font-weight: bolder;
+  margin: 0 15px;
+}
+
+
+#starsScoreValue {
+  display: block;
+  line-height: 75px;
+  font-size: 75px;
+  font-weight: bolder;
+  margin: 0 15px;
+}
 
 .HUD {
     position: absolute;
@@ -67,50 +157,6 @@ h3 {
     font-weight: lighter;
 }
 
-/* HUD */
-
-.statsContainer {
-  width: 100%;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.statsContainer span {
-  padding: 5px 10px;
-}
-
-.stat {
-  font-size: 48px;
-}
-
-#scoreText {
-  position: absolute;
-  top: 0;
-  left: 0;
-  text-align: left;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-#riskText {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  text-align: left;
-  color: rgba(255, 0, 0, 0.8);
-}
-
-#starsText {
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: right;
-  color: rgba(255, 255, 0, 0.8);
-}
-
-#highScore {
-  font-size: 24px;
-}
-
 /*song title*/
 h5 {
     font-size: 15px;
@@ -136,6 +182,7 @@ h6 {
     /*background-color: #f15a29;*/
     display: block;
     text-align: left;
+    z-index: 1000;
 }
 
 .albumCoverContainer {
@@ -196,10 +243,99 @@ input[type="range"]::-webkit-slider-thumb{
    -webkit-border-radius: 40px;
     -moz-border-radius: 40px;
     border-radius: 40px;
- }
+}
+ 
+/* Instructions */
+#instructions {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: none;
+  text-align: center;
+}
+#instructions p {
+  display: none;
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  text-align: center;
+  font-size: 2em;
+  
+  height: auto;
+  top: 50%;
+  left: 0;
+  right: 0;
+}
 
- /*Glyph Icons*/
- @font-face {
+#instructions #next {
+  position: absolute;
+  border: 3px solid #fff;
+  background-color: #222;
+  color: #fff;
+  font-size: 2em;
+  border-radius: 10px;
+  margin: auto;
+  margin-left: -1.3em;
+  margin-bottom: 20px;
+  bottom: 0;
+}
+#instructions #repoInstruct {
+  margin-top: -1.5em;
+}
+#instructions #scoreInstruct {
+  margin-left: 160px;
+  top: 10px;
+}
+#instructions #doorInstruct {
+  margin-top: -2em;
+}
+#instructions #starsInstruct {
+  margin-top: -1em; 
+}
+#instructions #heatInstruct {
+  margin-right: 100px;
+  top: 10px;
+}
+#instructions #bonusInstruct {
+  margin-left: 350px;
+  top: 10px;
+}
+#instructions #powerupsInstruct {
+  text-align: right;
+  margin-right: 180px;
+  top: 100px;
+}
+#instructions #mjInstruct {
+  text-align: right;
+  margin-right: 170px;
+  top: 5px;
+}
+#instructions #extenzeInstruct {
+  text-align: right;
+  margin-right: 170px;
+  top: 80px;
+}
+#instructions #ecsInstruct {
+  text-align: right;
+  margin-right: 170px;
+  top: 150px;
+}
+#instructions #cokeInstruct {
+  text-align: right;
+  margin-right: 170px;
+  top: 220px;
+}
+#instructions #diffInstruct {
+}
+#instructions #startInstruct {
+  text-align: right;
+  margin-right: 260px;
+  top: inherit;
+  bottom: 0;
+  margin-bottom: 0;
+}
+
+/*Glyph Icons*/
+@font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');

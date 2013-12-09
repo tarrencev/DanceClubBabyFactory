@@ -8,6 +8,7 @@ var SoundObject = function(track){
         sound_path = 'music/',
         src = sound_path + track;
     var soundInstance;      // the sound instance we create
+    var siren;
     
     var sampleRate;
     var analysisResults = {};
@@ -61,6 +62,10 @@ var SoundObject = function(track){
                 {
                     src: "music/rewind_sound.mp3",
                     id: "Rewind"
+                },
+                {
+                    src: "music/siren_sound.mp3",
+                    id: "Siren"
                 }
         ];
          
@@ -72,7 +77,7 @@ var SoundObject = function(track){
     function handleLoad(event) {
         gameObject.getTitle().progress();
 
-        if (event.id != "Rewind") {
+        if (event.id === "Song") {
             var context = createjs.WebAudioPlugin.context;
 
             // attach visualizer node to our existing dynamicsCompressorNode, which was connected to context.destination
@@ -230,11 +235,19 @@ var SoundObject = function(track){
         } else {
             soundInstance = createjs.Sound.play(src);
         }
+        if (siren) {
+            if (!siren.resume()) {
+                siren.play();
+            }
+        } else {
+            siren = createjs.Sound.play("Siren", {volume: 0, loop: -1});
+        }
     }
 
     function pausePlayback() {
         playing = false;
         soundInstance.pause();
+        siren.pause();
     }
 
     function refreshFilters() {
@@ -312,6 +325,14 @@ var SoundObject = function(track){
     this.stop = function() {
         soundInstance.stop();
         playing = false;
+    };
+
+    this.getSong = function() {
+        return soundInstance;
+    };
+
+    this.getSiren = function() {
+        return siren;
     };
 
     this.setVolume = function(value) {

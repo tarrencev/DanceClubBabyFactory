@@ -86,7 +86,7 @@ var TitleObject = function(new_stage){
         stage.addChild(instructionTitle);
 
         instructionText = new createjs.Text("throw the craziest party in town while\n" +
-                             "running your illegal, for-profit orphange\n\n" +
+                             "running your illegal, for-profit orphanage\n\n" +
                              "catch the stars as they shoot to the beat of the music\n" +
                              "miss too many of them and the cops will shut you down\n" +
                              "use your stars to purchase powerups\n\n" +
@@ -117,18 +117,48 @@ var TitleObject = function(new_stage){
 
     this.makeReadyForStart = function() {
         var button = new createjs.Shape();
-        button.alpha = 0.01;
-        button.x = CONSTANTS.WIDTH / 2;
+        button.x = CONSTANTS.WIDTH / 2 - 10;
         button.y = CONSTANTS.HEIGHT / 4;
         button.graphics
-            .beginFill('#FFFFFF')
-            .drawRect(0,
-                      0,
-                      200,
-                      80);
+              .beginStroke('#00CCFF')
+              .setStrokeStyle(5)
+              .beginFill('#6e2bff')
+              .drawRoundRect(0,
+                             0,
+                             175,
+                             80,
+                             10);
         stage.addChild(button);
         yay.text = "play!";
-        button.addEventListener("click", change_stage);
+        stage.setChildIndex(yay, stage.getNumChildren()-1);
+        button.addEventListener("click", function() {
+            change_stage();
+            gameObject.getHud().renderStartTimer();
+            document.getElementById("instructions").style.display = "none";
+        });
+        
+        var tutbutton = new createjs.Container();
+        tutbutton.x = CONSTANTS.WIDTH / 2 + 220;
+        tutbutton.y = CONSTANTS.HEIGHT / 4;
+        var box = new createjs.Shape();
+        box.graphics
+            .beginStroke('#00CCFF')
+            .setStrokeStyle(5)
+            .beginFill('#6e2bff')
+            .drawRoundRect(0,
+                           0,
+                           200,
+                           80,
+                           10);
+        tutText = new createjs.Text("Tutorial",
+                                "bold 48px Helvetica",
+                                "#FFFFFF");
+        tutText.textBaseline = "alphabetic";
+        tutText.x = 10;
+        tutText.y = 56;
+        tutbutton.addChild(box);
+        tutbutton.addChild(tutText);
+        stage.addChild(tutbutton);
     };
 
     this.progress = function() {

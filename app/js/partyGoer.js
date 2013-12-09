@@ -16,17 +16,10 @@ PartyGoerObject.prototype.init = function() {
     this.goer.y = pos.y;
 };
 
-// PartyGoerObject.prototype.ecstasy = function() {
-//     this.goer.graphics.clear();
-//     this.goer.graphics
-//              .beginFill(getRandomColorWithOpacity(1.0))
-//              .drawCircle(this.goer.x, this.goer.y, this.radius);
-// };
-
 PartyGoerObject.prototype.drawGoer = function() {
     this.goer = new createjs.Shape();
     this.goer.graphics
-             .beginStroke('#555')
+             .beginStroke('#aaa')
              .setStrokeStyle(1.5)
              .beginFill('#000')
              .drawCircle(0, 0, this.radius);

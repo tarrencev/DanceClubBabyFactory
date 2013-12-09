@@ -1,29 +1,38 @@
 var DoorObject = function(){
     //private vars
-    var door, doorGuide;
+    var door = new createjs.Shape();
+    var doorGuide;
     var doorPosition = 0;
     var radius = 250;
     var doorThickness = 16;
     var doorWidth = Math.PI/6; // in radians
-    var stars = 0;
+    var originalWidth;
+    var goalWidth;
+    var defaultDoorColor = '#00CCFF';
+    var extenzeDoorColor = '#6e2bff';
     var extenzeActive = false;
+    var extending = false;
+    var extenzeCount = 0;
+    
+    document.addEventListener("onEcstasyStart", ecstasyStartHandler);
+    document.addEventListener("onEcstasyEnd", ecstasyEndHandler);
+    var ecstasyTimer;
 
     //private funcs
     function init() {
         drawDoorGuide();
         drawDoor();
-        document.addEventListener("blocked", function(){stars++;}, false);
         document.addEventListener("twoKey", extenzeDoor, false);
     }
 
     function drawDoor() {
-        door = new createjs.Shape();
         door.x = CONSTANTS.WIDTH/2;
         door.y = CONSTANTS.HEIGHT/2;
-        door.graphics.beginStroke('#00CCFF')
-                    .setStrokeStyle(doorThickness)
-                    .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
-                    .endStroke();
+        door.graphics.beginStroke(defaultDoorColor)
+                     .setStrokeStyle(doorThickness)
+                     .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
+                     .endStroke();
+        door.cache(-(radius+doorThickness), -(radius+doorThickness), (radius+doorThickness)*2, (radius+doorThickness)*2);
         stage.addChild(door);
     }
 
@@ -45,27 +54,29 @@ var DoorObject = function(){
     }
 
     function extenzeDoor() {
-        if(stars >= EXTENZECOST && !extenzeActive) {
-            console.log('extenze called');
+        if(gameObject.getHud().getStars() >= EXTENZECOST && !extenzeActive) {
             extenzeActive = true;
-            door.graphics.clear();
-            door.graphics.beginStroke('#6e2bff')
-                        .setStrokeStyle(doorThickness)
-                        .arc(0, 0, radius, -doorWidth/2 * 3/2, doorWidth/2 * 3/2)
-                        .endStroke();
-            doorWidth = Math.PI/6 * 3/2;
-            setTimeout(function() {
-                doorWidth = Math.PI/6;
-                door.graphics.clear();
-                door.graphics.beginStroke('#00CCFF')
-                        .setStrokeStyle(doorThickness)
-                        .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
-                        .endStroke();
-                
-                extenzeActive = false;
-            } , 5000);
-        }
-        
+            originalWidth = doorWidth;
+            goalWidth = doorWidth * 3/2;
+            extending = true;
+            gameObject.getHud().renderTextAlert("Extenze");
+            gameObject.getHud().decrementStarsBy(EXTENZECOST);
+        }   
+    }
+    
+    function ecstasyStartHandler() {
+        var color = getRandomColorObject();
+        door.filters = [
+            new createjs.ColorFilter(0,0,0,1, color[0],color[1],color[2],0)
+        ];
+        door.updateCache();
+        ecstasyTimer = setTimeout(ecstasyStartHandler, 100);
+    }
+    
+    function ecstasyEndHandler() {
+        door.filters = [];
+        door.updateCache();
+        clearTimeout(ecstasyTimer);
     }
 
     //public funcs
@@ -122,6 +133,34 @@ var DoorObject = function(){
             }
         }
         return false;
+    };
+    
+    this.tick = function() {
+        if (extending) {
+            door.graphics.clear();
+            doorWidth = doorWidth*0.8 + goalWidth*0.2;
+            if (Math.abs(goalWidth-doorWidth) < 0.01) {
+                doorWidth = goalWidth;
+                extending = false;
+                if (!extenzeActive) extenzeCount = 0;
+            }
+            var doorColor;
+            if (extenzeActive) doorColor = extenzeDoorColor;
+            else doorColor = defaultDoorColor;
+            door.graphics.beginStroke(doorColor)
+                         .setStrokeStyle(doorThickness)
+                         .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
+                         .endStroke();
+            door.updateCache();
+        }
+        if (extenzeActive) {
+            extenzeCount++;
+        }
+        if (extenzeCount > 300) {
+            extenzeActive = false;
+            extending = true;
+            goalWidth = originalWidth;
+        }
     };
 
     init();

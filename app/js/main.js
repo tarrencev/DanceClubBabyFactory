@@ -6,7 +6,6 @@ var GameObject = function() {
         babyRepo,
         goerGen,
         door,
-        partyLimit = 10,
         copGen,
         projectiles,
         // damage,
@@ -77,40 +76,61 @@ var GameObject = function() {
 
         //init hud
         hud = new HudObject();
-        hud.renderStartTimer();
+        //hud.renderStartTimer();
 
         // damage = 0;
+        renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
         
         document.addEventListener("mousemove", mouseMoveHandler);
-        stage.addEventListener("click", mouseClickHandler);
+        //stage.addEventListener("click", mouseClickHandler);
         // document.addEventListener("violation", violationHandler, false);
     }
 
+    var fps = null;
+    function renderFPS(fps_str) {
+        if(!fps) {
+            fps = new createjs.Text(fps_str,
+                                  "32px Helvetica",
+                                  "#FFFFFF");
+            fps.alpha = 1.0;
+            fps.x = 30;
+            fps.y = 50;
+            fps.textBaseline = "alphabetic";
+            stage.addChild(fps);
+        } else {
+            fps.text = fps_str;
+        }
+    }
+
     //same as perform_logic() in zenilib
+    var prevPartySize = 0;
     function tick() {
 
-        // if (audioPlayer.isPlaying() && createjs.Ticker.getTicks() % 300 === 0) {
-        //     if (Math.random() < (damage / 200.0)) {
-        //         copGen.addCop();
-        //     }
-        // }
+        renderFPS(Math.round(createjs.Ticker.getMeasuredFPS()).toString());
     
         if (audioPlayer.isPlaying()) {
             audioPlayer.tick();
+            door.tick();
             goerGen.tick();
             projectiles.tick();
             copGen.tick();
             background.tick();
+            hud.tick();
         
             if (createjs.Ticker.getTicks() % 50 === 0) {
+                PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
                 goerGen.addPartyGoer();
+                //console.log(PROGRESSMODIFIER);
             }
-            if (createjs.Ticker.getTicks() % 50 === 0) {
-                if (goerGen.partySize() > 2) {
+            if (createjs.Ticker.getTicks() % 60 === 0) {
+                var babiesToAdd = (goerGen.partySize() - prevPartySize) * 1/BABYSPAWNRATEMODIFIER * (goerGen.partySize() + 10)/10;
+                prevPartySize = goerGen.partySize();
+                while (babiesToAdd > 0) {
                     babyRepo.addBaby();
+                    babiesToAdd--;
                 }
             }
-            if (createjs.Ticker.getTicks() % 100 === 0) {
+            if (createjs.Ticker.getTicks() % 30 === 0) {
                 goerGen.wander();
             }
         }
@@ -186,10 +206,6 @@ var GameObject = function() {
         return copGen;
     };
 
-    this.getPartyLimit = function() {
-        return partyLimit;
-    };
-
     this.getProjectiles = function() {
         return projectiles;
     };
@@ -204,10 +220,12 @@ var GameObject = function() {
     
     this.resetGame = function() {
         // setDamage(0, true);
+        console.log("game reset");
         babyRepo.reset();
         projectiles.reset();
         goerGen.reset();
         hud.reset();
+        console.log("game end");
     };
 };
 

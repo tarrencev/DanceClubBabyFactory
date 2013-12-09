@@ -13,18 +13,29 @@ var HI = 1, LO = -1;
 var canvas, stage, preloaded_songs;
 var volumeModifier = 50;
 var speedModifier = 1;
+var difficultyModifier = 1;
+var MINTICKSPERPROJECTILE = 3;
+var BABYSPAWNRATEMODIFIER = 4;
+var PROGRESSMODIFIER = 1;
 
-var SLOWDOWNCOST = 25;
+var SLOWDOWNCOST = 0;
 var EXTENZECOST = 25;
 var ECSTACYCOST = 25;
+var MUSHROOMSCOST = 25;
+var COCAINECOST = 50;
 
+var colors = [ [204, 51, 255], [0, 153, 255], [255, 255, 51], [0, 255, 51], [255, 0, 239], [255, 0, 0] ];
 
-var colors = [  "rgba(204, 51, 255, ", "rgba(0, 153, 255, ", 
-        "rgba(255, 255, 51, ", "rgba(0, 255, 51, ",
-        "rgba(255, 0, 239, ", "rgba(255, 0, 0, " ];
- 
 function getRandomColorWithOpacity(opacity) {
-	return colors[Math.floor(Math.random() * colors.length)] + opacity.toString() + ")";
+    var index = Math.floor(Math.random() * colors.length);
+    return "rgba(" + colors[index][0] + ", " + 
+                     colors[index][1] + ", " + 
+                     colors[index][2] + ", " + 
+                     opacity.toString() + ")";
+}
+
+function getRandomColorObject() {
+    return colors[Math.floor(Math.random() * colors.length)];
 }
 
 function getRandomSign() {
@@ -45,6 +56,10 @@ var twoKey = document.createEvent('Event');
 twoKey.initEvent('twoKey', true, true);
 var threeKey = document.createEvent('Event');
 threeKey.initEvent('threeKey', true, true);
+var fourKey = document.createEvent('Event');
+fourKey.initEvent('fourKey', true, true);
+var fiveKey = document.createEvent('Event');
+fiveKey.initEvent('fiveKey', true, true);
 
 $(document).keydown(function(e) {
 	if (e.keyCode === 38 || e.keyCode === 87) {
@@ -60,5 +75,9 @@ $(document).keydown(function(e) {
 		document.dispatchEvent(twoKey);
 	} else if (e.keyCode === 51) {
 		document.dispatchEvent(threeKey);
+	} else if (e.keyCode === 52) {
+		document.dispatchEvent(fourKey);
+	} else if (e.keyCode === 53) {
+		document.dispatchEvent(fiveKey);
 	}
 });

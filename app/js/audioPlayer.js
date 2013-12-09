@@ -43,17 +43,26 @@ var AudioPlayerObject = function(){
         sound.playPause();
         if(playing) {
             playing = false;
-            playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
+            playButton.children().removeClass('glyphicon-pause')
+                                 .addClass('glyphicon-play');
             gameObject.getGoerGen().pause();
             gameObject.getProjectiles().pause();
         } else {
             playing = true;
+<<<<<<< HEAD
             playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
             gameObject.getGoerGen().resume();
             gameObject.getProjectiles().resume();
+=======
+            playButton.children().removeClass('glyphicon-play')
+                                 .addClass('glyphicon-pause');
+            gameObject.getGoerGen().backToParty();
+>>>>>>> 102e5585adf09c9977b72acca0421bb89625863f
         }
-        if (stopped) {
+        if (playing && stopped) {
+            $('#winState').hide();
             gameObject.resetGame();
+            document.getElementById("instructions").style.display = "none";
         }
         stopped = false;
     }
@@ -138,23 +147,20 @@ var AudioPlayerObject = function(){
     };
     
     this.stopPlayback = function() {
-        if (!stopped) {
-            var enterEasing = setInterval(function() {
-                speedModifier = speedModifier*0.95;
-                if (speedModifier < 0.1) {
-                    speedModifier = 1;
-                    document.LOLaudio.playbackRate.value = speedModifier;
-                    clearInterval(enterEasing);
-                    sound.stop();
-                    createjs.Sound.play("Rewind");
-                }
-                document.LOLaudio.playbackRate.value = speedModifier;
-            }, 10);
-            playing = false;
-            stopped = true;
-            playButton.children().removeClass('glyphicon-pause')
-                                 .addClass('glyphicon-play');
-        }
+        var enterEasing = setInterval(function() {
+            speedModifier = speedModifier*0.95;
+            if (speedModifier < 0.1) {
+                speedModifier = 1;
+                clearInterval(enterEasing);
+                sound.stop();
+                createjs.Sound.play("Rewind");
+            }
+            gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;
+        }, 10);
+        playing = false;
+        stopped = true;
+        playButton.children().removeClass('glyphicon-pause')
+                             .addClass('glyphicon-play');
     };
 
     this.getSound = function() {
@@ -165,16 +171,5 @@ var AudioPlayerObject = function(){
         playButtonHandler();
     };
     
-    // this.playPause = function() {
-    //     sound.playPause();
-    //     if(playing) {
-    //         playing = false;
-    //         playButton.children().removeClass('glyphicon-pause').addClass('glyphicon-play');
-    //     } else {
-    //         playing = true;
-    //         playButton.children().removeClass('glyphicon-play').addClass('glyphicon-pause');
-    //     }
-    // };
-
     init();
 };

@@ -2,6 +2,8 @@ var HudObject = function(){
     var slomoPowerup,
         extenzePowerup,
         ecstasyPowerup,
+        mushroomsPowerup,
+        cocainePowerup,
         scoreText,
         score = 0,
         scoreIcon,
@@ -11,46 +13,83 @@ var HudObject = function(){
         heat = 0,
         heatText,
         heatMeter;
+    var LoseEvt;
 
     function init() {
         drawScore();
         drawStars();
         drawHeat();
-        addPowerUps('slowmo');
+        addPowerUps();
+        drawInstructions();
+        
+        LoseEvt = document.createEvent('Event');
+        LoseEvt.initEvent('lose', true, true);
 
         document.addEventListener("birth", incrementScore, false);
         document.addEventListener("blocked", incrementStars, false);
         document.addEventListener("violation", violationHandler, false);
-        document.addEventListener("oneKey", function(){
-                                                if(stars >= SLOWDOWNCOST) {
-                                                    renderTextAlert('Slow Motion');
-                                                    decrementStarsBy(SLOWDOWNCOST);
-                                                }
-                                            }, false);
-        document.addEventListener("twoKey", function(){
-                                                if(stars >= EXTENZECOST) {
-                                                    renderTextAlert('Extenze');
-                                                    decrementStarsBy(EXTENZECOST);
-                                                }
-                                            }, false);
-        document.addEventListener("threeKey", function(){
-                                                if(stars >= ECSTACYCOST) {
-                                                    renderTextAlert('Ecstacy');
-                                                    decrementStarsBy(ECSTACYCOST);
-                                                }
-                                            } , false);
     }
     
     function violationHandler(event) {
         if (gameObject.getAudioPlayer().isPlaying()) {
             heat += 5.9;
-            createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
-            if (heat >= 118) {
+            var siren = gameObject.getAudioPlayer().getSound().getSiren();
+            if (heat < 118) {
+                createjs.Tween.get(siren, {override: true})
+                              .to({volume: 1}, 500).call(function() {
+                                  createjs.Tween.get(siren)
+                                                .to({volume: 0.2*heat/118}, 1500);
+                });
+            } else {
+                heat = 118;
                 gameObject.getAudioPlayer().stopPlayback();
+                createjs.Tween.get(siren, {override: true})
+                              .to({volume: 1}, 1000).call(function() {
+                                  createjs.Tween.get(siren).to({volume: 0}, 3000);
+                });
+                displayScoreScreen();
+                document.dispatchEvent(LoseEvt);
             }
+            updateHeat();
         }
     }
 
+    function displayScoreScreen() {
+        $('#winState').show();
+        var scoreValue = $('#playerScoreValue');
+        var starsValue = $('#starsScoreValue');
+        var babiesValue = $('#babiesScoreValue');
+        
+        var babiesCounter = 0;
+        var scoreCounter = 0;
+        var babiesInterval = setInterval(function() {
+            scoreCounter = scoreCounter + babiesCounter * 100;
+            scoreValue.text(commaSeparateNumber(scoreCounter));
+            babiesValue.text(babiesCounter.toString());
+            if(babiesCounter === score) {
+                var starsCounter = 0;
+                var starsInterval = setInterval(function() {
+                    scoreCounter = scoreCounter + babiesCounter * 10;
+                    scoreValue.text(commaSeparateNumber(scoreCounter));
+                    starsValue.text(starsCounter.toString());
+                    console.log(starsCounter);
+                    if(starsCounter === stars) {
+                        clearInterval(starsInterval);
+                    }
+                    starsCounter++;
+                }, 1000/stars);
+                clearInterval(babiesInterval);
+            }
+            babiesCounter++;
+        }, 30);
+    }
+
+    function commaSeparateNumber(val){
+        while (/(\d+)(\d{3})/.test(val.toString())){
+            val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+        }
+        return val;
+    }
     function drawHeat() {
         heatText = new createjs.Text("Heat",
                               "27px Helvetica",
@@ -62,7 +101,8 @@ var HudObject = function(){
         stage.addChild(heatText);
 
         var heatOutline = new createjs.Shape();
-        heatOutline.graphics.setStrokeStyle(2).beginStroke("#fff").drawRect(CONSTANTS.WIDTH/2 - 95, 17, 120, 25);
+        heatOutline.graphics.setStrokeStyle(2).beginStroke("#fff")
+                            .drawRect(CONSTANTS.WIDTH/2 - 95, 17, 120, 25);
         stage.addChild(heatOutline);
 
         heatMeter = new createjs.Shape();
@@ -70,6 +110,10 @@ var HudObject = function(){
         heatMeter.y = 18;
         heatMeter.graphics.beginFill("#FF0A0A").drawRect(0, 0, 1, 23);
         stage.addChild(heatMeter);
+    }
+    
+    function updateHeat() {
+        createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
     }
 
     function drawScore() {
@@ -113,11 +157,27 @@ var HudObject = function(){
 
             ecstasyPowerup = new PowerUpHudObject();
             ecstasyPowerup.drawEcstasy();
+
+            // mushroomsPowerup = new PowerUpHudObject();
+            // mushroomsPowerup.drawMushrooms();
+
+            cocainePowerup = new PowerUpHudObject();
+            cocainePowerup.drawCocaine();
     }
 
-    function decrementScoreBy(value) {
-        score = value;
-        scoreText.text = score.toString();
+    function drawInstructions() {
+        document.getElementById("instructions").style.display = "block";
+        var steps = ["repoInstruct", "scoreInstruct", "doorInstruct", "heatInstruct", "bonusInstruct", "powerupsInstruct", "mjInstruct", "extenzeInstruct", "ecsInstruct", "cokeInstruct", "startInstruct"];
+        var currentStep = 0;
+        document.getElementById(steps[currentStep]).style.display = "inline";
+        document.getElementById("next").addEventListener("click", function(){
+            document.getElementById(steps[currentStep++]).style.display = "none";
+            document.getElementById(steps[currentStep]).style.display = "inline";
+            if (currentStep >= steps.length-1) {
+                document.getElementById("next").style.display = "none";
+                document.getElementById("instructions").style.pointerEvents = "none";
+            }
+        });
     }
 
     function incrementScore() {
@@ -130,17 +190,13 @@ var HudObject = function(){
         starsText.text = stars.toString();
     }
 
+    document.addEventListener("fiveKey", incrementStars, false);
     function incrementStars() {
         stars++;
         starsText.text = stars.toString();
     }
 
     //public funs
-    this.removePowerUp = function(powerupName) {
-        if(powerupName === 'slowmo')
-            powerup.destroy();
-    };
-
     function renderTextAlert(text) {
         var alert = new createjs.Text(text,
                               "bold 24px Helvetica",
@@ -171,10 +227,18 @@ var HudObject = function(){
             
         }, 1000);
     };
+    
+    this.tick = function() {
+        if (heat > 0) {
+            heat -= 0.05 * speedModifier;
+            updateHeat();
+        }
+    };
 
     this.reset = function() {
+        console.log("Hud RESET");
         heat = 0;
-        createjs.Tween.get(heatMeter).to({scaleX: 0, scaleY: 1}, 500, createjs.Ease.linear);
+        updateHeat();
         stars = 0;
         starsText.text = "0";
         score = 0;
@@ -183,6 +247,12 @@ var HudObject = function(){
 
     this.renderTextAlert = function(text) {
         renderTextAlert(text);
+    };
+
+    this.decrementStarsBy = function(value) {
+        console.log(value);
+        stars -= value;
+        starsText.text = stars.toString();
     };
 
     init();
