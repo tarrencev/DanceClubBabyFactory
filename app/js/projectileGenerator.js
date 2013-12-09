@@ -206,7 +206,6 @@ var ProjectileGeneratorObject = function() {
             }
 
             if(cocaineActive) {
-                console.log('cocaine ' + cocaineCount);
                 blockProjectile(i);
             }
         }
@@ -225,7 +224,6 @@ var ProjectileGeneratorObject = function() {
             if (marijuanaCount%3 === 0 && easeIn) {
                 speedModifier = speedModifier * 0.99 + 0.75 * 0.001;
                 if (speedModifier < 0.76) {
-                    console.log('eased in');
                     speedModifier = 0.75;
                     easeIn = false;
                     easeOut = true;
@@ -235,7 +233,6 @@ var ProjectileGeneratorObject = function() {
             } else if (marijuanaCount > 70 && marijuanaCount%5 === 0 && easeOut) {
                 speedModifier = (speedModifier-0.5*0.001)/0.99;
                 if (speedModifier > 0.98) {
-                    console.log('eased out');
                     speedModifier = 1;
                     marijuanaActive = false;
                     easeOut = false;
