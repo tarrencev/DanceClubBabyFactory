@@ -10,7 +10,7 @@ var BackgroundObject = function(){
     function init() {
         drawBaseBackground();
         drawSpectrum();
-        drawFlare();
+        // drawFlare();
         var center = {
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2
@@ -72,7 +72,7 @@ var BackgroundObject = function(){
 
     function lpPulseHandler(event) {
         var dataDiff = event.dataDiff;
-        setFlareChangeInRadius(dataDiff);
+        // setFlareChangeInRadius(dataDiff);
         if(dataDiff > 4) dataDiff = 4;
         if(dataDiff > 1) fireRing(dataDiff);
     }
@@ -84,7 +84,7 @@ var BackgroundObject = function(){
     }
 
     function fireRing(dataDiff) {
-        if (rings.getNumChildren() < 15) {
+        if (rings.getNumChildren() < 10) {
             newRing = new createjs.Shape();
             newRing.graphics.beginStroke(getRandomColorWithOpacity(0.2 * dataDiff))
                             .setStrokeStyle(4 * dataDiff)
@@ -115,7 +115,7 @@ var BackgroundObject = function(){
                                      ambientColorFilter[1], 
                                      ambientColorFilter[2], 0)
         ];*/
-        flare.cache(-CONSTANTS.WIDTH/2, -CONSTANTS.HEIGHT/2, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
+        // flare.cache(-CONSTANTS.WIDTH/2, -CONSTANTS.HEIGHT/2, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
         // .getHSL((i/CIRCLES*HUE_VARIANCE+circleHue)%360, 100, 50);
     };
     
