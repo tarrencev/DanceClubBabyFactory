@@ -41,12 +41,14 @@ var AudioPlayerObject = function(){
         sound.playPause();
         if(playing) {
             playing = false;
+            gameObject.pause();
             playButton.children().removeClass('glyphicon-pause')
                                  .addClass('glyphicon-play');
             gameObject.getGoerGen().pause();
             gameObject.getProjectiles().pause();
         } else {
             playing = true;
+            gameObject.resume();
             playButton.children().removeClass('glyphicon-play')
                                  .addClass('glyphicon-pause');
             gameObject.getGoerGen().resume();

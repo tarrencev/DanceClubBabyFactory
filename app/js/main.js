@@ -215,6 +215,14 @@ var GameObject = function() {
         hud.reset();
         console.log("game end");
     };
+
+    this.pause = function() {
+        createjs.Ticker.removeEventListener('tick', tick);
+    };
+
+    this.resume = function() {
+        createjs.Ticker.addEventListener('tick', tick);
+    };
 };
 
 var gameObject = new GameObject();
