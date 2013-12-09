@@ -20,6 +20,7 @@ var HudObject = function(){
         drawStars();
         drawHeat();
         addPowerUps();
+        drawInstructions();
         
         LoseEvt = document.createEvent('Event');
         LoseEvt.initEvent('lose', true, true);
@@ -125,6 +126,21 @@ var HudObject = function(){
 
             cocainePowerup = new PowerUpHudObject();
             cocainePowerup.drawCocaine();
+    }
+
+    function drawInstructions() {
+        document.getElementById("instructions").style.display = "block";
+        var steps = ["repoInstruct", "scoreInstruct", "doorInstruct", "heatInstruct", "bonusInstruct", "powerupsInstruct", "mjInstruct", "extenzeInstruct", "ecsInstruct", "cokeInstruct", "startInstruct"];
+        var currentStep = 0;
+        document.getElementById(steps[currentStep]).style.display = "inline";
+        document.getElementById("next").addEventListener("click", function(){
+            document.getElementById(steps[currentStep++]).style.display = "none";
+            document.getElementById(steps[currentStep]).style.display = "inline";
+            if (currentStep >= steps.length-1) {
+                document.getElementById("next").style.display = "none";
+                document.getElementById("instructions").style.pointerEvents = "none";
+            }
+        });
     }
 
     function incrementScore() {

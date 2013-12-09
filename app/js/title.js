@@ -117,17 +117,21 @@ var TitleObject = function(new_stage){
 
     this.makeReadyForStart = function() {
         var button = new createjs.Shape();
-        button.alpha = 0.01;
-        button.x = CONSTANTS.WIDTH / 2;
+        button.alpha = 0.8;
+        button.x = CONSTANTS.WIDTH / 2 - 10;
         button.y = CONSTANTS.HEIGHT / 4;
         button.graphics
-            .beginFill('#FFFFFF')
-            .drawRect(0,
-                      0,
-                      200,
-                      80);
+              .beginStroke('#00CCFF')
+              .setStrokeStyle(5)
+              .beginFill('#6e2bff')
+              .drawRoundRect(0,
+                             0,
+                             175,
+                             80,
+                             10);
         stage.addChild(button);
         yay.text = "play!";
+        stage.setChildIndex(yay, stage.getNumChildren()-1);
         button.addEventListener("click", change_stage);
     };
 

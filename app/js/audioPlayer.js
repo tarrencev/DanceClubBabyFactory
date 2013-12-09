@@ -54,6 +54,7 @@ var AudioPlayerObject = function(){
         }
         if (playing && stopped) {
             gameObject.resetGame();
+            document.getElementById("instructions").style.display = "none";
         }
         stopped = false;
     }

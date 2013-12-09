@@ -76,13 +76,12 @@ var GameObject = function() {
 
         //init hud
         hud = new HudObject();
-        hud.renderStartTimer();
 
         // damage = 0;
         renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
         
         document.addEventListener("mousemove", mouseMoveHandler);
-        stage.addEventListener("click", mouseClickHandler);
+        //stage.addEventListener("click", mouseClickHandler);
         // document.addEventListener("violation", violationHandler, false);
     }
 
