@@ -13,8 +13,12 @@ var HI = 1, LO = -1;
 var canvas, stage, preloaded_songs;
 var volumeModifier = 50;
 var speedModifier = 1;
+var difficultyModifier = 1;
+var MINTICKSPERPROJECTILE = 3;
+var BABYSPAWNRATEMODIFIER = 4;
+var PROGRESSMODIFIER = 1;
 
-var SLOWDOWNCOST = 25;
+var SLOWDOWNCOST = 0;
 var EXTENZECOST = 25;
 var ECSTACYCOST = 25;
 var MUSHROOMSCOST = 25;

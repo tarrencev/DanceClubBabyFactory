@@ -10,7 +10,6 @@ var DoorObject = function(){
     var goalWidth;
     var defaultDoorColor = '#00CCFF';
     var extenzeDoorColor = '#6e2bff';
-    var stars = 2000;
     var extenzeActive = false;
     var extending = false;
     var extenzeCount = 0;
@@ -23,7 +22,6 @@ var DoorObject = function(){
     function init() {
         drawDoorGuide();
         drawDoor();
-        document.addEventListener("blocked", function(){stars++;}, false);
         document.addEventListener("twoKey", extenzeDoor, false);
     }
 
@@ -56,15 +54,14 @@ var DoorObject = function(){
     }
 
     function extenzeDoor() {
-        if(stars >= EXTENZECOST && !extenzeActive) {
+        if(gameObject.getHud().getStars() >= EXTENZECOST && !extenzeActive) {
             extenzeActive = true;
             originalWidth = doorWidth;
             goalWidth = doorWidth * 3/2;
             extending = true;
             gameObject.getHud().renderTextAlert("Extenze");
             gameObject.getHud().decrementStarsBy(EXTENZECOST);
-        }
-        
+        }   
     }
     
     function ecstasyStartHandler() {
