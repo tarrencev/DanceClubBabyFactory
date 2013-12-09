@@ -124,7 +124,7 @@ var ProjectileGeneratorObject = function() {
 
     function calculateProjectileDirection(dataDiff) {
 
-        projectileAngle = projectileAngle + Math.PI/8 * Math.sqrt(Math.abs(dataDiff)) * dataDiff/Math.abs(dataDiff) * Math.sqrt(ticksSinceProjectile) / 10;
+        projectileAngle = projectileAngle + Math.PI/8 * Math.sqrt(Math.abs(dataDiff)) * dataDiff/Math.abs(dataDiff) * Math.sqrt(ticksSinceProjectile) * Math.sqrt(projectileCounter)/400;
 
         var newPosition = {
             x: window.innerWidth/2 + 2 * window.innerHeight * Math.cos(projectileAngle),
@@ -213,7 +213,6 @@ var ProjectileGeneratorObject = function() {
 
         if(marijuanaActive) {
             if (marijuanaCount%3 === 0 && easeIn) {
-                console.log('easing in ' + speedModifier.toString());
                 speedModifier = speedModifier * 0.99 + 0.75 * 0.001;
                 if (speedModifier < 0.76) {
                     console.log('eased in');
@@ -222,9 +221,8 @@ var ProjectileGeneratorObject = function() {
                     easeOut = true;
                     marijuanaCount = 0;
                 }
-                document.LOLaudio.playbackRate.value = speedModifier;
+                gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;
             } else if (marijuanaCount > 70 && marijuanaCount%5 === 0 && easeOut) {
-                console.log('easing out' + speedModifier.toString());
                 speedModifier = (speedModifier-0.5*0.001)/0.99;
                 if (speedModifier > 0.98) {
                     console.log('eased out');
@@ -233,7 +231,8 @@ var ProjectileGeneratorObject = function() {
                     easeOut = false;
                     marijuanaCount = 0;
                 }
-                document.LOLaudio.playbackRate.value = speedModifier;
+                gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;
+                console.log(gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value);
             }
         }
         marijuanaCount++;

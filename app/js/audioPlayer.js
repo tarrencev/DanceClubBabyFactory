@@ -144,12 +144,11 @@ var AudioPlayerObject = function(){
             speedModifier = speedModifier*0.95;
             if (speedModifier < 0.1) {
                 speedModifier = 1;
-                document.LOLaudio.playbackRate.value = speedModifier;
                 clearInterval(enterEasing);
                 sound.stop();
                 createjs.Sound.play("Rewind");
             }
-            document.LOLaudio.playbackRate.value = speedModifier;
+            gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;
         }, 10);
         playing = false;
         stopped = true;

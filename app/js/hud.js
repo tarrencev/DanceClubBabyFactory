@@ -190,6 +190,7 @@ var HudObject = function(){
         starsText.text = stars.toString();
     }
 
+    document.addEventListener("fiveKey", incrementStars, false);
     function incrementStars() {
         stars++;
         starsText.text = stars.toString();

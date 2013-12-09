@@ -76,6 +76,7 @@ var GameObject = function() {
 
         //init hud
         hud = new HudObject();
+        //hud.renderStartTimer();
 
         // damage = 0;
         renderFPS(Math.round(createjs.Ticker.getFPS()).toString());

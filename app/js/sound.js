@@ -327,7 +327,11 @@ var SoundObject = function(track){
         playing = false;
     };
 
-    this.getSiren = function(value) {
+    this.getSong = function() {
+        return soundInstance;
+    };
+
+    this.getSiren = function() {
         return siren;
     };
 
