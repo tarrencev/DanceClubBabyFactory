@@ -128,7 +128,7 @@ var ProjectileGeneratorObject = function() {
 
     function calculateProjectileDirection(dataDiff) {
 
-        projectileAngle = projectileAngle + Math.PI/8 * Math.sqrt(Math.abs(dataDiff)) * dataDiff/Math.abs(dataDiff) * Math.sqrt(ticksSinceProjectile) / 10;
+        projectileAngle = projectileAngle + Math.PI/8 * Math.sqrt(Math.abs(dataDiff)) * dataDiff/Math.abs(dataDiff) * Math.sqrt(ticksSinceProjectile) * Math.sqrt(count)/200;
 
         var newPosition = {
             x: window.innerWidth/2 + 2 * window.innerHeight * Math.cos(projectileAngle),
@@ -241,6 +241,7 @@ var ProjectileGeneratorObject = function() {
         cocaineCount++;
         mushroomsCount++;
         count++;
+        console.log(count);
         ticksSinceProjectile++;
     };
 
