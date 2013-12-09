@@ -81,7 +81,7 @@ var HudObject = function(){
                 clearInterval(babiesInterval);
             }
             babiesCounter++;
-        }, 200/babiesCounter);
+        }, 100/babiesCounter);
     }
 
     function commaSeparateNumber(val){
@@ -113,7 +113,7 @@ var HudObject = function(){
     }
     
     function updateHeat() {
-        createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
+        createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.quartIn);
     }
 
     function drawScore() {
@@ -206,7 +206,7 @@ var HudObject = function(){
         alert.textBaseline = "middle";
         alert.x = CONSTANTS.WIDTH/2;
         alert.y = CONSTANTS.HEIGHT/2;
-        createjs.Tween.get(alert).to({scaleX: 20, scaleY: 20, alpha:0}, 900).call(stage.removeChild(alert), [], this);
+        createjs.Tween.get(alert).to({scaleX: 20, scaleY: 20, alpha:0}, 900).call(function() {stage.removeChild(alert);});
         stage.addChild(alert);
     }
 

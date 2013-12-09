@@ -110,16 +110,6 @@ var ProjectileGeneratorObject = function() {
         }
     }
 
-    // function activateMushrooms() {
-    //     if(stars >= MUSHROOMSCOST && !mushroomsActive) {
-    //         stars = stars - MUSHROOMSCOST;
-    //         mushroomsActive = true;
-    //         mushroomsCount = 0;
-    //         gameObject.getHud().renderTextAlert("Mushrooms");
-    //         gameObject.getHud().decrementStarsBy(MUSHROOMSCOST);
-    //     }
-    // }
-
     function activateCocaine() {
         if(gameObject.getHud().getStars() >= COCAINECOST && !cocaineActive) {
             cocaineActive = true;
@@ -213,11 +203,6 @@ var ProjectileGeneratorObject = function() {
             cocaineActive = false;
             cocaineCount = 0;
         }
-
-        // if(mushroomsActive && mushroomsCount > 120) {
-        //     mushroomsActive = false;
-        //     mushroomsCount = 0;
-        // }
 
         if(marijuanaActive) {
             console.log(gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value);
