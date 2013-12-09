@@ -165,6 +165,7 @@ var TitleObject = function(new_stage){
         tutbutton.addChild(box);
         tutbutton.addChild(tutText);
         stage.addChild(tutbutton);
+        tutbutton.addEventListener("click", change_stage);
     };
 
     this.progress = function() {

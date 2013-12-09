@@ -113,7 +113,7 @@ var HudObject = function(){
     }
     
     function updateHeat() {
-        createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.linear);
+        createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.quartIn);
     }
 
     function drawScore() {
