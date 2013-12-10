@@ -8,6 +8,7 @@ var GameObject = function() {
         door,
         copGen,
         projectiles,
+        // damage,
         hud,
         title;
         
@@ -17,9 +18,9 @@ var GameObject = function() {
     function init() {
         canvas = document.createElement('canvas');
 
-        canvas.width = window.innerWidth;
+        canvas.width = window.innerWidth;// * 0.8;
         canvas.height = window.innerHeight;
-        CONSTANTS.WIDTH = window.innerWidth;
+        CONSTANTS.WIDTH = window.innerWidth;// * 0.8;
         CONSTANTS.HEIGHT = window.innerHeight;
 
         canvas.setAttribute('id', 'c');
@@ -45,6 +46,7 @@ var GameObject = function() {
 
     function game() {
         createjs.Ticker.setFPS(30);
+        //stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
 
         createjs.Ticker.removeEventListener('tick', title_tick);
@@ -66,15 +68,22 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
+        //init the fuzz
+        copGen = new CopGenObject();
+
         //init door
         door = new DoorObject();
 
         //init hud
         hud = new HudObject();
+        //hud.renderStartTimer();
 
+        // damage = 0;
         renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
         
         document.addEventListener("mousemove", mouseMoveHandler);
+        //stage.addEventListener("click", mouseClickHandler);
+        // document.addEventListener("violation", violationHandler, false);
     }
 
     var fps = null;
@@ -93,6 +102,7 @@ var GameObject = function() {
         }
     }
 
+    //same as perform_logic() in zenilib
     var prevPartySize = 0;
     function tick() {
 
@@ -103,16 +113,18 @@ var GameObject = function() {
             door.tick();
             goerGen.tick();
             projectiles.tick();
+            copGen.tick();
             background.tick();
             hud.tick();
         
             if (createjs.Ticker.getTicks() % 50 === 0) {
-                PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
+                //PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
                 goerGen.addPartyGoer();
+                //console.log(PROGRESSMODIFIER);
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
                 var partySize = goerGen.partySize();
-                var babiesToAdd = (partySize - prevPartySize) * 1/BABYSPAWNRATEMODIFIER * (goerGen.partySize() + 10)/10;
+                var babiesToAdd = (partySize - prevPartySize) * 1/BABYSPAWNRATEMODIFIER * (partySize + 10)/10;
                 prevPartySize = partySize;
                 while (babiesToAdd > 0) {
                     babyRepo.addBaby();
@@ -129,7 +141,7 @@ var GameObject = function() {
 
     function onResize() {
         // browser viewport size
-        var w = window.innerWidth;
+        var w = window.innerWidth;// * 0.8;
         var h = window.innerHeight;
 
         // stage dimensions
@@ -208,20 +220,13 @@ var GameObject = function() {
     };
     
     this.resetGame = function() {
+        // setDamage(0, true);
         console.log("game reset");
         babyRepo.reset();
         projectiles.reset();
         goerGen.reset();
         hud.reset();
         console.log("game end");
-    };
-
-    this.pause = function() {
-        createjs.Ticker.removeEventListener('tick', tick);
-    };
-
-    this.resume = function() {
-        createjs.Ticker.addEventListener('tick', tick);
     };
 };
 
