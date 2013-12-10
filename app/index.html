@@ -6,6 +6,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style"
     content="black-translucent" />
+    <script>
+    function BlockElasticScroll(event) {
+        event.preventDefault();
+    }
+    </script>
     <title>Dance Club Baby Factory</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/switch.css">
@@ -32,6 +37,7 @@
     <script type="text/javascript" src="js/hud.js"></script>
     <script type="text/javascript" src="js/powerUpHud.js"></script>
 </head>
+<body ontouchmove="BlockElasticScroll(event);">
 <body>
     <div id="HUD" class="HUD">
         <div class="audioPlayer">
