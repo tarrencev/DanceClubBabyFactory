@@ -48,6 +48,7 @@ var GameObject = function() {
         createjs.Ticker.setFPS(30);
         //stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
+        createjs.Touch.enable(stage);
 
         createjs.Ticker.removeEventListener('tick', title_tick);
         createjs.Ticker.addEventListener('tick', tick);

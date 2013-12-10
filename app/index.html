@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>The Infinite Dubstep Baby Factory</title>
+    <meta name="viewport" content="width=device-width;
+    initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent" />
+    <script>
+    function BlockElasticScroll(event) {
+        event.preventDefault();
+    }
+    </script>
+    <title>Dance Club Baby Factory</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/switch.css">
     <script src="vendor/createjs-2013.09.25.min.js"></script>
@@ -27,6 +37,7 @@
     <script type="text/javascript" src="js/hud.js"></script>
     <script type="text/javascript" src="js/powerUpHud.js"></script>
 </head>
+<body ontouchmove="BlockElasticScroll(event);">
 <body>
     <div id="HUD" class="HUD">
         <div class="audioPlayer">
@@ -133,7 +144,7 @@
     </div>
     <div id="winState">
         <div class="scoresContainer">
-            <span class="gameOverTitle">Game Over</span>
+            <span class="titleText">Game Over</span>
             <div class="scoreNameContainer">
                 <span class="playerScore">You scored:</span>
                 <span class="subScore">Babies:</span>
@@ -145,9 +156,16 @@
                 <span id="starsScoreValue">0</span>
             </div>
         </div>
-        <div class="winMenuContainer">
+        <div class="menuContainer">
             <span>Press space to retry</span>
-            <!-- <span>Replay</span> -->
+        </div>
+    </div>
+    <div id="titleState">
+        <span class="titleText">Dance Club Baby Factory</span>
+        <div id="titleMenu" class="menuContainer">
+            <button class="titlePlayButton menuItem">Play</button>
+            <button class="tutorialButton menuItem">Tutorial</button>
+            <button class="storyButton menuItem">Story</button>
         </div>
     </div>
 <script src="js/main.js"></script>

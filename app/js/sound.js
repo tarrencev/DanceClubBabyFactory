@@ -1,12 +1,12 @@
-var SoundObject = function(track){
+var SoundObject = function(){
     //private vars
     //declare private vars her
     var FFTSIZE = 1024;      // number of samples for the analyser node FFT, min 32
 
     var audio,
-        playing,
-        sound_path = 'music/',
-        src = sound_path + track;
+        playing;
+        // sound_path = 'music/',
+        // src = sound_path + track;
     var soundInstance;      // the sound instance we create
     var siren;
     
@@ -54,50 +54,28 @@ var SoundObject = function(track){
         initEvents();
 
         if (!createjs.Sound.registerPlugin(createjs.WebAudioPlugin)) { return; }
-        var manifest = [
-                {
-                    id: "Song",
-                    src: sound_path+track
-                },
-                {
-                    src: "music/rewind_sound.mp3",
-                    id: "Rewind"
-                },
-                {
-                    src: "music/siren_sound.mp3",
-                    id: "Siren"
-                }
-        ];
          
-        createjs.Sound.addEventListener("fileload", createjs.proxy(handleLoad, this));
-        createjs.Sound.registerManifest(manifest, "");
+        loadQueue.addEventListener("complete", handleLoad);
         audio = createjs.Sound.activePlugin;
     }
 
     function handleLoad(event) {
-        gameObject.getTitle().progress();
+        var context = createjs.WebAudioPlugin.context;
 
-        if (event.id === "Song") {
-            var context = createjs.WebAudioPlugin.context;
+        // attach visualizer node to our existing dynamicsCompressorNode, which was connected to context.destination
+        var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
+        dynamicsNode.disconnect();  // disconnect from destination
 
-            // attach visualizer node to our existing dynamicsCompressorNode, which was connected to context.destination
-            var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
-            dynamicsNode.disconnect();  // disconnect from destination
+        //init filters
+        initLowPassFilter(context, dynamicsNode);
+        initBandPassFilter1(context, dynamicsNode);
+        initBandPassFilter2(context, dynamicsNode);
+        initHighPassFilter(context, dynamicsNode);
+        initAnalyser(context, dynamicsNode);
+        sampleRate = context.sampleRate;
 
-            //init filters
-            initLowPassFilter(context, dynamicsNode);
-            initBandPassFilter1(context, dynamicsNode);
-            initBandPassFilter2(context, dynamicsNode);
-            initHighPassFilter(context, dynamicsNode);
-            initAnalyser(context, dynamicsNode);
-            sampleRate = context.sampleRate;
-
-            // calculate the number of array elements that represent each circle
-            freqChunk = bandPass1AnalyserNode.frequencyBinCount;
-            gameObject.getTitle().makeReadyForStart();
-            
-            console.log("highest freq: " + sampleRate/2);
-        }
+        // calculate the number of array elements that represent each circle
+        freqChunk = bandPass1AnalyserNode.frequencyBinCount;
     }
 
     function initAnalyser(context, dynamicsNode) {
@@ -221,9 +199,6 @@ var SoundObject = function(track){
         
         AnalyserNode.getByteFrequencyData(FreqByteData);
         AnalyserNode.getByteTimeDomainData(TimeByteData);
-        
-        /*analysisResults.lo = analysisFilter(LO, FreqByteData, 40);
-        analysisResults.hi = analysisFilter(HI, FreqByteData, 8000);*/
     }
 
     function startPlayback() {
@@ -233,7 +208,7 @@ var SoundObject = function(track){
                 soundInstance.play();
             }
         } else {
-            soundInstance = createjs.Sound.play(src);
+            soundInstance = createjs.Sound.play("gameSong");
         }
         if (siren) {
             if (!siren.resume()) {
