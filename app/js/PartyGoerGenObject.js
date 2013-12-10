@@ -27,6 +27,7 @@ var PartyGoerGenObject = function() {
             gameObject.getHud().renderTextAlert("Ecstasy");
             gameObject.getHud().decrementStarsBy(ECSTACYCOST);
             gameObject.getDoor().ecstasyStart();
+            gameObject.getBabyRepo().ecstasy();
         }
     }
 

@@ -75,6 +75,18 @@ var BabyRepoObject = function() {
         return babies.length;
     };
 
+    this.ecstasy = function() {
+        var extraBabiesToAdd = 5;
+
+        var extraBabiesToAddInterval = setInterval(function() {
+            drawBaby();
+            extraBabiesToAdd--;
+            if (extraBabiesToAdd === 0) {
+                clearInterval(extraBabiesToAddInterval);
+            }
+        }, 5);
+    };
+
     this.reset = function() {
         for (var i in babies) {
             stage.removeChild(babies[i].baby);

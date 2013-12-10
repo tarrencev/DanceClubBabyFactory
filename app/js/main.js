@@ -118,10 +118,9 @@ var GameObject = function() {
             background.tick();
             hud.tick();
         
-            if (createjs.Ticker.getTicks() % 50 === 0) {
-                //PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
+            if (createjs.Ticker.getTicks() % Math.floor(50*PROGRESSMODIFIER) === 0) {
+                PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
                 goerGen.addPartyGoer();
-                //console.log(PROGRESSMODIFIER);
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
                 var partySize = goerGen.partySize();
@@ -228,6 +227,14 @@ var GameObject = function() {
         goerGen.reset();
         hud.reset();
         console.log("game end");
+    };
+
+    this.addExtraBabies = function() {
+        var extraBabiesToAdd = 5;
+        while (extraBabiesToAdd > 0) {
+            babyRepo.addBaby();
+            extraBabiesToAdd--;
+        }
     };
 };
 
