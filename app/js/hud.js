@@ -164,7 +164,7 @@ var HudObject = function(){
 
     function drawInstructions() {
         document.getElementById("instructions").style.display = "block";
-        var steps = ["repoInstruct", "scoreInstruct", "doorInstruct", "heatInstruct", "bonusInstruct", "powerupsInstruct", "mjInstruct", "extenzeInstruct", "ecsInstruct", "cokeInstruct", "startInstruct"];
+        var steps = ["repoInstruct", "scoreInstruct", "doorInstruct", "heatInstruct", "bonusInstruct", "powerupsInstruct", "drugs", "startInstruct"];
         var currentStep = 0;
         document.getElementById(steps[currentStep]).style.display = "inline";
         document.getElementById("next").addEventListener("click", function(){
