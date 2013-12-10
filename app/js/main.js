@@ -119,7 +119,7 @@ var GameObject = function() {
             hud.tick();
         
             if (createjs.Ticker.getTicks() % Math.floor(30 + 20*PROGRESSMODIFIER) === 0) {
-                PROGRESSMODIFIER = PROGRESSMODIFIER * 0.99;
+                PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
                 goerGen.addPartyGoer();
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
