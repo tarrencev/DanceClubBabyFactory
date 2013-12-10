@@ -118,8 +118,8 @@ var GameObject = function() {
             background.tick();
             hud.tick();
         
-            if (createjs.Ticker.getTicks() % Math.floor(50*PROGRESSMODIFIER) === 0) {
-                PROGRESSMODIFIER = PROGRESSMODIFIER * 1.01;
+            if (createjs.Ticker.getTicks() % Math.floor(30 + 20*PROGRESSMODIFIER) === 0) {
+                PROGRESSMODIFIER = PROGRESSMODIFIER * 0.99;
                 goerGen.addPartyGoer();
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
