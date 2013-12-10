@@ -1,8 +1,7 @@
 var AudioPlayerObject = function(){
     //private vars
     //declare private vars her
-    var sound,
-        playButton,
+    var playButton,
         settingsButton,
         audioControlsOpen = false,
         stopped = true,
@@ -17,7 +16,6 @@ var AudioPlayerObject = function(){
 
     //private funcs
     function init() {
-        sound = preloaded_songs[track.src];
         setSongInfo(track);
         playButton = $('#playButton');
         playButton.click(playButtonHandler);
@@ -102,7 +100,6 @@ var AudioPlayerObject = function(){
 
     function increaseVolume(event) {
         if(playing) {
-        console.log('increase volume');
             if(volumeModifier < 100) {
                 volumeModifier += 10;
             } else {
@@ -115,7 +112,6 @@ var AudioPlayerObject = function(){
 
     function decreaseVolume(event) {
         if(playing) {
-            console.log('decrease volume');
             if(volumeModifier > 10) {
                 volumeModifier -= 10;
             } else {

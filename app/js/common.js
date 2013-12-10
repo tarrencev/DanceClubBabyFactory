@@ -10,7 +10,7 @@ var STAGECENTER = {
 
 var HI = 1, LO = -1;
 
-var canvas, stage, preloaded_songs;
+var canvas, stage, loadQueue, sound;
 var volumeModifier = 50;
 var speedModifier = 1;
 var difficultyModifier = 1;
