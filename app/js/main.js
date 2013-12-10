@@ -27,6 +27,7 @@ var GameObject = function() {
         document.body.appendChild(canvas);
         stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
+        createjs.Touch.enable(stage);
 
         window.onresize = function() {
             onResize();
