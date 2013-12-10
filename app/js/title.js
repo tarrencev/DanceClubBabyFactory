@@ -70,46 +70,6 @@ var TitleObject = function(new_stage){
 
     function fileProgress(event) {
         createjs.Tween.get(loadingMeter).to({scaleX: event.progress, scaleY: 1}, 5, createjs.Ease.quartIn);
-        // loadingMeter.scaleX();
-        // console.log("progress " + event.progress.toString());
-    }
-
-    function drawLoadingText() {
-        yay = new createjs.Text("loading..",
-                                "bold 65px Helvetica",
-                                "#FFFFFF");
-
-        // yay.alpha = 0.2;
-        yay.x = CONSTANTS.WIDTH / 2;
-        yay.y = CONSTANTS.HEIGHT / 4;
-        yay.textBasline = "middle";
-        stage.addChild(yay);
-    }
-
-    function drawInstructions() {
-        instructionTitle = new createjs.Text("instructions:",
-                                   "bold 25px Helvetica",
-                                   "#FFFFFF");
-        instructionTitle.x = CONSTANTS.WIDTH / 2 + 20;
-        instructionTitle.y = CONSTANTS.HEIGHT / 2 - 30;
-        instructionTitle.textBaseline = "alphabetic";
-        stage.addChild(instructionTitle);
-
-        instructionText = new createjs.Text("throw the craziest party in town while\n" +
-                             "running your illegal, for-profit orphanage\n\n" +
-                             "catch the stars as they shoot to the beat of the music\n" +
-                             "miss too many of them and the cops will shut you down\n" +
-                             "use your stars to purchase powerups\n\n" +
-                             "increase the volume to increase the difficulty\n" +
-                             "the louder the party, the more partiers will come\n\n" + // need to implement this
-                             "partiers will produce babies for you, which means profit!",
-                            "20px Helvetica",
-                            "#FFFFFF");
-        instructionText.x = CONSTANTS.WIDTH / 2 + 40;
-        instructionText.y = CONSTANTS.HEIGHT / 2;
-        instructionText.lineHeight = 24;
-        instructionText.textBaseline = "alphabetic";
-        stage.addChild(instructionText);
     }
 
     function change_stage() {

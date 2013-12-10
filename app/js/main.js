@@ -8,11 +8,14 @@ var GameObject = function() {
         door,
         copGen,
         projectiles,
-        // damage,
         hud,
         title;
         
     var instance = this;
+
+    window.onresize = function() {
+            onResize();
+    };
 
     //private funcs
     function init() {
@@ -29,9 +32,6 @@ var GameObject = function() {
         stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
 
-        window.onresize = function() {
-            onResize();
-        };
 
         if(!createjs.Ticker.hasEventListener('tick')) {
             createjs.Ticker.addEventListener('tick', title_tick);
@@ -46,7 +46,6 @@ var GameObject = function() {
 
     function game() {
         createjs.Ticker.setFPS(30);
-        //stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
         createjs.Touch.enable(stage);
 
@@ -77,14 +76,10 @@ var GameObject = function() {
 
         //init hud
         hud = new HudObject();
-        //hud.renderStartTimer();
 
-        // damage = 0;
         renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
         
         document.addEventListener("mousemove", mouseMoveHandler);
-        //stage.addEventListener("click", mouseClickHandler);
-        // document.addEventListener("violation", violationHandler, false);
     }
 
     var fps = null;
@@ -141,7 +136,7 @@ var GameObject = function() {
 
     function onResize() {
         // browser viewport size
-        var w = window.innerWidth;// * 0.8;
+        var w = window.innerWidth;
         var h = window.innerHeight;
 
         // stage dimensions
@@ -153,29 +148,14 @@ var GameObject = function() {
         stage.scaleX = scale;
         stage.scaleY = scale;
         
-        stage.x = (w-scale*ow)/2;
-        stage.y = (h-scale*oh)/2;
-        
-        CONSTANTS.WIDTH = w;
-        CONSTANTS.HEIGHT = h;
-
-        stage.canvas.width = CONSTANTS.WIDTH;
-        stage.canvas.height = CONSTANTS.HEIGHT;
+        stage.canvas.width = ow * scale;
+        stage.canvas.height = oh * scale;
 
         stage.update();
     }
 
     function mouseMoveHandler(event) {
         door.moveDoor(event);
-    }
-
-    function mousePressMoveHandler(event) {
-        console.log('press move');
-        //door.moveDoor(event);
-    }
-
-    function mouseClickHandler(event) {
-        console.log('click');
     }
 
     //public funcs

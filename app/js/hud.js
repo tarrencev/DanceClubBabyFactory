@@ -158,9 +158,6 @@ var HudObject = function(){
             ecstasyPowerup = new PowerUpHudObject();
             ecstasyPowerup.drawEcstasy();
 
-            // mushroomsPowerup = new PowerUpHudObject();
-            // mushroomsPowerup.drawMushrooms();
-
             cocainePowerup = new PowerUpHudObject();
             cocainePowerup.drawCocaine();
     }
