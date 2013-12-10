@@ -72,7 +72,6 @@ var HudObject = function(){
                     scoreCounter = scoreCounter + babiesCounter * 10;
                     scoreValue.text(commaSeparateNumber(scoreCounter));
                     starsValue.text(starsCounter.toString());
-                    console.log(starsCounter);
                     if(starsCounter === stars) {
                         clearInterval(starsInterval);
                     }

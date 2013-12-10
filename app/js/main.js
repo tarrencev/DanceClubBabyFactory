@@ -119,7 +119,7 @@ var GameObject = function() {
             }
             if (createjs.Ticker.getTicks() % 60 === 0) {
                 var partySize = goerGen.partySize();
-                var babiesToAdd = (partySize - prevPartySize) * 1/BABYSPAWNRATEMODIFIER * (partySize + 10)/10;
+                var babiesToAdd = (partySize - prevPartySize) * 1/BABYSPAWNRATEMODIFIER;
                 prevPartySize = partySize;
                 while (babiesToAdd > 0) {
                     babyRepo.addBaby();
