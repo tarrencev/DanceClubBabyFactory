@@ -27,7 +27,6 @@ var GameObject = function() {
         document.body.appendChild(canvas);
         stage = new createjs.Stage(canvas);
         stage.mouseEventsEnabled = true;
-        createjs.Touch.enable(stage);
 
         window.onresize = function() {
             onResize();
@@ -47,6 +46,7 @@ var GameObject = function() {
     function game() {
         createjs.Ticker.setFPS(30);
         stage.mouseEventsEnabled = true;
+        createjs.Touch.enable(stage);
 
         createjs.Ticker.removeEventListener('tick', title_tick);
         createjs.Ticker.addEventListener('tick', tick);
