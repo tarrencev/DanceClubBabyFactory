@@ -218,6 +218,16 @@ var GameObject = function() {
     this.getTitle = function() {
         return title;
     };
+
+    this.pause = function() {
+        goerGen.pause();
+        projectiles.pause();
+    };
+
+    this.resume = function() {
+        goerGen.resume();
+        projectiles.resume();
+    };
     
     this.resetGame = function() {
         // setDamage(0, true);
@@ -227,14 +237,6 @@ var GameObject = function() {
         goerGen.reset();
         hud.reset();
         console.log("game end");
-    };
-
-    this.addExtraBabies = function() {
-        var extraBabiesToAdd = 5;
-        while (extraBabiesToAdd > 0) {
-            babyRepo.addBaby();
-            extraBabiesToAdd--;
-        }
     };
 };
 

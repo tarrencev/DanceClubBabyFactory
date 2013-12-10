@@ -42,15 +42,11 @@ var AudioPlayerObject = function(){
             gameObject.pause();
             playButton.children().removeClass('glyphicon-pause')
                                  .addClass('glyphicon-play');
-            gameObject.getGoerGen().pause();
-            gameObject.getProjectiles().pause();
         } else {
             playing = true;
             gameObject.resume();
             playButton.children().removeClass('glyphicon-play')
                                  .addClass('glyphicon-pause');
-            gameObject.getGoerGen().resume();
-            gameObject.getProjectiles().resume();
         }
         if (playing && stopped) {
             $('#winState').hide();
