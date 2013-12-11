@@ -231,7 +231,7 @@ var PartyGoerGenObject = function() {
     };
 
     this.partySize = function() {
-        return getPartySize();
+        return this.getPeopleInParty();
     };
 
     this.pause = function() {
