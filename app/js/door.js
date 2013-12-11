@@ -62,9 +62,17 @@ var DoorObject = function(){
 
     //public funcs
     this.moveDoor = function(event) {
+        var deltaY;
+        var deltaX;
 
-        var deltaY = event.clientY - CONSTANTS.HEIGHT/2;
-        var deltaX = event.clientX - CONSTANTS.WIDTH/2;
+        if(!mobile) {
+            deltaY = event.clientY - CONSTANTS.HEIGHT/2;
+            deltaX = event.clientX - CONSTANTS.WIDTH/2;
+        } else {
+            deltaY = event.dy;
+            deltaX = event.dx;
+        }
+
         var angle = Math.atan2(deltaY,deltaX) * 180/Math.PI;
         door.rotation = angle;
         

@@ -70,16 +70,18 @@ var GameObject = function() {
 
     function game() {
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            mobile = true;
             GameController.init({
+                forcePerformanceFriendly: true,
                 left: {
-                    type: 'joystick'
-                    // touchMove: function( details ) {
-                    //     console.log( details.dx );
-                    //     console.log( details.dy );
-                    //     console.log( details.max );
-                    //     console.log( details.normalizedX );
-                    //     console.log( details.normalizedY );
-                    // }
+                    type: 'joystick',
+                    joystick: {
+                        radius: 50
+                    },
+                    position: { left: '10%', bottom: '15%' },
+                    touchMove: function( details ) {
+                        door.moveDoor({dx: details.dx, dy: details.dy});
+                    }
                 }
             });
             // document.addEventListener("touchstart", touchHandler, true);

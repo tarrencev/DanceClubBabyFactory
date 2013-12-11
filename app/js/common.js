@@ -11,6 +11,7 @@ var STAGECENTER = {
 var HI = 1, LO = -1, HUD = -999;
 
 var canvas, stage, loadQueue, sound;
+var mobile = false;
 var volumeModifier = 50;
 var speedModifier = 1;
 var difficultyModifier = 1;
