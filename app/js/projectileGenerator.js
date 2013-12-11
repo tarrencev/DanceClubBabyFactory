@@ -25,18 +25,19 @@ var ProjectileGeneratorObject = function() {
 
         document.addEventListener("lpPulse", lpPulseHandler, false);
         document.addEventListener("hpPulse", hpPulseHandler, false);
+        document.addEventListener("bp1Pulse", hpPulseHandler, false);
         document.addEventListener("oneKey", activateMarijuana, false);
         document.addEventListener("fourKey", activateCocaine, false);
     }
 
     function lpPulseHandler(event) {
         var dataDiff = event.dataDiff;
-        fireProjectile(dataDiff, LO);
+        fireProjectile(dataDiff);
     }
 
     function hpPulseHandler(event) {
         var dataDiff = event.dataDiff;
-        fireProjectile(dataDiff, HI);
+        fireProjectile(dataDiff);
     }
     function removeProjectile(index) {
         stage.removeChild(projectiles.getChildAt(index).getShape());
@@ -54,8 +55,8 @@ var ProjectileGeneratorObject = function() {
         document.dispatchEvent(violationEvt);
     }
 
-    function drawProjectile(type) {
-        var projectile = new ProjectileObject(type);
+    function drawProjectile() {
+        var projectile = new ProjectileObject();
         projectiles.addChild(projectile);
         
         return projectile;
@@ -69,11 +70,11 @@ var ProjectileGeneratorObject = function() {
     }
 
     var projectileCounter = 0;
-    function fireProjectile(dataDiff, type) {
+    function fireProjectile(dataDiff) {
         if (ticksSinceProjectile > MINTICKSPERPROJECTILE/(volumeModifier/100) && dataDiff > 0.25) {
             if(dataDiff > 4) dataDiff = 4;
             if(dataDiff < -4) dataDiff = -4;
-            var projectile = drawProjectile(type);
+            var projectile = drawProjectile();
             var edgePos = calculateProjectileDirection(rotateDirection*dataDiff*5);
             var offsetPosition = {
                 x: CONSTANTS.WIDTH/2+gameObject.getBabyRepo().getRadius()*Math.cos(projectileAngle), 
@@ -168,6 +169,9 @@ var ProjectileGeneratorObject = function() {
             stage.removeChild(powerUps.getChildAt(i).getShape());
             powerUps.removeChildAt(i);
         }
+        marijuanaActive = false;
+        mushroomsActive = false;
+        cocaineActive = false;
     };
     
     var cocaineCount = 0;

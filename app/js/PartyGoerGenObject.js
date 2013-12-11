@@ -252,6 +252,7 @@ var PartyGoerGenObject = function() {
     
     this.reset = function() {
         this.clearPeople();
+        ecstasy = false;
     };
 
     this.clearPeople = function() {

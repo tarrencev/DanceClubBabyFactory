@@ -333,25 +333,32 @@ input[type="range"]::-webkit-slider-thumb{
   margin-right: 180px;
   top: 100px;
 }
+#instructions #drugs {
+  display: none;
+}
 #instructions #mjInstruct {
   text-align: right;
   margin-right: 170px;
   top: 5px;
+  display: inline;
 }
 #instructions #extenzeInstruct {
   text-align: right;
   margin-right: 170px;
   top: 80px;
+  display: inline;
 }
 #instructions #ecsInstruct {
   text-align: right;
   margin-right: 170px;
   top: 150px;
+  display: inline;
 }
 #instructions #cokeInstruct {
   text-align: right;
   margin-right: 170px;
   top: 220px;
+  display: inline;
 }
 #instructions #diffInstruct {
 }

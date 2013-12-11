@@ -47,7 +47,7 @@ PowerUpHudObject.prototype.drawPowerUpCost = function(index, cost) {
     subtext.x = CONSTANTS.WIDTH - 100;
     subtext.y = 65 + index * 80;
     subtext.textBaseline = "alphabetic";
-    var star = new ProjectileObject(HUD);
+    var star = new ProjectileObject();
     star.setPosition({x: CONSTANTS.WIDTH - 120, y: 60 + index * 80});
     stage.addChild(subtext);
 

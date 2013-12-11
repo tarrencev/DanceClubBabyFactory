@@ -63,14 +63,14 @@ var HudObject = function(){
         var babiesCounter = 0;
         var scoreCounter = 0;
         var babiesInterval = setInterval(function() {
-            scoreCounter = scoreCounter + babiesCounter * 100;
-            scoreValue.text(commaSeparateNumber(scoreCounter));
-            babiesValue.text(babiesCounter.toString());
+            if (babiesCounter > 0) scoreCounter = scoreCounter + 1000;
+            scoreValue.text("$" + commaSeparateNumber(scoreCounter));
+            babiesValue.text(babiesCounter.toString() + " x $1000");
             if(babiesCounter === score) {
                 var starsCounter = 0;
                 var starsInterval = setInterval(function() {
-                    scoreCounter = scoreCounter + babiesCounter * 10;
-                    scoreValue.text(commaSeparateNumber(scoreCounter));
+                    if (starsCounter > 0) scoreCounter = scoreCounter + 100;
+                    scoreValue.text("$" + commaSeparateNumber(scoreCounter));
                     starsValue.text(starsCounter.toString());
                     console.log(starsCounter);
                     if(starsCounter === stars) {
@@ -144,7 +144,7 @@ var HudObject = function(){
         starsText.y = 41;
         starsText.textBaseline = "alphabetic";
         stage.addChild(starsText);
-        starsIcon = new ProjectileObject(HUD);
+        starsIcon = new ProjectileObject();
         starsIcon.setPosition({x: CONSTANTS.WIDTH/2 + 140, y: 30});
     }
 
@@ -239,7 +239,7 @@ var HudObject = function(){
         stars = 0;
         starsText.text = "0";
         score = 0;
-        starsText.text = "0";
+        scoreText.text = "0";
     };
 
     this.renderTextAlert = function(text) {

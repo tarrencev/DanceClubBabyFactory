@@ -36,22 +36,24 @@ var AudioPlayerObject = function(){
     }
 
     function playButtonHandler(event) {
-        sound.playPause();
-        if(playing) {
-            playing = false;
-            gameObject.pause();
-            playButton.children().removeClass('glyphicon-pause')
-                                 .addClass('glyphicon-play');
-        } else {
-            playing = true;
-            gameObject.resume();
-            playButton.children().removeClass('glyphicon-play')
-                                 .addClass('glyphicon-pause');
-        }
-        if (playing && stopped) {
+        if (stopped) {
             $('#winState').hide();
             gameObject.resetGame();
             document.getElementById("instructions").style.display = "none";
+            gameObject.getHud().renderStartTimer();
+        } else {
+            sound.playPause();
+            if(playing) {
+                playing = false;
+                gameObject.pause();
+                playButton.children().removeClass('glyphicon-pause')
+                                     .addClass('glyphicon-play');
+            } else {
+                playing = true;
+                gameObject.resume();
+                playButton.children().removeClass('glyphicon-play')
+                                     .addClass('glyphicon-pause');
+            }
         }
         stopped = false;
     }

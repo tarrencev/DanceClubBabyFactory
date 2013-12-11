@@ -58,7 +58,7 @@ var TitleObject = function(new_stage){
         clearInterval(titleBackgroundInterval);
         change_stage();
         document.getElementById("instructions").style.display = "none";
-        gameObject.getHud().renderStartTimer();
+        gameObject.getAudioPlayer().play();
     }
 
     function handleComplete(event) {

@@ -115,8 +115,8 @@ var SoundObject = function(){
     function initBandPassFilter1(context, dynamicsNode) {
         bandPass1Filter = context.createBiquadFilter();
         bandPass1Filter.type = 2;
-        bandPass1Filter.frequency.value = 270;
-        bandPass1Filter.Q = 230;
+        bandPass1Filter.frequency.value = 2780;
+        bandPass1Filter.Q = 2740;
         bandPass1Filter.connect(context.destination);
 
         bandPass1AnalyserNode = context.createAnalyser();
@@ -134,8 +134,8 @@ var SoundObject = function(){
     function initBandPassFilter2(context, dynamicsNode) {
         bandPass2Filter = context.createBiquadFilter();
         bandPass2Filter.type = 2;
-        bandPass2Filter.frequency.value = 1250;
-        bandPass2Filter.Q = 750;
+        bandPass2Filter.frequency.value = 8260;
+        bandPass2Filter.Q = 2740;
         bandPass2Filter.connect(context.destination);
 
         bandPass2AnalyserNode = context.createAnalyser();
@@ -154,7 +154,7 @@ var SoundObject = function(){
         //create highpass filter
         highPassFilter = context.createBiquadFilter();
         highPassFilter.type = 1; // Hi-pass filter. See BiquadFilterNode docs
-        highPassFilter.frequency.value = 2000;
+        highPassFilter.frequency.value = 11000;
         highPassFilter.connect(context.destination);
 
         // create an highpass analyser node

@@ -8,7 +8,7 @@ var STAGECENTER = {
     y: function() { return CONSTANTS.HEIGHT/2; }
 };
 
-var HI = 1, LO = -1;
+var HI = 1, LO = -1, HUD = -999;
 
 var canvas, stage, loadQueue, sound;
 var volumeModifier = 50;

@@ -135,6 +135,15 @@ var DoorObject = function(){
         return false;
     };
     
+    this.reset = function() {
+        if (extenzeActive) {
+            extenzeCount = 0;
+            extenzeActive = false;
+            extending = true;
+            goalWidth = originalWidth;
+        }
+    };
+    
     this.tick = function() {
         if (extending) {
             door.graphics.clear();
