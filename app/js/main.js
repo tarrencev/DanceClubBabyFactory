@@ -9,7 +9,8 @@ var GameObject = function() {
         projectiles,
         hud,
         title;
-        
+
+    var joystick;
     var instance = this;
 
     window.onresize = function() {
@@ -70,18 +71,7 @@ var GameObject = function() {
     function game() {
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             mobile = true;
-            GameController.init({
-                forcePerformanceFriendly: true,
-                left: {
-                    type: 'joystick',
-                    position: { left: '10%', bottom: '15%' },
-                    joystick: {
-                        touchMove: function( details ) {
-                            door.moveDoor({dx: details.normalizedX, dy: -details.normalizedY});
-                        }
-                    }
-                }
-            });
+            joystick = new VirtualJoystick();
         }
 
         createjs.Ticker.setFPS(30);
@@ -137,6 +127,10 @@ var GameObject = function() {
     function tick() {
 
         //renderFPS(Math.round(createjs.Ticker.getMeasuredFPS()).toString());
+
+        if(mobile) {
+            door.moveDoor({dx: joystick.deltaX(), dy: joystick.deltaY()});
+        }
     
         if (audioPlayer.isPlaying()) {
             audioPlayer.tick();
