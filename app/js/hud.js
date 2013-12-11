@@ -72,7 +72,6 @@ var HudObject = function(){
                     if (starsCounter > 0) scoreCounter = scoreCounter + 100;
                     scoreValue.text("$" + commaSeparateNumber(scoreCounter));
                     starsValue.text(starsCounter.toString());
-                    console.log(starsCounter);
                     if(starsCounter === stars) {
                         clearInterval(starsInterval);
                     }

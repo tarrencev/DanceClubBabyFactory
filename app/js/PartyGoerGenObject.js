@@ -7,6 +7,7 @@ var PartyGoerGenObject = function() {
     var everyoneNeedtoLeave = false;
     var ecstasy = false;
     var partyPeople;
+    var numberOfPeopleInParty = 0;
     document.addEventListener("threeKey", ecstasyHandler);
     document.addEventListener("lose", kickEveryoneOut);
 
@@ -27,7 +28,7 @@ var PartyGoerGenObject = function() {
             gameObject.getHud().renderTextAlert("Ecstasy");
             gameObject.getHud().decrementStarsBy(ECSTACYCOST);
             gameObject.getDoor().ecstasyStart();
-            gameObject.getBabyRepo().ecstasy();
+            BABYSPAWNRATEMODIFIER = 2;
         }
     }
 
@@ -152,6 +153,7 @@ var PartyGoerGenObject = function() {
             }
         }
 
+        numberOfPeopleInParty = 0;
         for (; i < upperbound; i++) {
             
             var distance = getDistance(people.getChildAt(i), babyRepo);
@@ -159,6 +161,7 @@ var PartyGoerGenObject = function() {
 
             if (distance < babyRepoRadius + people.getChildAt(i).getRadius() + offset) {
                 createjs.Tween.removeTweens(people.getChildAt(i).getShape());
+                numberOfPeopleInParty++;
                 pos = getRandomPosInParty();
                 createjs.Tween.get(people.getChildAt(i).getShape()).to(pos, danceSpeed * getDistanceBtwObjectAndPos(people.getChildAt(i), pos), createjs.Ease.linear);
             } else {
@@ -187,16 +190,6 @@ var PartyGoerGenObject = function() {
         return peeps;
     }
 
-    function getPartySize() {
-        var num = 0;
-        for (var i =0; i < people.getNumChildren(); i++) {
-            if (getDistance(people.getChildAt(i), gameObject.getBabyRepo()) < gameObject.getDoor().getRadius()) {
-                num++;
-            }
-        }
-        return num;
-    }
-
     //public funcs
     this.addPartyGoer = function() {
         drawPartyGoer();
@@ -218,7 +211,8 @@ var PartyGoerGenObject = function() {
             }
             if(ecstasyCount > 210) {
                 ecstasy = false;
-                gameObject.getDoor().ecstasyStart();
+                BABYSPAWNRATEMODIFIER = 4;
+                // gameObject.getDoor().ecstasyStart();
             }
         }
         ecstasyCount++;
@@ -263,6 +257,6 @@ var PartyGoerGenObject = function() {
     };
 
     this.getPeopleInParty = function() {
-        getPeopleInParty();
+        return numberOfPeopleInParty;
     };
 };
