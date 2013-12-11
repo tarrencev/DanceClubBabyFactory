@@ -6,7 +6,6 @@ var GameObject = function() {
         babyRepo,
         goerGen,
         door,
-        copGen,
         projectiles,
         hud,
         title;
@@ -21,9 +20,9 @@ var GameObject = function() {
     function init() {
         canvas = document.createElement('canvas');
 
-        canvas.width = window.innerWidth;// * 0.8;
+        canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        CONSTANTS.WIDTH = window.innerWidth;// * 0.8;
+        CONSTANTS.WIDTH = window.innerWidth;
         CONSTANTS.HEIGHT = window.innerHeight;
 
         canvas.setAttribute('id', 'c');
@@ -108,16 +107,11 @@ var GameObject = function() {
         //init party goers
         goerGen = new PartyGoerGenObject();
 
-        //init the fuzz
-        copGen = new CopGenObject();
-
         //init door
         door = new DoorObject();
 
         //init hud
         hud = new HudObject();
-
-        //renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
         
         document.addEventListener("mousemove", mouseMoveHandler);
     }
@@ -149,7 +143,6 @@ var GameObject = function() {
             door.tick();
             goerGen.tick();
             projectiles.tick();
-            copGen.tick();
             background.tick();
             hud.tick();
         
@@ -221,10 +214,6 @@ var GameObject = function() {
 
     this.getGoerGen = function() {
         return goerGen;
-    };
-
-    this.getCopGen = function() {
-        return copGen;
     };
 
     this.getProjectiles = function() {
