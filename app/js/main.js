@@ -106,7 +106,7 @@ var GameObject = function() {
         //init hud
         hud = new HudObject();
 
-        renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
+        //renderFPS(Math.round(createjs.Ticker.getFPS()).toString());
         
         document.addEventListener("mousemove", mouseMoveHandler);
     }
@@ -131,7 +131,7 @@ var GameObject = function() {
     var prevPartySize = 0;
     function tick() {
 
-        renderFPS(Math.round(createjs.Ticker.getMeasuredFPS()).toString());
+        //renderFPS(Math.round(createjs.Ticker.getMeasuredFPS()).toString());
     
         if (audioPlayer.isPlaying()) {
             audioPlayer.tick();

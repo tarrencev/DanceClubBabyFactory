@@ -28,7 +28,7 @@ var PartyGoerGenObject = function() {
             gameObject.getHud().renderTextAlert("Ecstasy");
             gameObject.getHud().decrementStarsBy(ECSTACYCOST);
             gameObject.getDoor().ecstasyStart();
-            BABYSPAWNRATEMODIFIER = 2;
+            BABYSPAWNRATEMODIFIER *= 2;
         }
     }
 
@@ -213,7 +213,7 @@ var PartyGoerGenObject = function() {
             }
             if(ecstasyCount > 210) {
                 ecstasy = false;
-                BABYSPAWNRATEMODIFIER = 4;
+                BABYSPAWNRATEMODIFIER = 10;
                 // gameObject.getDoor().ecstasyStart();
             }
         }
