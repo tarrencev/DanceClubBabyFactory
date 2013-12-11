@@ -126,7 +126,7 @@ var GameObject = function() {
                     babiesToAdd--;
                 }
             }
-            if (createjs.Ticker.getTicks() % 30 === 0) {
+            if (createjs.Ticker.getTicks() % 45 === 0) {
                 goerGen.wander();
             }
         }

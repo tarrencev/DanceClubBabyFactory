@@ -192,13 +192,15 @@ var PartyGoerGenObject = function() {
 
     //public funcs
     this.addPartyGoer = function() {
-        drawPartyGoer();
+        console.log(numberOfPeopleInParty);
+        if(numberOfPeopleInParty < 8)
+            drawPartyGoer();
     };
 
     var ecstasyCount = 0;
     this.tick = function() {
 
-        if(ecstasyCount % 5 === 0) {
+        if(ecstasyCount % 20 === 0) {
             collisionBehaviors();
         }
 
