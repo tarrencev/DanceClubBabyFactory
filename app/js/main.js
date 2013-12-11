@@ -8,11 +8,9 @@ var GameObject = function() {
         door,
         projectiles,
         hud,
-        title;
-
-    var joystick;
-    var instance = this;
-
+        title,
+        joystick;
+    
     window.onresize = function() {
             onResize();
     };
@@ -30,42 +28,8 @@ var GameObject = function() {
 
         document.body.appendChild(canvas);
         stage = new createjs.Stage(canvas);
-        createjs.Touch.enable(stage);
-        // stage.mouseEventsEnabled = true;
 
-
-        if(!createjs.Ticker.hasEventListener('tick')) {
-            createjs.Ticker.addEventListener('tick', title_tick);
-        }
-
-        title = new TitleObject(game); 
-    }
-
-    function touchHandler(event)
-    {
-        var touches = event.changedTouches,
-            first = touches[0],
-            type = "";
-        switch(event.type)
-        {
-            case "touchstart": type = "mousedown"; break;
-            case "touchmove":  type="mousemove"; break;        
-            case "touchend":   type="mouseup"; break;
-            default: return;
-        }
-
-        var simulatedEvent = document.createEvent("MouseEvent");
-        simulatedEvent.initMouseEvent(type, true, true, window, 1, 
-                                  first.screenX, first.screenY, 
-                                  first.clientX, first.clientY, false, 
-                                  false, false, false, 0/*left*/, null);
-
-                                                                                     first.target.dispatchEvent(simulatedEvent);
-        event.preventDefault();
-    }
-
-    function title_tick() {
-      stage.update();
+        title = new TitleObject(game);
     }
 
     function game() {
@@ -78,7 +42,6 @@ var GameObject = function() {
         // stage.mouseEventsEnabled = true;
         createjs.Touch.enable(stage);
 
-        createjs.Ticker.removeEventListener('tick', title_tick);
         createjs.Ticker.addEventListener('tick', tick);
         createjs.Ticker.setFPS(30);
 
@@ -122,11 +85,8 @@ var GameObject = function() {
         }
     }
 
-    //same as perform_logic() in zenilib
     var prevPartySize = 0;
     function tick() {
-
-        //renderFPS(Math.round(createjs.Ticker.getMeasuredFPS()).toString());
 
         if(mobile) {
             door.moveDoor({dx: joystick.deltaX(), dy: joystick.deltaY()});
@@ -234,14 +194,12 @@ var GameObject = function() {
     
     this.resetGame = function() {
         // setDamage(0, true);
-        console.log("game reset");
         background.reset();
         door.reset();
         babyRepo.reset();
         projectiles.reset();
         goerGen.reset();
         hud.reset();
-        console.log("game end");
     };
 };
 

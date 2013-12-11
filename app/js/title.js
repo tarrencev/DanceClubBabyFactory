@@ -37,6 +37,12 @@ var TitleObject = function(new_stage){
 
         $(".titlePlayButton").click(handlePlayButton);
         $(".tutorialButton").click(change_stage);
+        createjs.Ticker.addEventListener('tick', tick);
+        stage.update();
+    }
+
+    function tick() {
+        stage.update();
     }
 
     function initLoadingMeter() {
