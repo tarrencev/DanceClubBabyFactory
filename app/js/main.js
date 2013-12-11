@@ -69,11 +69,25 @@ var GameObject = function() {
     }
 
     function game() {
-        document.addEventListener("touchstart", touchHandler, true);
-        document.addEventListener("touchmove", touchHandler, true);
-        document.addEventListener("touchend", touchHandler, true);
-        document.addEventListener("touchcancel", touchHandler, true);
-        
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            GameController.init({
+                left: {
+                    type: 'joystick'
+                    // touchMove: function( details ) {
+                    //     console.log( details.dx );
+                    //     console.log( details.dy );
+                    //     console.log( details.max );
+                    //     console.log( details.normalizedX );
+                    //     console.log( details.normalizedY );
+                    // }
+                }
+            });
+            // document.addEventListener("touchstart", touchHandler, true);
+            // document.addEventListener("touchmove", touchHandler, true);
+            // document.addEventListener("touchend", touchHandler, true);
+            // document.addEventListener("touchcancel", touchHandler, true);
+        }
+
         createjs.Ticker.setFPS(30);
         // stage.mouseEventsEnabled = true;
         createjs.Touch.enable(stage);
