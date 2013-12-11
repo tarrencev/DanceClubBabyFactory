@@ -69,7 +69,7 @@ var GameObject = function() {
     }
 
     function game() {
-        // if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             mobile = true;
             GameController.init({
                 forcePerformanceFriendly: true,
@@ -83,7 +83,7 @@ var GameObject = function() {
                     }
                 }
             });
-        // }
+        }
 
         createjs.Ticker.setFPS(30);
         // stage.mouseEventsEnabled = true;
