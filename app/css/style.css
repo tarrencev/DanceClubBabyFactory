@@ -47,14 +47,14 @@ canvas {
 #titleState #story {
   position: absolute;
   top: 300px;
-  width: 75%;
+  width: 60%;
   margin: auto;
   left: 0; right: 0;
 }
 
 #titleState #story p {
-  font-size: 1.5em;
-  margin: 1em;
+  font-size: 1.2em;
+  margin: 0.8em;
 }
 
 .scoresContainer {
