@@ -54,6 +54,7 @@ var HudObject = function(){
         }
     }
 
+
     function displayScoreScreen() {
         $('#winState').show();
         var scoreValue = $('#playerScoreValue');
@@ -205,6 +206,10 @@ var HudObject = function(){
         createjs.Tween.get(alert).to({scaleX: 20, scaleY: 20, alpha:0}, 900).call(function() {stage.removeChild(alert);});
         stage.addChild(alert);
     }
+
+    this.displayScoreScreen = function() {
+        displayScoreScreen();
+    };
 
     this.getStars = function() {
         return stars;

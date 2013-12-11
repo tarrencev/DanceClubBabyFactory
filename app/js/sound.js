@@ -209,6 +209,7 @@ var SoundObject = function(){
             }
         } else {
             soundInstance = createjs.Sound.play("gameSong");
+            soundInstance.addEventListener("complete", handleEndSong);
         }
         if (siren) {
             if (!siren.resume()) {
@@ -217,6 +218,10 @@ var SoundObject = function(){
         } else {
             siren = createjs.Sound.play("Siren", {volume: 0, loop: -1});
         }
+    }
+
+    function handleEndSong() {
+        gameObject.getHud().displayScoreScreen();
     }
 
     function pausePlayback() {
