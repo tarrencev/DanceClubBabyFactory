@@ -42,13 +42,13 @@ var TitleObject = function(new_stage){
     function initLoadingMeter() {
         loadingMeterBackground = new createjs.Shape();
         loadingMeterBackground.x = CONSTANTS.WIDTH/2 - 200;
-        loadingMeterBackground.y = CONSTANTS.HEIGHT/2;
+        loadingMeterBackground.y = 250;
         loadingMeterBackground.graphics.beginFill("#FFF").drawRect(0, 0, 400, 40);
         stage.addChild(loadingMeterBackground);
 
         loadingMeter = new createjs.Shape();
         loadingMeter.x = CONSTANTS.WIDTH/2 - 200;
-        loadingMeter.y = CONSTANTS.HEIGHT/2;
+        loadingMeter.y = 250;
         loadingMeter.graphics.beginFill("#ff00ef").drawRect(0, 0, 400, 40);
         loadingMeter.scaleX = 0;
         stage.addChild(loadingMeter);

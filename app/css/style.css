@@ -44,6 +44,19 @@ canvas {
   background-color: rgba(0,0,0,0.7);
 }
 
+#titleState #story {
+  position: absolute;
+  top: 300px;
+  width: 75%;
+  margin: auto;
+  left: 0; right: 0;
+}
+
+#titleState #story p {
+  font-size: 1.5em;
+  margin: 1em;
+}
+
 .scoresContainer {
   display:block;
   margin: 50px auto;
