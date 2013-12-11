@@ -118,7 +118,6 @@ var HudObject = function(){
     }
     
     function updateHeat() {
-        console.log(heat);
         createjs.Tween.get(heatMeter).to({scaleX: heat, scaleY: 1}, 500, createjs.Ease.quartIn);
     }
 
@@ -251,7 +250,6 @@ var HudObject = function(){
     };
 
     this.reset = function() {
-        console.log("Hud RESET");
         heat = 0.001;
         updateHeat();
         stars = 0;
@@ -265,7 +263,6 @@ var HudObject = function(){
     };
 
     this.decrementStarsBy = function(value) {
-        console.log(value);
         stars -= value;
         starsText.text = stars.toString();
     };

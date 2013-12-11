@@ -192,7 +192,6 @@ var PartyGoerGenObject = function() {
 
     //public funcs
     this.addPartyGoer = function() {
-        console.log(numberOfPeopleInParty);
         if(numberOfPeopleInParty < 8)
             drawPartyGoer();
     };

@@ -69,26 +69,21 @@ var GameObject = function() {
     }
 
     function game() {
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        // if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
             mobile = true;
             GameController.init({
                 forcePerformanceFriendly: true,
                 left: {
                     type: 'joystick',
-                    joystick: {
-                        radius: 50
-                    },
                     position: { left: '10%', bottom: '15%' },
-                    touchMove: function( details ) {
-                        door.moveDoor({dx: details.dx, dy: details.dy});
+                    joystick: {
+                        touchMove: function( details ) {
+                            door.moveDoor({dx: details.normalizedX, dy: -details.normalizedY});
+                        }
                     }
                 }
             });
-            // document.addEventListener("touchstart", touchHandler, true);
-            // document.addEventListener("touchmove", touchHandler, true);
-            // document.addEventListener("touchend", touchHandler, true);
-            // document.addEventListener("touchcancel", touchHandler, true);
-        }
+        // }
 
         createjs.Ticker.setFPS(30);
         // stage.mouseEventsEnabled = true;

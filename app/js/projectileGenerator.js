@@ -210,7 +210,6 @@ var ProjectileGeneratorObject = function() {
         }
 
         if(marijuanaActive) {
-            console.log(gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value);
             if (marijuanaCount%3 === 0 && easeIn) {
                 speedModifier = speedModifier * 0.99 + 0.75 * 0.001;
                 if (speedModifier < 0.76) {
