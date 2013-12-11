@@ -212,6 +212,7 @@ var GameObject = function() {
     this.resetGame = function() {
         // setDamage(0, true);
         console.log("game reset");
+        background.reset();
         door.reset();
         babyRepo.reset();
         projectiles.reset();

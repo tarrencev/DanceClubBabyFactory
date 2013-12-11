@@ -5,7 +5,8 @@ var AudioPlayerObject = function(){
         settingsButton,
         audioControlsOpen = false,
         stopped = true,
-        playing = false;
+        playing = false,
+        instance = this;
 
     var track = {
         artist: 'Flight Facilities',
@@ -30,11 +31,8 @@ var AudioPlayerObject = function(){
         document.addEventListener("downKey", decreaseVolume, false);
         document.addEventListener("spaceKey", playButtonHandler, false);
     }
-
-    function handleEvent(event) {
-        console.log('event received');
-    }
-
+    
+    this.countingDown = false;
     function playButtonHandler(event) {
         if (stopped) {
             $('#winState').hide();
@@ -42,17 +40,19 @@ var AudioPlayerObject = function(){
             document.getElementById("instructions").style.display = "none";
             gameObject.getHud().renderStartTimer();
         } else {
-            sound.playPause();
-            if(playing) {
-                playing = false;
-                gameObject.pause();
-                playButton.children().removeClass('glyphicon-pause')
-                                     .addClass('glyphicon-play');
-            } else {
-                playing = true;
-                gameObject.resume();
-                playButton.children().removeClass('glyphicon-play')
-                                     .addClass('glyphicon-pause');
+            if (!instance.countingDown) {
+                sound.playPause();
+                if(playing) {
+                    playing = false;
+                    gameObject.pause();
+                    playButton.children().removeClass('glyphicon-pause')
+                                         .addClass('glyphicon-play');
+                } else {
+                    playing = true;
+                    gameObject.resume();
+                    playButton.children().removeClass('glyphicon-play')
+                                         .addClass('glyphicon-pause');
+                }
             }
         }
         stopped = false;
@@ -142,6 +142,7 @@ var AudioPlayerObject = function(){
                 speedModifier = 1;
                 clearInterval(enterEasing);
                 sound.stop();
+                instance.getSound().getSiren().volume = 0;
                 createjs.Sound.play("Rewind");
             }
             gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;

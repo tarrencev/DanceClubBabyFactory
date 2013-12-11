@@ -155,6 +155,11 @@ var BackgroundObject = function(){
         spectrum.rotation += 0.5;
     };
     
+    this.reset = function() {
+        rings.removeAllChildren();
+        spectrum.graphics.clear();
+    };
+    
     this.tick = function() {
         for(var i = rings.getNumChildren()-1; i>-1; i--) {
             ring = rings.getChildAt(i);

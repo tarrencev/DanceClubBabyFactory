@@ -53,6 +53,11 @@ var HudObject = function(){
             updateHeat();
         }
     }
+    
+    function handleSongEnd() {
+        gameObject.getAudioPlayer().stopPlayback();
+        displayScoreScreen();
+    }
 
     function displayScoreScreen() {
         $('#winState').show();
@@ -213,12 +218,15 @@ var HudObject = function(){
     this.renderStartTimer = function(){
         var second = 3;
         renderTextAlert(second.toString());
+        gameObject.getAudioPlayer().countingDown = true;
         var enterEasing = setInterval(function() {
             second--;
             if (second === 0) {
                 clearInterval(enterEasing);
                 renderTextAlert("Go!");
+                gameObject.getAudioPlayer().countingDown = false;
                 gameObject.getAudioPlayer().play();
+                gameObject.getAudioPlayer().getSound().getSong().addEventListener("complete", handleSongEnd, false);
             } else renderTextAlert(second.toString());
             
         }, 1000);
