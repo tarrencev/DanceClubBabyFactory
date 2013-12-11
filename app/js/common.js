@@ -16,7 +16,7 @@ var volumeModifier = 50;
 var speedModifier = 1;
 var difficultyModifier = 1;
 var MINTICKSPERPROJECTILE = 3;
-var BABYSPAWNRATEMODIFIER = 4;
+var BABYSPAWNRATEMODIFIER = 10;
 var PROGRESSMODIFIER = 1;
 
 var SLOWDOWNCOST = 25;

@@ -115,6 +115,7 @@ var ProjectileGeneratorObject = function() {
         if(gameObject.getHud().getStars() >= COCAINECOST && !cocaineActive) {
             cocaineActive = true;
             cocaineCount = 0;
+            gameObject.getHud().resetHeat();
             gameObject.getHud().renderTextAlert("Cocaine");
             gameObject.getHud().decrementStarsBy(COCAINECOST);
         }
