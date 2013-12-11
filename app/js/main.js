@@ -38,11 +38,7 @@ var GameObject = function() {
             createjs.Ticker.addEventListener('tick', title_tick);
         }
 
-        title = new TitleObject(game);
-        document.addEventListener("touchstart", touchHandler, true);
-        document.addEventListener("touchmove", touchHandler, true);
-        document.addEventListener("touchend", touchHandler, true);
-        document.addEventListener("touchcancel", touchHandler, true);    
+        title = new TitleObject(game); 
     }
 
     function touchHandler(event)
@@ -73,6 +69,11 @@ var GameObject = function() {
     }
 
     function game() {
+        document.addEventListener("touchstart", touchHandler, true);
+        document.addEventListener("touchmove", touchHandler, true);
+        document.addEventListener("touchend", touchHandler, true);
+        document.addEventListener("touchcancel", touchHandler, true);
+        
         createjs.Ticker.setFPS(30);
         // stage.mouseEventsEnabled = true;
         createjs.Touch.enable(stage);
