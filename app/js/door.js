@@ -30,7 +30,6 @@ var DoorObject = function(){
                      .setStrokeStyle(doorThickness)
                      .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                      .endStroke();
-        // door.cache(-(radius+doorThickness), -(radius+doorThickness), (radius+doorThickness)*2, (radius+doorThickness)*2);
         stage.addChild(door);
     }
 
@@ -46,7 +45,6 @@ var DoorObject = function(){
                 .setStrokeStyle(3)
                 .arc(CONSTANTS.WIDTH/2, CONSTANTS.HEIGHT/2, 250, start, end);
         }
-        // doorGuide.cache(CONSTANTS.WIDTH/2 - 260, CONSTANTS.HEIGHT/2 - 260, 520, 520);
 
         stage.addChild(doorGuide);
     }
@@ -64,7 +62,6 @@ var DoorObject = function(){
 
     //public funcs
     this.moveDoor = function(event) {
-        //console.log(event.stageY);
 
         var deltaY = event.clientY - CONSTANTS.HEIGHT/2;
         var deltaX = event.clientX - CONSTANTS.WIDTH/2;
@@ -90,13 +87,11 @@ var DoorObject = function(){
             door.filters = [
                 new createjs.ColorFilter(0,0,0,1, color[0],color[1],color[2],0)
             ];
-            // door.updateCache();
         }, 100);
     };
     
     this.ecstasyEnd = function() {
         door.filters = [];
-        // door.updateCache();
         clearTimeout(ecstasyInterval);
     };
     
@@ -160,7 +155,6 @@ var DoorObject = function(){
                          .setStrokeStyle(doorThickness)
                          .arc(0, 0, radius, -doorWidth/2, doorWidth/2)
                          .endStroke();
-            // door.updateCache();
         }
         if (extenzeActive) {
             extenzeCount++;
