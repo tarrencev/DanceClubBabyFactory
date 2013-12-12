@@ -28,7 +28,7 @@ AudioPlayerObject.prototype.init = function() {
     document.addEventListener("spaceKey", this.playHandler, false);
 };
     
-AudioPlayerObject.prototype.playHandler = function(event) {
+AudioPlayerObject.prototype.playHandler = function() {
     if (this.stopped) {
         $('#winState').hide();
         gameObject.resetGame();
@@ -37,10 +37,12 @@ AudioPlayerObject.prototype.playHandler = function(event) {
     } else {
         if (!this.countingDown) {
             if(this.playing) {
+                console.log("pause");
                 sound.pause();
                 this.playing = false;
                 gameObject.pause();
             } else {
+                console.log("play");
                 sound.play();
                 this.playing = true;
                 gameObject.resume();
@@ -138,8 +140,4 @@ AudioPlayerObject.prototype.stopPlayback = function() {
     this.stopped = true;
     this.playButton.children().removeClass('glyphicon-pause')
                             .addClass('glyphicon-play');
-};
-
-AudioPlayerObject.prototype.play = function() {
-    this.playHandler();
 };

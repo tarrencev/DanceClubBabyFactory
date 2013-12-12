@@ -235,7 +235,7 @@ var HudObject = function(){
                 clearInterval(enterEasing);
                 renderTextAlert("Go!");
                 gameObject.getAudioPlayer().countingDown = false;
-                gameObject.getAudioPlayer().play();
+                gameObject.getAudioPlayer().playHandler();
                 sound.getSong().addEventListener("complete", handleSongEnd, false);
             } else renderTextAlert(second.toString());
             

@@ -218,7 +218,7 @@ var ProjectileGeneratorObject = function() {
                     easeOut = true;
                     marijuanaCount = 0;
                 }
-                gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;
+                sound.getSong().LOLaudio.playbackRate.value = speedModifier;
             } else if (marijuanaCount > 70 && marijuanaCount%5 === 0 && easeOut) {
                 speedModifier = (speedModifier-0.5*0.001)/0.99;
                 if (speedModifier > 0.98) {
@@ -227,7 +227,7 @@ var ProjectileGeneratorObject = function() {
                     easeOut = false;
                     marijuanaCount = 0;
                 }
-                gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;
+                sound.getSong().LOLaudio.playbackRate.value = speedModifier;
             }
         }
         marijuanaCount++;

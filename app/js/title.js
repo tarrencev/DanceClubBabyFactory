@@ -66,7 +66,7 @@ var TitleObject = function(new_stage){
         clearInterval(titleBackgroundInterval);
         change_stage();
         document.getElementById("instructions").style.display = "none";
-        gameObject.getAudioPlayer().play();
+        gameObject.getAudioPlayer().playHandler();
     }
 
     function handleComplete(songFile) {
