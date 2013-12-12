@@ -10,7 +10,6 @@ var BackgroundObject = function(){
     function init() {
         drawBaseBackground();
         drawSpectrum();
-        // drawFlare();
         var center = {
             x: CONSTANTS.WIDTH/2,
             y: CONSTANTS.HEIGHT/2
@@ -38,41 +37,11 @@ var BackgroundObject = function(){
     
     function drawSpectrum() {
         spectrum = new createjs.Shape();
-        spectrum.minHeight = 75 /*gameObject.getBabyRepo().getRadius()*/;
-        /*
-        var sections = 300;
-        var barWidth = Math.PI*2/sections*75 /*gameObject.getBabyRepo().getRadius()/;
-        var barHeight = 75 /*gameObject.getBabyRepo().getRadius()/;
-        for (var i=0; i<sections; i++) {
-            var bar = new createjs.Shape();
-            bar.graphics.beginFill("rgba(241,90,41,0.3)")
-                        .rect(-barWidth/2, 0,
-                              barWidth, barHeight);
-            bar.rotation = i*360/sections;
-        
-            spectrum.addChild(bar);
-        }
-        */
-    }
-
-    function drawFlare() {
-        flare = new createjs.Shape();
-        var center = {
-            x: CONSTANTS.WIDTH/2,
-            y: CONSTANTS.HEIGHT/2
-        };
-        flare.x = center.x;
-        flare.y = center.y;
-        flare.graphics
-            .beginRadialGradientFill(["rgba(255,255,255,0.2)","rgba(255,255,255,0)"], [0, 1], 0, 0, 0, 0, 0, 250)
-            .drawCircle(0, 0, flareRadius);
-        flare.scaleX = flare.scaleY = 0;
-        stage.addChild(flare);
+        spectrum.minHeight = 75;
     }
 
     function lpPulseHandler(event) {
         var dataDiff = event.dataDiff;
-        // setFlareChangeInRadius(dataDiff);
         if(dataDiff > 4) dataDiff = 4;
         if(dataDiff > 1) fireRing(dataDiff);
     }
@@ -99,25 +68,6 @@ var BackgroundObject = function(){
             rings.addChild(newRing);
         }
     }
-
-    function setFlareChangeInRadius(radiusDiff) {
-        flareRadius = radiusDiff*3;
-        //console.log(flareRadius);
-        flare.scaleX = flare.scaleY = flareRadius;
-    }
-
-    this.setFlareColor = function(ambientColorFilter) {
-        flare.graphics
-            .beginRadialGradientFill(["#123456","#000"], [0, 1], 0, 0, 0, 0, 0, 250);
-        /*flare.filters = [
-            new createjs.ColorFilter(1,1,1,1, 
-                                     ambientColorFilter[0], 
-                                     ambientColorFilter[1], 
-                                     ambientColorFilter[2], 0)
-        ];*/
-        // flare.cache(-CONSTANTS.WIDTH/2, -CONSTANTS.HEIGHT/2, CONSTANTS.WIDTH, CONSTANTS.HEIGHT);
-        // .getHSL((i/CIRCLES*HUE_VARIANCE+circleHue)%360, 100, 50);
-    };
     
     this.updateSpectrum = function() {
         var data = sound.getSpectrum();
@@ -137,21 +87,6 @@ var BackgroundObject = function(){
         }
         spectrum.graphics.endFill()
                          .endStroke();
-        /*total = 0;
-        var dataSections = data.length/4*3;
-        var lol=0;
-        for (var i=0; i<spectrum.getNumChildren(); i++) {
-            var sectionTotal = 0;
-            var part = i*dataSections/spectrum.getNumChildren();
-            do {
-              sectionTotal += data[part];
-              part++;
-            } while (part < (i+1)*dataSections/spectrum.getNumChildren());
-            sectionTotal /= dataSections/spectrum.getNumChildren();
-            total += sectionTotal;
-            spectrum.getChildAt(i).scaleY = 1+sectionTotal/255*4;
-            lol++;
-        }*/
         spectrum.rotation += 0.5;
     };
     

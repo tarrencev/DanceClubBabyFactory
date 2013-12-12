@@ -2,7 +2,7 @@ function AudioPlayerObject() {
     this.audioControlsOpen = false;
     this.stopped = true;
     this.playing = false;
-    this.countingDown = false;
+    this.countingDown = true;
 
     this.track = {
         artist: 'Flight Facilities',
@@ -16,8 +16,6 @@ function AudioPlayerObject() {
 
 AudioPlayerObject.prototype.init = function() {
     this.setSongInfo();
-    this.playButton = $('#playButton');
-    this.playButton.click(this.playButtonHandler);
 
     this.settingsButton = $('#settingsButton');
     this.settingsButton.click(this.settingsButtonHandler);
@@ -27,10 +25,10 @@ AudioPlayerObject.prototype.init = function() {
     $('.onoffswitch-checkbox').change(this.switchHandler);
     document.addEventListener("upKey", this.increaseVolume, false);
     document.addEventListener("downKey", this.decreaseVolume, false);
-    document.addEventListener("spaceKey", this.playButtonHandler, false);
+    document.addEventListener("spaceKey", this.playHandler, false);
 };
     
-AudioPlayerObject.prototype.playButtonHandler = function(event) {
+AudioPlayerObject.prototype.playHandler = function(event) {
     if (this.stopped) {
         $('#winState').hide();
         gameObject.resetGame();
@@ -38,17 +36,14 @@ AudioPlayerObject.prototype.playButtonHandler = function(event) {
         gameObject.getHud().renderStartTimer();
     } else {
         if (!this.countingDown) {
-            sound.playPause();
             if(this.playing) {
+                sound.pause();
                 this.playing = false;
                 gameObject.pause();
-                this.playButton.children().removeClass('glyphicon-pause')
-                                            .addClass('glyphicon-play');
             } else {
+                sound.play();
                 this.playing = true;
                 gameObject.resume();
-                this.playButton.children().removeClass('glyphicon-play')
-                                        .addClass('glyphicon-pause');
             }
         }
     }
@@ -146,5 +141,5 @@ AudioPlayerObject.prototype.stopPlayback = function() {
 };
 
 AudioPlayerObject.prototype.play = function() {
-    this.playButtonHandler();
+    this.playHandler();
 };

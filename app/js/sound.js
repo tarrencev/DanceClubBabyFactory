@@ -294,11 +294,13 @@ var SoundObject = function(){
         return dataDiff;
     }
 
-    //public funs
-    this.playPause = function() {
-        if (playing)
+    this.pause = function() {
+        if(playing)
             pausePlayback();
-        else
+    };
+
+    this.play = function() {
+        if(!playing)
             startPlayback();
     };
     
@@ -366,15 +368,9 @@ var SoundObject = function(){
     this.tick = function() {
         if(playing) {
             updateAnalysers();
-            
-            /*lpEvt.dataDiff = Math.abs(calculateDiff(analysisResults.lo, TimeByteData))/60;
-            hpEvt.dataDiff = Math.abs(calculateDiff(analysisResults.hi, TimeByteData))/60;
-            document.dispatchEvent(lpEvt);
-            document.dispatchEvent(hpEvt);*/
 
             if (lowPassEnabled) {
                 lpEvt.dataDiff = calculateDiff(lpFreqByteData, lpTimeByteData);
-                //lpEvt.dataDiff = calculateDiff(analysisResults.lo, lpTimeByteData);
                 document.dispatchEvent(lpEvt);
             }
             if (bandPass1Enabled) {
@@ -387,7 +383,6 @@ var SoundObject = function(){
             }
             if (highPassEnabled) {
                 hpEvt.dataDiff = calculateDiff(hpFreqByteData, hpTimeByteData);
-                //hpEvt.dataDiff = calculateDiff(analysisResults.hi, hpTimeByteData);
                 document.dispatchEvent(hpEvt);
             }
         }

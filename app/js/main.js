@@ -179,17 +179,18 @@ var GameObject = function() {
     };
 
     this.pause = function() {
+        createjs.Ticker.removeEventListener('tick', tick);
         goerGen.pause();
         projectiles.pause();
     };
 
     this.resume = function() {
+        createjs.Ticker.addEventListener('tick', tick);
         goerGen.resume();
         projectiles.resume();
     };
     
     this.resetGame = function() {
-        // setDamage(0, true);
         background.reset();
         door.reset();
         babyRepo.reset();
