@@ -1,8 +1,5 @@
 function BabyObject(){
-    // The following variables can be modified outside the object so they're not private
-    // But this is for the sake of efficiency (and because of scope)
     this.radius = 5;
-
     this.init();
 }
 
@@ -21,7 +18,6 @@ BabyObject.prototype.drawBaby = function() {
     stage.addChild(this.baby);
 };
 
-//public funs
 BabyObject.prototype.setPosition = function(position) {
     this.baby.x = position.x;
     this.baby.y = position.y;

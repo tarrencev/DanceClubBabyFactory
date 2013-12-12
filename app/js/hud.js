@@ -33,7 +33,7 @@ var HudObject = function(){
     function violationHandler(event) {
         if (gameObject.getAudioPlayer().isPlaying()) {
             heat += 5.9;
-            var siren = gameObject.getAudioPlayer().getSound().getSiren();
+            var siren = sound.getSiren();
             if (heat < 118) {
                 createjs.Tween.get(siren, {override: true})
                               .to({volume: 1}, 500).call(function() {
@@ -236,7 +236,7 @@ var HudObject = function(){
                 renderTextAlert("Go!");
                 gameObject.getAudioPlayer().countingDown = false;
                 gameObject.getAudioPlayer().play();
-                gameObject.getAudioPlayer().getSound().getSong().addEventListener("complete", handleSongEnd, false);
+                sound.getSong().addEventListener("complete", handleSongEnd, false);
             } else renderTextAlert(second.toString());
             
         }, 1000);

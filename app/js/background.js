@@ -120,7 +120,7 @@ var BackgroundObject = function(){
     };
     
     this.updateSpectrum = function() {
-        var data = gameObject.getAudioPlayer().getSound().getSpectrum();
+        var data = sound.getSpectrum();
         for (var last=data.length; last>0; --last) {
             if (data[last] > 0) break;
         }

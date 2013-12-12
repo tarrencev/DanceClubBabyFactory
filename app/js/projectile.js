@@ -1,8 +1,4 @@
 function ProjectileObject() {
-    // The following variables can be modified outside the object so they're not private
-    // But this is for the sake of efficiency (and because of scope)
-    //this.projectile; // DO NOT MODIFY THIS VARIABLE DIRECTLY!
-    // radius not used
     this.radius = 14;
     this.dest = 0;
     this.time = 0;

@@ -1,86 +1,79 @@
-var BabyRepoObject = function() {
-    //private vars
-    //declare private vars here
-    var container;
-    var radius = 75;
-    var strokeWidth = 4;
-    var babies = [];
-    var birthEvt;
+function BabyRepoObject() {
+    this.radius = 75;
+    this.strokeWidth = 4;
+    this.babies = new createjs.Container();
+    this.init();
+}
 
-    //private funcs
-    function init() {
-        drawContainer();
-        birthEvt = document.createEvent('Event');
-        birthEvt.initEvent('birth', true, true);
+BabyRepoObject.prototype.init = function() {
+    this.drawContainer();
+    this.birthEvt = document.createEvent('Event');
+    this.birthEvt.initEvent('birth', true, true);
+};
+
+BabyRepoObject.prototype.drawContainer = function() {
+    this.container = new createjs.Shape();
+    this.container.x = CONSTANTS.WIDTH/2;
+    this.container.y = CONSTANTS.HEIGHT/2;
+    this.container.graphics
+        .beginStroke('#df2b90')
+        .setStrokeStyle(this.strokeWidth)
+        .beginFill('#ec87b8')
+        .drawCircle(0, 0, this.radius);
+
+    stage.addChild(this.container);
+};
+
+BabyRepoObject.prototype.drawBaby = function() {
+    var baby = new BabyObject();
+    var tries = 0;
+    while (this.checkForCollisions(baby) && tries++ < 10) {
+        baby.setPosition(this.getRandomPos(baby));
     }
+    this.babies.addChild(baby);
+    document.dispatchEvent(this.birthEvt);
+};
 
-    function drawContainer() {
-        container = new createjs.Shape();
-        container.x = CONSTANTS.WIDTH/2;
-        container.y = CONSTANTS.HEIGHT/2;
-        container.graphics
-            .beginStroke('#df2b90')
-            .setStrokeStyle(strokeWidth)
-            .beginFill('#ec87b8')
-            .drawCircle(0, 0, radius);
-
-        stage.addChild(container);
+BabyRepoObject.prototype.checkForCollisions = function(baby_) {
+    for (var i = 0; i < this.babies.getNumChildren(); i++) {
+        if(circlesDoCollide(this.babies.getChildAt(i), baby_))
+            return true;
     }
+    return false;
+};
 
-    function drawBaby() {
-        var baby = new BabyObject();
-        var tries = 0;
-        while (checkForCollisions(baby) && tries++ < 10) {
-            baby.setPosition(getRandomPos(baby));
-        }
-        babies.push(baby);
-        document.dispatchEvent(birthEvt);
+BabyRepoObject.prototype.getRandomPos = function(baby) {
+    var angle = Math.PI*2*Math.random();
+    var distance = Math.random()*(this.radius - this.strokeWidth);
+    var position = {
+        x: Math.cos(angle)*distance,
+        y: Math.sin(angle)*distance
+    };
+    return position;
+};
+
+BabyRepoObject.prototype.addBaby = function() {
+    this.drawBaby();
+};
+
+BabyRepoObject.prototype.getPosition = function() {
+    return {
+        x: this.container.x,
+        y: this.container.y
+    };
+};
+
+BabyRepoObject.prototype.getRadius = function() {
+    return this.radius;
+};
+
+BabyRepoObject.prototype.getNumBabies = function() {
+    return this.babies.getNumChildren();
+};
+
+BabyRepoObject.prototype.reset = function() {
+    for (var i = 0; i < this.babies.getNumChildren(); i++) {
+        stage.removeChild(this.babies.getChildAt(i).baby);
     }
-
-    function checkForCollisions(baby_) {
-        for (var i in babies) {
-            if(circlesDoCollide(babies[i], baby_))
-                return true;
-        }
-        return false;
-    }
-
-    function getRandomPos(baby) {
-        var angle = Math.PI*2*Math.random();
-        var distance = Math.random()*(radius-strokeWidth);
-        var position = {
-            x: Math.cos(angle)*distance,
-            y: Math.sin(angle)*distance
-        };
-        return position;
-    }
-
-    //public funcs
-    this.addBaby = function() {
-        drawBaby();
-    };
-
-    this.getPosition = function() {
-        return {
-            x: container.x,
-            y: container.y
-        };
-    };
-
-    this.getRadius = function() {
-        return radius;
-    };
-
-    this.getNumBabies = function() {
-        return babies.length;
-    };
-
-    this.reset = function() {
-        for (var i in babies) {
-            stage.removeChild(babies[i].baby);
-        }
-        babies = [];
-    };
-
-    init();
+    this.babies.removeAllChildren();
 };

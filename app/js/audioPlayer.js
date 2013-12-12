@@ -2,7 +2,6 @@ function AudioPlayerObject() {
     this.audioControlsOpen = false;
     this.stopped = true;
     this.playing = false;
-    // this.instance = this;
     this.countingDown = false;
 
     this.track = {
