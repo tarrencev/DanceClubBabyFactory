@@ -39,11 +39,7 @@ var GameObject = function() {
         }
 
         createjs.Ticker.setFPS(30);
-        // stage.mouseEventsEnabled = true;
-        createjs.Touch.enable(stage);
-
         createjs.Ticker.addEventListener('tick', tick);
-        createjs.Ticker.setFPS(30);
 
         //init audio player
         audioPlayer = new AudioPlayerObject();
