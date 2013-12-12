@@ -5,10 +5,10 @@ function AudioPlayerObject() {
     this.countingDown = true;
 
     this.track = {
-        artist: 'Flight Facilities',
-        title: 'Crave You (Adventure Club Dubstep Remix)',
-        src: 'Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3',
-        cover: 'Ratatat-Classics.png'
+        artist: 'Brahj',
+        title: 'Delusional Confusion, Welome',
+        src: 'Brahj - Delusional Confusion, Welome.mp3',
+        cover: 'brahj.png'
     };
 
     this.getStopped = function() { return stopped;};

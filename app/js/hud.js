@@ -33,14 +33,14 @@ var HudObject = function(){
     function violationHandler(event) {
         if (gameObject.getAudioPlayer().getPlaying()) {
             heat += 5.9;
-            var siren = sound.getSiren();
-            if (heat < 118) {
-                createjs.Tween.get(siren, {override: true})
-                              .to({volume: 1}, 500).call(function() {
-                                  createjs.Tween.get(siren)
-                                                .to({volume: 0.2*heat/118}, 1500);
-                });
-            } else {
+            // var siren = sound.getSiren();
+            // if (heat < 118) {
+            //     createjs.Tween.get(siren, {override: true})
+            //                   .to({volume: 1}, 500).call(function() {
+            //                       createjs.Tween.get(siren)
+            //                                     .to({volume: 0.2*heat/118}, 1500);
+            //     });
+            if(heat >= 118) {
                 heat = 118;
                 gameObject.getAudioPlayer().stopPlayback();
                 createjs.Tween.get(siren, {override: true})

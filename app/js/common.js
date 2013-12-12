@@ -17,7 +17,7 @@ var speedModifier = 1;
 var difficultyModifier = 1;
 var MINTICKSPERPROJECTILE = 3;
 var BABYSPAWNRATEMODIFIER = 10;
-var PROGRESSMODIFIER = 1;
+var PROGRESSMODIFIER = 0.75;
 
 var SLOWDOWNCOST = 25;
 var EXTENZECOST = 25;
