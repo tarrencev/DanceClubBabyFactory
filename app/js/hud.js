@@ -43,10 +43,10 @@ var HudObject = function(){
             if(heat >= 118) {
                 heat = 118;
                 gameObject.getAudioPlayer().stopPlayback();
-                createjs.Tween.get(siren, {override: true})
-                              .to({volume: 1}, 1000).call(function() {
-                                  createjs.Tween.get(siren).to({volume: 0}, 3000);
-                });
+                // createjs.Tween.get(siren, {override: true})
+                //               .to({volume: 1}, 1000).call(function() {
+                //                   createjs.Tween.get(siren).to({volume: 0}, 3000);
+                // });
                 displayScoreScreen();
                 document.dispatchEvent(LoseEvt);
             }
