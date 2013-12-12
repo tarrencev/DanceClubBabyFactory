@@ -1,165 +1,151 @@
-var AudioPlayerObject = function(){
-    //private vars
-    //declare private vars her
-    var playButton,
-        settingsButton,
-        audioControlsOpen = false,
-        stopped = true,
-        playing = false,
-        instance = this;
+function AudioPlayerObject() {
+    this.audioControlsOpen = false;
+    this.stopped = true;
+    this.playing = false;
+    // this.instance = this;
+    this.countingDown = false;
 
-    var track = {
+    this.track = {
         artist: 'Flight Facilities',
         title: 'Crave You (Adventure Club Dubstep Remix)',
         src: 'Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3',
         cover: 'Ratatat-Classics.png'
     };
 
-    //private funcs
-    function init() {
-        setSongInfo(track);
-        playButton = $('#playButton');
-        playButton.click(playButtonHandler);
+    this.init();
+}
 
-        settingsButton = $('#settingsButton');
-        settingsButton.click(settingsButtonHandler);
+AudioPlayerObject.prototype.init = function() {
+    this.setSongInfo();
+    this.playButton = $('#playButton');
+    this.playButton.click(this.playButtonHandler);
 
-        //hook into volume slider
-        $('#volumeSlider').change(setVolume);
-        $('.onoffswitch-checkbox').change(switchHandler);
-        document.addEventListener("upKey", increaseVolume, false);
-        document.addEventListener("downKey", decreaseVolume, false);
-        document.addEventListener("spaceKey", playButtonHandler, false);
-    }
+    this.settingsButton = $('#settingsButton');
+    this.settingsButton.click(this.settingsButtonHandler);
+
+    //hook into volume slider
+    $('#volumeSlider').change(this.setVolume);
+    $('.onoffswitch-checkbox').change(this.switchHandler);
+    document.addEventListener("upKey", this.increaseVolume, false);
+    document.addEventListener("downKey", this.decreaseVolume, false);
+    document.addEventListener("spaceKey", this.playButtonHandler, false);
+};
     
-    this.countingDown = false;
-    function playButtonHandler(event) {
-        if (stopped) {
-            $('#winState').hide();
-            gameObject.resetGame();
-            document.getElementById("instructions").style.display = "none";
-            gameObject.getHud().renderStartTimer();
+AudioPlayerObject.prototype.playButtonHandler = function(event) {
+    if (this.stopped) {
+        $('#winState').hide();
+        gameObject.resetGame();
+        document.getElementById("instructions").style.display = "none";
+        gameObject.getHud().renderStartTimer();
+    } else {
+        if (!this.countingDown) {
+            sound.playPause();
+            if(this.playing) {
+                this.playing = false;
+                gameObject.pause();
+                this.playButton.children().removeClass('glyphicon-pause')
+                                            .addClass('glyphicon-play');
+            } else {
+                this.playing = true;
+                gameObject.resume();
+                this.playButton.children().removeClass('glyphicon-play')
+                                        .addClass('glyphicon-pause');
+            }
+        }
+    }
+    this.stopped = false;
+};
+
+AudioPlayerObject.prototype.switchHandler = function(event) {
+    if (event.target.id === 'lowPassSwitch') {
+        sound.toggleLowPassFilter();
+    } else if (event.target.id === 'bandPass1Switch') {
+        sound.toggleBandPass1Filter();
+    } else if (event.target.id === 'bandPass2Switch') {
+        sound.toggleBandPass2Filter();
+    } else if (event.target.id === 'highPassSwitch') {
+        sound.toggleHighPassFilter();
+    }
+};
+
+AudioPlayerObject.prototype.settingsButtonHandler = function(event) {
+    var audioControlsPane = $('.audioControlsPane')[0];
+    if(this.audioControlsOpen) {
+        audioControlsPane.style.opacity = 0;
+        this.audioControlsOpen = false;
+    } else {
+        audioControlsPane.style.opacity = 1;
+        this.audioControlsOpen = true;
+    }
+};
+
+AudioPlayerObject.prototype.setVolume = function(event) {
+    if(this.playing) {
+        if(10 < event.target.value) {
+            volumeModifier = event.target.value;
         } else {
-            if (!instance.countingDown) {
-                sound.playPause();
-                if(playing) {
-                    playing = false;
-                    gameObject.pause();
-                    playButton.children().removeClass('glyphicon-pause')
-                                         .addClass('glyphicon-play');
-                } else {
-                    playing = true;
-                    gameObject.resume();
-                    playButton.children().removeClass('glyphicon-play')
-                                         .addClass('glyphicon-pause');
-                }
-            }
+            volumeModifier = 10;
         }
-        stopped = false;
+        sound.setVolume(volumeModifier/100);
     }
+};
 
-    function switchHandler(event) {
-        if (event.target.id === 'lowPassSwitch') {
-            console.log('low pass switch');
-            sound.toggleLowPassFilter();
-        } else if (event.target.id === 'bandPass1Switch') {
-            console.log('band pass 1 switch');
-            sound.toggleBandPass1Filter();
-        } else if (event.target.id === 'bandPass2Switch') {
-            console.log('band pass 2 switch');
-            sound.toggleBandPass2Filter();
-        } else if (event.target.id === 'highPassSwitch') {
-            console.log('high pass switch');
-            sound.toggleHighPassFilter();
-        }
-    }
-
-    function settingsButtonHandler(event) {
-        var audioControlsPane = $('.audioControlsPane')[0];
-        if(audioControlsOpen) {
-            audioControlsPane.style.opacity = 0;
-            audioControlsOpen = false;
+AudioPlayerObject.prototype.increaseVolume = function(event) {
+    if(this.playing) {
+        if(volumeModifier < 100) {
+            volumeModifier += 10;
         } else {
-            audioControlsPane.style.opacity = 1;
-            audioControlsOpen = true;
+            volumeModifier = 100;
         }
+        sound.setVolume(volumeModifier/100);
+        $('#volumeSlider').val(volumeModifier);
     }
+};
 
-    function setVolume(event) {
-        if(playing) {
-            if(10 < event.target.value) {
-                volumeModifier = event.target.value;
-            } else {
-                volumeModifier = 10;
-            }
-            sound.setVolume(volumeModifier/100);
+AudioPlayerObject.prototype.decreaseVolume = function(event) {
+    if(this.playing) {
+        if(volumeModifier > 10) {
+            volumeModifier -= 10;
+        } else {
+            volumeModifier = 10;
         }
+        sound.setVolume(volumeModifier/100);
+        $('#volumeSlider').val(volumeModifier);
     }
+};
 
-    function increaseVolume(event) {
-        if(playing) {
-            if(volumeModifier < 100) {
-                volumeModifier += 10;
-            } else {
-                volumeModifier = 100;
-            }
-            sound.setVolume(volumeModifier/100);
-            $('#volumeSlider').val(volumeModifier);
-        }
-    }
+AudioPlayerObject.prototype.setSongInfo = function() {
+    $('#songTitle').text(this.track.title);
+    $('#songArtist').text(this.track.artist);
+    $('.albumCover')[0].src = '../music/covers/' + this.track.cover;
+};
 
-    function decreaseVolume(event) {
-        if(playing) {
-            if(volumeModifier > 10) {
-                volumeModifier -= 10;
-            } else {
-                volumeModifier = 10;
-            }
-            sound.setVolume(volumeModifier/100);
-            $('#volumeSlider').val(volumeModifier);
-        }
-    }
-
-    function setSongInfo(track) {
-        $('#songTitle').text(track.title);
-        $('#songArtist').text(track.artist);
-        $('.albumCover')[0].src = '../music/covers/' + track.cover;
-    }
-
-    //public funs
-    this.tick = function() {
-        sound.tick();
-    };
+AudioPlayerObject.prototype.tick = function() {
+    sound.tick();
+};
     
-    this.isPlaying = function() {
-        return playing;
-    };
-    
-    this.stopPlayback = function() {
-        var enterEasing = setInterval(function() {
-            speedModifier = speedModifier*0.95;
-            if (speedModifier < 0.1) {
-                speedModifier = 1;
-                clearInterval(enterEasing);
-                sound.stop();
-                instance.getSound().getSiren().volume = 0;
-                createjs.Sound.play("Rewind");
-            }
-            gameObject.getAudioPlayer().getSound().getSong().LOLaudio.playbackRate.value = speedModifier;
-        }, 10);
-        playing = false;
-        stopped = true;
-        playButton.children().removeClass('glyphicon-pause')
-                             .addClass('glyphicon-play');
-    };
+AudioPlayerObject.prototype.isPlaying = function() {
+    return this.playing;
+};
 
-    this.getSound = function() {
-        return sound;
-    };
+AudioPlayerObject.prototype.stopPlayback = function() {
+    var enterEasing = setInterval(function() {
+        speedModifier = speedModifier*0.95;
+        if (speedModifier < 0.1) {
+            speedModifier = 1;
+            clearInterval(enterEasing);
+            sound.stop();
+            sound.getSiren().volume = 0;
+            createjs.Sound.play("Rewind");
+        }
+        sound.getSong().LOLaudio.playbackRate.value = speedModifier;
+    }, 10);
+    this.playing = false;
+    this.stopped = true;
+    this.playButton.children().removeClass('glyphicon-pause')
+                            .addClass('glyphicon-play');
+};
 
-    this.play = function() {
-        playButtonHandler();
-    };
-    
-    init();
+AudioPlayerObject.prototype.play = function() {
+    this.playButtonHandler();
 };
