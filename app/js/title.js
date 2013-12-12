@@ -17,7 +17,6 @@ var TitleObject = function(new_stage){
         loadQueue = new createjs.LoadQueue();
         sound = new SoundObject();
         loadQueue.installPlugin(createjs.Sound);
-        loadQueue.addEventListener("complete", handleComplete);
         var manifest = [
             {
                 id: "gameSong",
@@ -41,7 +40,10 @@ var TitleObject = function(new_stage){
     }
 
     function tick() {
-        fileProgress(loadQueue.progress);
+        if(!loadQueue.loaded)
+            fileProgress(loadQueue.progress);
+        else 
+            handleComplete(loadQueue.getItem("gameSong"));
         stage.update();
     }
 
@@ -67,10 +69,10 @@ var TitleObject = function(new_stage){
         gameObject.getAudioPlayer().play();
     }
 
-    function handleComplete(event) {
+    function handleComplete(songFile) {
         stage.removeChild(loadingMeter);
         stage.removeChild(loadingMeterBackground);
-        song = event.item;
+        song = songFile;
         $('#titleMenu').show();
     }
 
