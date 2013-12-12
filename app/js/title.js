@@ -20,7 +20,7 @@ var TitleObject = function(new_stage){
         var manifest = [
             {
                 id: "gameSong",
-                src: "music/Brahj - Delusional Confusion, Welome.mp3"
+                src: "music/Delusional Confusion, Welcome.mp3"
             },
             {
                 src: "music/rewind_sound.mp3",
