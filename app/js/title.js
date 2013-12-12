@@ -20,7 +20,7 @@ var TitleObject = function(new_stage){
         var manifest = [
             {
                 id: "gameSong",
-                src: "music/Flight Facilities - Crave You (Adventure Club Dubstep Remix).mp3"
+                src: "music/JayZ Bonnie and Clyde.mp3"
             },
             {
                 src: "music/rewind_sound.mp3",

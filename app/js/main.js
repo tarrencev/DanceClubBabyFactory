@@ -88,7 +88,7 @@ var GameObject = function() {
             door.moveDoor({dx: joystick.deltaX(), dy: joystick.deltaY()});
         }
     
-        if (audioPlayer.isPlaying()) {
+        if (audioPlayer.getPlaying()) {
             audioPlayer.tick();
             door.tick();
             goerGen.tick();

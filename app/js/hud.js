@@ -31,7 +31,7 @@ var HudObject = function(){
     }
     
     function violationHandler(event) {
-        if (gameObject.getAudioPlayer().isPlaying()) {
+        if (gameObject.getAudioPlayer().getPlaying()) {
             heat += 5.9;
             var siren = sound.getSiren();
             if (heat < 118) {
