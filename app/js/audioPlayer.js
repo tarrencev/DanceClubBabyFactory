@@ -82,7 +82,7 @@ function AudioPlayerObject() {
                 speedModifier = 1;
                 clearInterval(enterEasing);
                 sound.stop();
-                sound.getSiren().volume = 0;
+                //sound.getSiren().volume = 0;
                 createjs.Sound.play("Rewind");
             }
             sound.getSong().LOLaudio.playbackRate.value = speedModifier;

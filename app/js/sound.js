@@ -8,7 +8,7 @@ var SoundObject = function(){
         // sound_path = 'music/',
         // src = sound_path + track;
     var soundInstance;      // the sound instance we create
-    var siren;
+    //var siren;
     
     var sampleRate;
     var analysisResults = {};
@@ -211,13 +211,13 @@ var SoundObject = function(){
             soundInstance = createjs.Sound.play("gameSong");
             soundInstance.addEventListener("complete", handleEndSong);
         }
-        if (siren) {
+        /*if (siren) {
             if (!siren.resume()) {
                 siren.play();
             }
         } else {
             siren = createjs.Sound.play("Siren", {volume: 0, loop: -1});
-        }
+        }*/
     }
 
     function handleEndSong() {
@@ -227,7 +227,7 @@ var SoundObject = function(){
     function pausePlayback() {
         playing = false;
         soundInstance.pause();
-        siren.pause();
+        //siren.pause();
     }
 
     function refreshFilters() {
@@ -313,9 +313,9 @@ var SoundObject = function(){
         return soundInstance;
     };
 
-    this.getSiren = function() {
+    /*this.getSiren = function() {
         return siren;
-    };
+    };*/
 
     this.setVolume = function(value) {
         soundInstance.setVolume(value);

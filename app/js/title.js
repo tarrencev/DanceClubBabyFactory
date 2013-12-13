@@ -25,11 +25,11 @@ var TitleObject = function(new_stage){
             {
                 src: "music/rewind_sound.mp3",
                 id: "Rewind"
-            },
+            }/*,
             {
                 src: "music/siren_sound.mp3",
                 id: "Siren"
-            }
+            }*/
         ];
         loadQueue.loadManifest(manifest, true);
 
